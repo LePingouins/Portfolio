@@ -1,0 +1,61 @@
+
+
+.minimal-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #18181b;
+  padding: 0.7em 2vw 0.7em 2vw;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  box-sizing: border-box;
+  border-bottom: 1px solid #991b1b;
+}
+
+.navbar-brand {
+  font-size: 1.35em;
+  font-weight: 700;
+  color: #ef4444;
+  letter-spacing: 1px;
+  font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+
+.minimal-links {
+  list-style: none;
+  display: flex;
+  gap: 2em;
+  margin: 0;
+  padding: 0;
+  font-size: 1.08em;
+  font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+.minimal-links li a {
+  text-decoration: none;
+  color: #f3f4f6;
+  font-weight: 500;
+  padding: 0.2em 0.7em;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+.minimal-links li a:hover {
+  background: #232323;
+  color: #ef4444;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #fffb00;
+  text-shadow: 0 0 8px #ff00cc, 0 0 4px #00ffea;
+  transition: transform 0.2s;
+}
+.theme-toggle:hover {
+  color: #00ffea;
+  transform: scale(1.2) rotate(-10deg);
+}

@@ -1,0 +1,85 @@
+.feedback-page {
+  background: #f4f6fb;
+  min-height: 100vh;
+  padding: 0 0 2em 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.feedback-header {
+  padding: 2em 0 1em 2em;
+  background: linear-gradient(90deg, #4f8cff 0%, #6ed6ff 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  margin-top: 32px; /* Reduced to bring header closer to navbar */
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+
+.feedback-title {
+  margin: 0;
+  font-size: 2.5em;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.feedback-subtitle {
+  margin: 0.5em 0 0 0;
+  font-size: 1.1em;
+  font-weight: 400;
+}
+
+.feedback-main {
+  width: 100%;
+  margin-top: 2em;
+  padding: 0 2em;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.feedback-comments-title {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-bottom: 1em;
+  color: #4f8cff;
+  width: 100%;
+}
+
+.feedback-list {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.feedback-item {
+  box-shadow: 0 2px 8px rgba(79,140,255,0.08);
+  border-radius: 12px;
+  padding: 1.5em;
+  background: #fff;
+  border: none;
+  transition: box-shadow 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.feedback-name {
+  font-weight: 600;
+  font-size: 1.1em;
+  color: #2d3a4a;
+}
+
+.feedback-comment {
+  margin: 0.75em 0;
+  font-size: 1.05em;
+  color: #444;
+}
+
+.feedback-date {
+  font-size: 0.9em;
+  color: #8ca0b3;
+}

@@ -1,0 +1,33 @@
+.contact-page-bg {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  overflow-x: hidden;
+}
+
+
+
+.contact-container {
+  max-width: 420px;
+  width: 100%;
+  padding: 20px 18px 24px 18px;
+  background: rgba(40,40,40,0.96);
+  border-radius: 16px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.45);
+  text-align: center;
+  color: #fff;
+  backdrop-filter: blur(2px);
+}
+
+
+.contact-success {
+  margin-top: 24px;
+  color: #ef4444;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: #18181b;
+  padding: 14px 0;
+  border-radius: 10px;
+}
