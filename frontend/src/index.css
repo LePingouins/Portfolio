@@ -1,8 +1,3 @@
-
-
-
-
-
 body {
   font-family: 'Segoe UI', 'Arial', sans-serif;
   line-height: 1.5;
@@ -14,10 +9,29 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+  margin: 0;
   position: relative;
   overflow-x: hidden;
 }
 
+/* Remove or lighten any overlay */
+body::before {
+  display: none !important;
+}
+
+/* High-contrast for all text elements */
+h1, h2, h3, h4, h5, h6, p, span, label, th, td, li, a, div {
+  color: #f3f4f6 !important;
+}
+
+/* Table and card backgrounds for visibility */
+table, th, td {
+  background: #232323 !important;
+  color: #f3f4f6 !important;
+  border-color: #444 !important;
+}
+
+/* Inputs and buttons */
 input, textarea, select {
   color: #fff;
   background: #232323;
@@ -48,91 +62,20 @@ button:hover {
   background: #b91c1c;
 }
 
-
-/* Remove or darken the background rays for a more professional look */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: radial-gradient(ellipse at center, #232323 0%, #18181b 100%);
-  opacity: 1;
-  z-index: 0;
-  pointer-events: none;
-}
-
-
-@keyframes crazyBgSpin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
+/* Links */
 a {
-  font-weight: 500;
-  color: var(--color-link);
-  text-decoration: inherit;
+  color: #4f8cff;
 }
 a:hover {
-  color: var(--color-link-hover);
-}
-
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-
-
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Segoe UI', 'Arial', sans-serif;
-  letter-spacing: 1px;
-  color: #f3f4f6;
-  font-weight: 700;
-}
-
-h1 {
-  font-size: 2.6em;
-  line-height: 1.1;
-  margin-bottom: 0.2em;
-  color: var(--accent);
-}
-
-  border-radius: 8px;
-  border: 2px solid var(--color-btn-border);
-  padding: 0.6em 1.3em;
-  font-size: 1.05em;
-  font-weight: 600;
-  background: var(--color-btn-bg);
-  color: var(--color-btn-text);
-  letter-spacing: 0.5px;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
-  cursor: pointer;
-  font-family: inherit;
-}
-button:hover {
-  background: var(--accent);
   color: #fff;
-  border-color: var(--accent-dark);
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* Remove default list styles for better dark mode */
+ul, ol {
+  color: #f3f4f6;
+}
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* Add a little padding to the main content */
+main, .main-content, .container {
+  padding: 2rem;
 }

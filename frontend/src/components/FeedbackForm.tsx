@@ -1,5 +1,7 @@
+
 import React, { useState } from 'react';
 import './FeedbackForm.css';
+import { submitFeedback } from '../services/api';
 
 
 interface FeedbackFormProps {
@@ -8,6 +10,7 @@ interface FeedbackFormProps {
 
 
 const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
+  // console.log('DEBUG: FeedbackForm component is mounted');
 
   const [name, setName] = useState('');
   const [comment, setComment] = useState('');
@@ -15,7 +18,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
   const [error, setError] = useState<string | null>(null);
 
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     if (honeypot) {
@@ -34,13 +37,27 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
       setError('Comment is too long.');
       return;
     }
-    onSubmit(name, comment);
-    setName('');
-    setComment('');
+    try {
+      await submitFeedback({ name, comment });
+      onSubmit(name, comment);
+      setName('');
+      setComment('');
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message || 'Failed to submit feedback.');
+      } else {
+        setError('Failed to submit feedback.');
+      }
+    }
   };
 
   return (
-    <form className="feedback-form" onSubmit={handleSubmit} autoComplete="off" aria-label="Feedback form">
+    <form
+      className="feedback-form"
+      onSubmit={handleSubmit}
+      autoComplete="off"
+      aria-label="Feedback form"
+    >
       <div className="feedback-form-group">
         <input
           id="feedback-name"
@@ -78,7 +95,9 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
         aria-hidden="true"
       />
       {error && <div className="feedback-error" role="alert">{error}</div>}
-      <button type="submit">Submit Feedback</button>
+      <button type="submit">
+        Submit Feedback
+      </button>
     </form>
   );
 };

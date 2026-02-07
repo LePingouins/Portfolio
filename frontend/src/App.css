@@ -1,5 +1,77 @@
-# Profile Page Styles
+/* Admin feedback table dark mode fix */
+.admin-feedback-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #232323;
+  color: #fff;
+  margin-bottom: 32px;
+}
+.admin-feedback-table th,
+.admin-feedback-table td {
+  background: #232323;
+  color: #fff;
+  padding: 8px;
+  border-bottom: 1px solid #444;
+}
+.admin-feedback-table th {
+  font-weight: 600;
+}
 
+/* Strong white text for admin feedback table */
+.admin-feedback-table, .admin-feedback-table th, .admin-feedback-table td {
+  color: #fff !important;
+  text-shadow: none !important;
+  font-weight: 700;
+  font-size: 1.2em;
+  opacity: 1 !important;
+  background: #18181b !important;
+}
+
+.admin-feedback-table tr {
+  background: #18181b !important;
+}
+
+.admin-feedback-table button {
+  color: #fff !important;
+  background: #ef4444 !important;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-right: 6px;
+  transition: background 0.2s;
+}
+.admin-feedback-table button:hover {
+  background: #991b1b !important;
+}
+
+/* Ensure backgrounds inside .content-safe-bg are never fully black */
+.content-safe-bg .feedback-container,
+.content-safe-bg .dashboard-content,
+.content-safe-bg .feedback-section,
+.content-safe-bg .feedback-success,
+.content-safe-bg .feedback-page-bg {
+  background: rgba(40,40,40,0.92) !important;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.45);
+}
+
+.content-safe-bg a,
+.content-safe-bg a:visited {
+  color: #4f8cff !important;
+  text-decoration: underline;
+}
+/* Universal content-safe background utility */
+.content-safe-bg {
+  background: #232323 !important;
+  color: #fff !important;
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
 .profile-container {
   min-height: 100vh;
   display: flex;

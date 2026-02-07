@@ -1,9 +1,6 @@
-import { createContext, useState, ReactNode } from 'react';
 
-export const LanguageContext = createContext({
-  language: 'en',
-  toggleLanguage: () => {},
-});
+import { useState, type ReactNode } from 'react';
+import { LanguageContext } from './LanguageContextValue';
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguage] = useState<'en' | 'fr'>(localStorage.getItem('lang') === 'fr' ? 'fr' : 'en');
@@ -20,3 +17,5 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     </LanguageContext.Provider>
   );
 };
+
+export { LanguageContext }; // Removed unused export of LanguageContextType

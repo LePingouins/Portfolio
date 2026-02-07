@@ -1,3 +1,43 @@
+
+.bg-anim-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(32px);
+  opacity: 0.32;
+  z-index: 0;
+  pointer-events: none;
+  animation: floatAnim 12s ease-in-out infinite alternate;
+}
+.bg-anim-circle1 {
+  width: 320px;
+  height: 320px;
+  left: -80px;
+  top: 10vh;
+  background: radial-gradient(circle at 30% 30%, #ef4444 0%, #232323 100%);
+  animation-delay: 0s;
+}
+.bg-anim-circle2 {
+  width: 220px;
+  height: 220px;
+  right: -60px;
+  top: 40vh;
+  background: radial-gradient(circle at 70% 70%, #0077ff 0%, #232323 100%);
+  animation-delay: 2s;
+}
+.bg-anim-circle3 {
+  width: 180px;
+  height: 180px;
+  left: 50vw;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%, #fbbf24 0%, #232323 100%);
+  animation-delay: 4s;
+}
+
+@keyframes floatAnim {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-40px) scale(1.08); }
+  100% { transform: translateY(0) scale(1); }
+}
 .projects-page-bg {
   min-height: 100vh;
   display: flex;

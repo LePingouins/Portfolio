@@ -1,6 +1,7 @@
 
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { LanguageContext } from '../components/LanguageContext';
 import './Projects.css';
 import { fetchProjects } from '../services/api';
 
@@ -14,6 +15,7 @@ interface Project {
 
 
 const Projects: React.FC = () => {
+    const { language } = useContext(LanguageContext);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -39,6 +41,9 @@ const Projects: React.FC = () => {
 
   return (
     <div className="projects-page-bg">
+      <div className="bg-anim-circle bg-anim-circle1" />
+      <div className="bg-anim-circle bg-anim-circle2" />
+      <div className="bg-anim-circle bg-anim-circle3" />
       <div className="projects-container">
         <h1>{language === 'fr' ? 'Projets' : 'Projects'}</h1>
         <input
@@ -54,7 +59,15 @@ const Projects: React.FC = () => {
             <div>{language === 'fr' ? 'Aucun projet trouvé.' : 'No projects found.'}</div>
           ) : (
             filtered.map((project, idx) => (
-              <div className="project-card" key={idx}>
+              <div
+                className="project-card"
+                key={idx}
+                style={{
+                  animationDelay: `${0.15 * idx}s`,
+                  opacity: 0,
+                  animation: 'fadeIn 0.7s ease forwards',
+                }}
+              >
                 <img src={project.image} alt={project.title} className="project-image" />
                 <h2>{project.title}</h2>
                 <p>{project.description}</p>

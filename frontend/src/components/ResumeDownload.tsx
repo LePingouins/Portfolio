@@ -12,7 +12,7 @@ const ResumeDownload: React.FC = () => {
         download
         style={{
           display: 'inline-block',
-          background: 'linear-gradient(90deg, #4b6cb7 0%, #182848 100%)',
+          background: '#ef4444',
           color: '#fff',
           padding: '0.7em 2em',
           borderRadius: '8px',
@@ -21,10 +21,13 @@ const ResumeDownload: React.FC = () => {
           textDecoration: 'none',
           boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           border: 'none',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          transition: 'background 0.2s',
         }}
         aria-label={language === 'fr' ? 'Télécharger le CV en PDF' : 'Download resume as PDF'}
         tabIndex={0}
+        onMouseOver={e => (e.currentTarget.style.background = '#b91c1c')}
+        onMouseOut={e => (e.currentTarget.style.background = '#ef4444')}
       >
         {language === 'fr' ? 'Télécharger le CV (PDF)' : 'Download Resume (PDF)'}
       </a>
