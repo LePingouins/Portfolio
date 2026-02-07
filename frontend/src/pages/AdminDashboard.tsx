@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import FeedbackSection from '../components/FeedbackSection';
+import AdminProjects from '../components/AdminProjects';
+import type { ProjectForm } from '../components/AdminProjects';
+import { addProject } from '../services/api';
 import { fetchAllFeedbacks, acceptFeedback, rejectFeedback, deleteFeedback, archiveFeedback } from '../services/api';
 
 interface Feedback {
@@ -16,8 +19,17 @@ const AdminDashboard: React.FC = () => {
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const navigate = useNavigate();
   const { section } = useParams();
-  // Normalize section: default to 'feedbacks' if not present or if 'feedback' (singular)
-  const adminSection = !section || section === 'feedback' ? 'feedbacks' : section;
+  // Normalize section: default to 'feedbacks' if not present or if 'feedback' (singular), but handle /admin/projects
+  let adminSection = section;
+  if (!adminSection || adminSection === 'feedback') {
+    // Check if pathname is /admin/projects
+    const pathname = window.location.pathname;
+    if (pathname === '/admin/projects') {
+      adminSection = 'projects';
+    } else {
+      adminSection = 'feedbacks';
+    }
+  }
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
@@ -58,6 +70,24 @@ const AdminDashboard: React.FC = () => {
               onArchive={handleArchive}
               admin
             />
+          )}
+          {adminSection === 'projects' && (
+            <AdminProjects onAddProject={async (project: ProjectForm) => {
+              try {
+                // Map ProjectForm to backend Project type
+                await addProject({
+                  name: project.name,
+                  description: project.description,
+                  projectLink: project.projectLink,
+                  websiteLink: project.websiteLink,
+                  imageUrl: project.imageUrl,
+                  techStack: project.techStack,
+                });
+                window.alert('Project added successfully!');
+              } catch {
+                window.alert('Failed to add project.');
+              }
+            }} />
           )}
           {/* Add more admin sections here as needed */}
         </div>

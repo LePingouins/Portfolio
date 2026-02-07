@@ -127,8 +127,13 @@ export async function fetchHello() {
 // Type definitions
 export interface Project {
   id?: number;
-  title: string;
+  name: string;
   description: string;
+  projectLink: string;
+  websiteLink: string;
+  imageUrl: string;
+  techStack: string[];
+  archived?: boolean;
 }
 export interface Skill {
   id?: number;
@@ -173,6 +178,27 @@ export async function fetchProjects() {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/projects` : `${API_BASE_URL}/api/projects`;
   const res = await fetch(url);
   if (!res.ok) throw new Error('Failed to fetch projects');
+  return res.json();
+}
+
+export async function fetchArchivedProjects() {
+  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/projects/archived` : `${API_BASE_URL}/api/projects/archived`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Failed to fetch archived projects');
+  return res.json();
+}
+
+export async function archiveProject(id: number) {
+  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/projects/${id}/archive` : `${API_BASE_URL}/api/projects/${id}/archive`;
+  const res = await fetch(url, { method: 'PATCH' });
+  if (!res.ok) throw new Error('Failed to archive project');
+  return res.json();
+}
+
+export async function unarchiveProject(id: number) {
+  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/projects/${id}/unarchive` : `${API_BASE_URL}/api/projects/${id}/unarchive`;
+  const res = await fetch(url, { method: 'PATCH' });
+  if (!res.ok) throw new Error('Failed to unarchive project');
   return res.json();
 }
 export async function addProject(project: Project) {

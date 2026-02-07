@@ -57,6 +57,7 @@ function AppRouter() {
         <Route path="/admin/archive" element={<Archive />} />
         <Route path="/admin/contacts" element={<AdminContact />} />
         <Route path="/admin-login" element={<AdminLogin />} />
+          <Route path="/admin/projects" element={<AdminDashboard />} />
       </Routes>
       <Footer />
     </>
