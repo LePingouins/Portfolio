@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import './Contact.css';
 import { LanguageContext } from '../components/LanguageContext';
 import { submitContactMessage } from '../services/api';
-import { EmailIcon, GithubIcon, LinkedinIcon, LocationIcon, SendIcon, PhoneIcon } from '../components/ContactIcons';
+import { EmailIcon, GithubIcon, LinkedinIcon, LocationIcon, SendIcon } from '../components/ContactIcons';
 
 const Contact: React.FC = () => {
   const { t } = useContext(LanguageContext);
@@ -62,13 +62,6 @@ const Contact: React.FC = () => {
                   <EmailIcon />
                 </div>
                 <span>oligoudreault@gmail.com</span>
-              </a>
-
-               <a href="tel:5143481921" className="contact-detail-item" style={{ textDecoration: 'none' }}>
-                <div className="icon-box">
-                  <PhoneIcon />
-                </div>
-                <span>+1 514-348-1921</span>
               </a>
             </div>
           </div>
