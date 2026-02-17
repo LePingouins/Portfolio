@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
+const LazyAdminSkills = lazy(() => import('./AdminSkills'));
+const LazyAdminTestimonials = lazy(() => import('./AdminTestimonials'));
 import { useNavigate, useParams } from 'react-router-dom';
 import FeedbackSection from '../components/FeedbackSection';
 import AdminProjects from '../components/AdminProjects';
@@ -60,7 +62,7 @@ const AdminDashboard: React.FC = () => {
   return (
     <>
       <div className="content-safe-bg" style={{ fontSize: 18, fontFamily: 'Inter, Arial, sans-serif', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <div className="dashboard-content">
+        <div className="dashboard-content" style={{ width: '100%' }}>
           {adminSection === 'feedbacks' && (
             <FeedbackSection
               feedbacks={feedbacks}
@@ -89,7 +91,16 @@ const AdminDashboard: React.FC = () => {
               }
             }} />
           )}
-          {/* Add more admin sections here as needed */}
+          {adminSection === 'testimonials' && (
+            <Suspense fallback={<div>Loading...</div>}>
+              <LazyAdminTestimonials />
+            </Suspense>
+          )}
+          {adminSection === 'skills' && (
+            <Suspense fallback={<div>Loading...</div>}>
+              <LazyAdminSkills />
+            </Suspense>
+          )}
         </div>
       </div>
     </>

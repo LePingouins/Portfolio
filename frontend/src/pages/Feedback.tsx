@@ -2,9 +2,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import './Feedback.css';
 import FeedbackForm from '../components/FeedbackForm';
-import FeedbackSection from '../components/FeedbackSection';
-import { LanguageContext } from '../components/LanguageContext';
+import { LanguageContext } from '../components/LanguageContextValue';
 import { fetchAcceptedFeedbacks } from '../services/api';
+import { StarIcon } from '../components/FeedbackIcons';
 
 interface Feedback {
   id: number;
@@ -14,88 +14,96 @@ interface Feedback {
   status: string;
 }
 
+// Helper: Parse the comment to see if it has metadata we added like [FEATURE] [4/5 Stars] - ...
+const parseComment = (raw: string) => {
+    let category = 'GENERAL';
+    let rating = 5;
+    let text = raw;
+
+    // Try to extract category [CAT]
+    const catMatch = raw.match(/^\[([A-Z]+)\]/);
+    if (catMatch) {
+        category = catMatch[1];
+        text = text.replace(catMatch[0], '').trim();
+    }
+
+    // Try to extract rating [N/5 Stars]
+    const ratingMatch = text.match(/^\[(\d)\/5 Stars\] -/);
+    if (ratingMatch) {
+        rating = parseInt(ratingMatch[1]);
+        text = text.replace(ratingMatch[0], '').trim();
+    }
+
+    return { category, rating, text };
+};
+
 const Feedback: React.FC = () => {
-  const [submitted, setSubmitted] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [showFabHint, setShowFabHint] = useState(true);
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
-  const { language } = useContext(LanguageContext);
+  const { t } = useContext(LanguageContext);
+  const [reload, setReload] = useState(0);
 
   useEffect(() => {
-    fetchAcceptedFeedbacks().then(setFeedbacks).catch(() => setFeedbacks([]));
-  }, [submitted]);
+    fetchAcceptedFeedbacks()
+        .then(data => {
+            // Sort by new
+            const sorted = data.sort((a: Feedback, b: Feedback) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+            setFeedbacks(sorted);
+        })
+        .catch(() => setFeedbacks([]));
+  }, [reload]);
 
-
-  // Modal open/close handlers
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => {
-    setModalOpen(false);
-    setSubmitted(false);
-  };
 
   return (
-    <div className="content-safe-bg">
-      <div className="feedback-page-bg">
-        <div className="bg-anim-circle bg-anim-circle1" />
-        <div className="bg-anim-circle bg-anim-circle2" />
-        <div className="bg-anim-circle bg-anim-circle3" />
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          width: '100%',
-          minHeight: '70vh',
-          justifyContent: 'flex-start',
-          paddingTop: 0,
-        }}>
-          {/* Comments Section at the Top */}
-          <div style={{ width: '100%', maxWidth: 700, margin: '24px auto 48px auto' }}>
-            <FeedbackSection feedbacks={feedbacks} />
-          </div>
-
-          {/* Modern Floating Action Button */}
-          {/* FAB Hint Bubble */}
-          {showFabHint && (
-            <div className="fab-hint-bubble">
-              <span>{language === 'fr' ? 'Envie de laisser un commentaire ? Cliquez ici !' : 'Want to add a comment? Click this!'}</span>
-              <button className="fab-hint-close" onClick={() => setShowFabHint(false)} aria-label="Close hint">×</button>
-            </div>
-          )}
-          <button
-            className="fab-add-feedback"
-            onClick={() => { openModal(); setShowFabHint(false); }}
-            aria-label={language === 'fr' ? 'Ajouter un avis' : 'Add Feedback'}
-          >
-            <span className="fab-icon">
-              {/* Chat bubble SVG icon */}
-              <svg viewBox="0 0 32 32" fill="none"><path d="M6 24v-2.5A2.5 2.5 0 0 1 8.5 19H24a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h.5V28l5.5-4h10a2 2 0 0 0 2-2V19" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </span>
-          </button>
-
-          {/* Modal Overlay for Feedback Form */}
-          {modalOpen && (
-            <div className="feedback-modal-overlay" onClick={closeModal}>
-              <div
-                className="feedback-modal-card"
-                onClick={e => e.stopPropagation()}
-              >
-                <button className="modal-close-btn" onClick={closeModal} aria-label="Close">×</button>
-                <h1 style={{ textAlign: 'left', marginBottom: 8 }}>{language === 'fr' ? 'Laisser un avis' : 'Leave Feedback'}</h1>
-                <p style={{ marginBottom: 24 }}>{language === 'fr' ? "Votre avis est important ! Laissez un commentaire ci-dessous." : "Your feedback is important! Leave a comment below."}</p>
-
-                {submitted ? (
-                  <div className="contact-success">{language === 'fr' ? "Merci pour votre avis !" : "Thank you for your feedback!"}</div>
-                ) : (
-                  <FeedbackForm onSubmit={() => setSubmitted(true)} />
-                )}
-              </div>
-            </div>
-          )}
+    <div className="feedback-page-bg">
+      <div className="bg-anim-circle bg-anim-circle1" />
+      <div className="bg-anim-circle bg-anim-circle2" />
+      <div className="bg-anim-circle bg-anim-circle3" />
+      
+      <div className="feedback-container">
+        
+        {/* Left: Feedbacks List */}
+        <div className="feedback-wall">
+           <div className="feedback-header">
+               <h1>{t.feedback.header}</h1>
+               <p>{t.feedback.sub}</p>
+           </div>
+           
+           <div className="feedback-grid">
+               {feedbacks.length === 0 ? (
+                   <div style={{ color: '#71717a', fontStyle: 'italic' }}>
+                       {t.feedback.noFeedback}
+                   </div>
+               ) : (
+                   feedbacks.map((f, index) => {
+                       const { category, rating, text } = parseComment(f.comment);
+                       return (
+                           <div key={f.id} className="feedback-card" style={{ animationDelay: `${index * 0.15}s` }}>
+                               <div className="card-header">
+                                   <span className="card-name">{f.name}</span>
+                                   <span className="card-date">{new Date(f.createdAt).toLocaleDateString()}</span>
+                               </div>
+                               <div className="card-stars">
+                                   {[1,2,3,4,5].map(s => (
+                                       <StarIcon key={s} width={16} height={16} filled={s <= rating} />
+                                   ))}
+                               </div>
+                               <div className="card-comment">{text}</div>
+                               <div className="card-badge">{category}</div>
+                           </div>
+                       );
+                   })
+               )}
+           </div>
         </div>
+
+        {/* Right: Sticky Form */}
+        <div className="feedback-form-wrapper">
+            <FeedbackForm onSubmit={() => setReload(p => p + 1)} />
+        </div>
+
       </div>
     </div>
   );
-}
-
+};
 
 export default Feedback;

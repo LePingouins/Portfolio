@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './AdminLogin.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
@@ -32,45 +33,34 @@ const AdminLogin: React.FC = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', width: '100vw', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#18181b', position: 'fixed', top: 0, left: 0, zIndex: 9999 }}>
-      <div style={{ position: 'absolute', inset: 0, background: '#18181b', opacity: 1, zIndex: 0 }}></div>
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          background: '#232323',
-          padding: 32,
-          borderRadius: 12,
-          boxShadow: '0 4px 32px rgba(0,0,0,0.18)',
-          minWidth: 320,
-          color: '#fff',
-          zIndex: 1,
-          position: 'relative',
-        }}
-      >
-        <h2 style={{ color: '#ef4444', marginBottom: 24 }}>Admin Login</h2>
-        <div style={{ marginBottom: 18 }}>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-            required
-            style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #444', background: '#232323', color: '#fff', fontSize: 16, fontWeight: 500 }}
-          />
-        </div>
-        <div style={{ marginBottom: 18 }}>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-            style={{ width: '100%', padding: 10, borderRadius: 6, border: '1px solid #444', background: '#232323', color: '#fff', fontSize: 16, fontWeight: 500 }}
-          />
-        </div>
-        {error && <div style={{ color: '#d32f2f', marginBottom: 12 }}>{error}</div>}
-        <button type="submit" style={{ width: '100%', padding: 12, borderRadius: 6, background: '#ef4444', color: '#fff', fontWeight: 600, border: 'none', fontSize: 16, cursor: 'pointer' }}>Login</button>
-      </form>
+    <div className="admin-login-container">
+      <div className="admin-login-card">
+        <h2 className="admin-login-title">Login</h2>
+        <form onSubmit={handleSubmit}>
+          {error && <div className="admin-error-message">{error}</div>}
+          <div className="admin-input-group">
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div className="admin-input-group">
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="admin-login-button">
+            Login
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

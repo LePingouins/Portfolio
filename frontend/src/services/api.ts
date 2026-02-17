@@ -1,3 +1,14 @@
+// Gemini skill suggestions (proxy)
+export async function fetchGeminiSkillSuggestions(query: string, model: 'flash' | 'pro' = 'flash') {
+  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/gemini/suggest-skills` : `${API_BASE_URL}/api/gemini/suggest-skills`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query, model })
+  });
+  if (!res.ok) throw new Error('Failed to fetch Gemini suggestions');
+  return res.json();
+}
 // Archive contact message (admin)
 export async function archiveContactMessage(id: number) {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/contact-messages/${id}/archive` : `${API_BASE_URL}/api/contact-messages/${id}/archive`;
@@ -171,6 +182,12 @@ export interface Message {
   name: string;
   email: string;
   content: string;
+}
+export interface TestimonialPayload {
+  name: string;
+  text: string;
+  role?: string;
+  avatar?: string;
 }
 
 // Projects
@@ -370,7 +387,13 @@ export async function fetchTestimonials() {
   if (!res.ok) throw new Error('Failed to fetch testimonials');
   return res.json();
 }
-export async function submitTestimonial(testimonial: Testimonial) {
+export async function fetchAllTestimonials() {
+  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/testimonials/all` : `${API_BASE_URL}/api/testimonials/all`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Failed to fetch all testimonials');
+  return res.json();
+}
+export async function submitTestimonial(testimonial: TestimonialPayload) {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/testimonials` : `${API_BASE_URL}/api/testimonials`;
   const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(testimonial) });
   if (!res.ok) throw new Error('Failed to submit testimonial');

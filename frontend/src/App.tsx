@@ -16,6 +16,7 @@ import Footer from './components/Footer';
 import { ThemeProvider } from './components/ThemeContext';
 import { LanguageProvider } from './components/LanguageContext';
 import Archive from './pages/Archive';
+import TestimonialsPage from './pages/TestimonialsPage';
 
 function AppRouter() {
   const location = useLocation();
@@ -26,6 +27,16 @@ function AppRouter() {
   const handleNavigate = (section: string) => {
     navigate(`/admin/${section}`);
   };
+  // Determine current admin section from the path
+  let currentSection = '';
+  if (adminMatch) {
+    const match = location.pathname.match(/^\/admin\/?([^/]*)/);
+    if (match && match[1]) {
+      currentSection = match[1];
+    } else {
+      currentSection = 'feedbacks';
+    }
+  }
   return (
     <>
       <div
@@ -36,8 +47,7 @@ function AppRouter() {
         <Navbar />
         {adminMatch && (
           <AdminSubNav
-            // current section will be handled by AdminDashboard, so just pass empty string or undefined
-            current={''}
+            current={currentSection}
             onNavigate={handleNavigate}
             visible={subNavVisible}
           />
@@ -48,6 +58,7 @@ function AppRouter() {
         <Route path="/about" element={<About />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/testimonials" element={<TestimonialsPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/feedback" element={<Feedback />} />
         <Route path="/blog" element={<Blog />} />
@@ -57,7 +68,7 @@ function AppRouter() {
         <Route path="/admin/archive" element={<Archive />} />
         <Route path="/admin/contacts" element={<AdminContact />} />
         <Route path="/admin-login" element={<AdminLogin />} />
-          <Route path="/admin/projects" element={<AdminDashboard />} />
+        <Route path="/admin/projects" element={<AdminDashboard />} />
       </Routes>
       <Footer />
     </>

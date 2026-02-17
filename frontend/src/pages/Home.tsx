@@ -1,21 +1,29 @@
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense, useContext } from 'react';
+import { LanguageContext } from '../components/LanguageContext';
+import { useTheme } from '../components/ThemeContext';
+import Timeline from '../components/TimelineSection';
+const Testimonials = React.lazy(() => import('../components/Testimonials'));
 import './Home.css';
 
-import { useContext } from 'react';
-import { LanguageContext } from '../components/LanguageContext';
-
 const Home: React.FC = () => {
-  const { language } = useContext(LanguageContext);
-  // Animated text effect for title and description
-  const titleText = 'Portfolio';
-  const descText = language === 'fr'
-    ? "Bienvenue sur mon site portfolio. Découvrez mes projets, compétences, expériences et plus encore."
-    : "Welcome to my portfolio website. Explore my projects, skills, experience, and more.";
+  const { language, t } = useContext(LanguageContext);
+  const { theme, toggleTheme } = useTheme();
 
+  // Content configuration
+  const titleText = t.home.title;
+  const descText = t.home.description;
+
+  const timelineItems = [
+    { title: t.home.timeline.college.title, date: '2023', description: t.home.timeline.college.desc },
+    { title: t.home.timeline.internship.title, date: '2026', description: t.home.timeline.internship.desc },
+    { title: t.home.timeline.graduate.title, date: '2026', description: t.home.timeline.graduate.desc },
+    { title: t.home.timeline.university.title, date: '2026', description: t.home.timeline.university.desc }
+  ];
+
+  /* Typing Animation Logic */
   const [displayedTitle, setDisplayedTitle] = useState('');
   const [displayedDesc, setDisplayedDesc] = useState('');
-
+  
   useEffect(() => {
     setDisplayedTitle('');
     setDisplayedDesc('');
@@ -24,28 +32,22 @@ const Home: React.FC = () => {
     let titleInterval: number | null = null;
     let descInterval: number | null = null;
 
-    function animateTitle() {
-      titleInterval = setInterval(() => {
-        titleIdx++;
-        setDisplayedTitle(titleText.slice(0, titleIdx));
-        if (titleIdx >= titleText.length) {
-          clearInterval(titleInterval!);
-          animateDesc();
-        }
-      }, 90);
-    }
-
-    function animateDesc() {
-      descInterval = setInterval(() => {
-        descIdx++;
-        setDisplayedDesc(descText.slice(0, descIdx));
-        if (descIdx >= descText.length) {
-          clearInterval(descInterval!);
-        }
-      }, 18);
-    }
-
-    animateTitle();
+    // Start title animation
+    titleInterval = setInterval(() => {
+      titleIdx++;
+      setDisplayedTitle(titleText.slice(0, titleIdx));
+      if (titleIdx >= titleText.length) {
+        if (titleInterval) clearInterval(titleInterval);
+        // Start desc animation after title finishes
+        descInterval = setInterval(() => {
+          descIdx++;
+          setDisplayedDesc(descText.slice(0, descIdx));
+          if (descIdx >= descText.length) {
+             if (descInterval) clearInterval(descInterval);
+          }
+        }, 18);
+      }
+    }, 90);
 
     return () => {
       if (titleInterval) clearInterval(titleInterval);
@@ -53,40 +55,64 @@ const Home: React.FC = () => {
     };
   }, [language, titleText, descText]);
 
+
   return (
-    <div className="home-page-bg">
-      {/* Animated background circles */}
-      <div className="bg-anim-circle bg-anim-circle1" />
-      <div className="bg-anim-circle bg-anim-circle2" />
-      <div className="bg-anim-circle bg-anim-circle3" />
-      <main className="profile-container">
-        <section className="profile-card minimal-card">
-          <h1 style={{ minHeight: 48, letterSpacing: 1 }}>{displayedTitle}</h1>
-          <p className="profile-desc" style={{ minHeight: 48 }}>{displayedDesc}</p>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 32 }}>
-            {/* Phone */}
-            <a href="tel:5143481921" title="Call" style={{ color: '#ef4444', textDecoration: 'none' }} target="_blank" rel="noopener noreferrer">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92V19a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3 5.18 2 2 0 0 1 5 3h2.09a2 2 0 0 1 2 1.72c.13.81.36 1.6.68 2.34a2 2 0 0 1-.45 2.11l-.27.27a16 16 0 0 0 6.29 6.29l.27-.27a2 2 0 0 1 2.11-.45c.74.32 1.53.55 2.34.68A2 2 0 0 1 22 16.92z"></path></svg>
-            </a>
-            {/* Email */}
-            <a href="mailto:oligoudreault@gmail.com" title="Email" style={{ color: '#ef4444', textDecoration: 'none' }} target="_blank" rel="noopener noreferrer">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" /><polyline points="3 7 12 13 21 7" /></svg>
-            </a>
-            {/* LinkedIn */}
-            <a href="https://www.linkedin.com/in/olivier-goudreault-09120a386/" title="LinkedIn" style={{ color: '#0077ff', textDecoration: 'none' }} target="_blank" rel="noopener noreferrer">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0077ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" /><line x1="8" y1="11" x2="8" y2="16" /><line x1="8" y1="8" x2="8" y2="8" /><line x1="12" y1="16" x2="12" y2="11" /><path d="M16 16v-3a2 2 0 0 0-4 0" /></svg>
-            </a>
-            {/* GitHub */}
-            <a href="https://github.com/LePingouins" title="GitHub" style={{ color: '#fff', textDecoration: 'none' }} target="_blank" rel="noopener noreferrer">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.36 6.84 9.71.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.36-3.37-1.36-.45-1.18-1.1-1.5-1.1-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05a9.38 9.38 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.07.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .26.18.57.69.48A10.01 10.01 0 0 0 22 12.26C22 6.58 17.52 2 12 2z" /></svg>
-            </a>
-            {/* Twitter */}
-            <a href="https://x.com/OliGoudreault" title="Twitter/X" style={{ color: '#1da1f2', textDecoration: 'none' }} target="_blank" rel="noopener noreferrer">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1da1f2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.53 7.16L7.47 17.22" /><path d="M7.47 7.16l10.06 10.06" /></svg>
-            </a>
+    <div className="home-page-container">
+      {/* Dynamic Background */}
+      <div className="home-bg-layer" />
+      <div className="bg-gradient-orb orb-1" />
+      <div className="bg-gradient-orb orb-2" />
+      <div className="bg-gradient-orb orb-3" />
+
+      <header className="home-header">
+         <button
+            className="theme-toggle-btn"
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? '🌙' : '☀️'}
+          </button>
+      </header>
+      
+      <main className="home-content-wrapper">
+        
+        {/* HERO SECTION */}
+        <section className="hero-section glass-panel">
+          <div className="hero-content">
+            <h1 className="hero-title">
+              {displayedTitle}<span className="cursor-blink">|</span>
+            </h1>
+            <p className="hero-desc">{displayedDesc}</p>
+            
+            <div className="hero-social-links">
+               <a href="https://github.com/LePingouins" target="_blank" rel="noopener noreferrer" className="social-icon github" title="GitHub">
+                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+               </a>
+               <a href="https://www.linkedin.com/in/olivier-goudreault-09120a386/" target="_blank" rel="noopener noreferrer" className="social-icon linkedin" title="LinkedIn">
+                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+               </a>
+               <a href="mailto:oligoudreault@gmail.com" className="social-icon email" title="Email">
+                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+               </a>
+               <a href="tel:5143481921" className="social-icon phone" title="Phone">
+                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+               </a>
+            </div>
           </div>
         </section>
-        {/* Dynamic content sections will be loaded here in the future */}
+
+        {/* TIMELINE SECTION */}
+        <section className="timeline-wrapper fade-in-up">
+           <Timeline items={timelineItems} />
+        </section>
+
+        {/* TESTIMONIALS SECTION */}
+        <section className="testimonials-wrapper fade-in-up delay-200">
+          <Suspense fallback={<div className="loading-spinner">Is someone saying something nice?...</div>}>
+            <Testimonials />
+          </Suspense>
+        </section>
+
       </main>
     </div>
   );

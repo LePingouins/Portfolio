@@ -1,15 +1,14 @@
-
 import React, { useState, useContext } from 'react';
 import './Contact.css';
 import { LanguageContext } from '../components/LanguageContext';
-import type { LanguageContextType } from '../components/LanguageContextValue';
 import { submitContactMessage } from '../services/api';
+import { EmailIcon, GithubIcon, LinkedinIcon, LocationIcon, SendIcon, PhoneIcon } from '../components/ContactIcons';
 
 const Contact: React.FC = () => {
-  const { language } = useContext(LanguageContext) as LanguageContextType;
+  const { t } = useContext(LanguageContext);
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -17,39 +16,162 @@ const Contact: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
+    
     if (!form.name.trim() || !form.email.trim() || !form.subject.trim() || !form.message.trim()) {
-      setError('Please fill in all fields.');
+      setErrorMessage(t.contact.form.errorInit);
       return;
     }
+
+    setStatus('submitting');
+    
     try {
       await submitContactMessage(form);
-      setSubmitted(true);
-    } catch {
-      setError('Failed to send message. Please try again later.');
+      setStatus('success');
+      setForm({ name: '', email: '', subject: '', message: '' });
+    } catch (error) {
+      console.error('Contact submit error:', error);
+      setStatus('error');
+      setErrorMessage(t.contact.form.errorSend);
     }
   };
+
 
   return (
     <div className="contact-page-bg">
       <div className="bg-anim-circle bg-anim-circle1" />
       <div className="bg-anim-circle bg-anim-circle2" />
-      <div className="bg-anim-circle bg-anim-circle3" />
-      <div className="contact-container">
-        <h1>{language === 'fr' ? 'Contactez-moi' : 'Contact Me'}</h1>
-        <p>{language === 'fr' ? "Une question, une collaboration ou juste envie de dire bonjour ? Remplissez le formulaire ci-dessous !" : "Have a question, want to collaborate, or just want to say hi? Fill out the form below!"}</p>
-        {submitted ? (
-          <div className="contact-success">{language === 'fr' ? "Merci pour votre message !" : "Thank you for your message!"}</div>
-        ) : (
-          <form className="contact-form" onSubmit={handleSubmit} autoComplete="off" style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 18 }}>
-            <input type="text" name="name" placeholder={language === 'fr' ? 'Votre nom' : 'Your name'} value={form.name} onChange={handleChange} required style={{ padding: 10, borderRadius: 6, border: '1px solid #444', background: '#18181b', color: '#fff' }} />
-            <input type="email" name="email" placeholder={language === 'fr' ? 'Votre email' : 'Your email'} value={form.email} onChange={handleChange} required style={{ padding: 10, borderRadius: 6, border: '1px solid #444', background: '#18181b', color: '#fff' }} />
-            <input type="text" name="subject" placeholder={language === 'fr' ? 'Sujet' : 'Subject'} value={form.subject} onChange={handleChange} required style={{ padding: 10, borderRadius: 6, border: '1px solid #444', background: '#18181b', color: '#fff' }} />
-            <textarea name="message" placeholder={language === 'fr' ? 'Votre message' : 'Your message'} value={form.message} onChange={handleChange} required rows={5} style={{ padding: 10, borderRadius: 6, border: '1px solid #444', background: '#18181b', color: '#fff' }} />
-            {error && <div className="feedback-error" style={{ color: '#ef4444', fontWeight: 600 }}>{error}</div>}
-            <button type="submit" style={{ padding: '8px 18px', borderRadius: 6, background: '#ef4444', color: '#fff', fontWeight: 600, border: 'none', fontSize: 15, cursor: 'pointer', marginTop: 8 }}>{language === 'fr' ? 'Envoyer' : 'Send'}</button>
-          </form>
-        )}
+
+      <div className="contact-card-wrapper">
+        <div className="contact-info-panel">
+          <div>
+            <div className="contact-info-header">
+              <h2>{t.contact.title}</h2>
+              <p className="contact-info-text">{t.contact.subtitle}</p>
+            </div>
+
+            <div className="contact-details">
+              <div className="contact-detail-item">
+                <div className="icon-box">
+                  <LocationIcon />
+                </div>
+                <span>{t.contact.location}</span>
+              </div>
+              
+              <a href="mailto:oligoudreault@gmail.com" className="contact-detail-item" style={{ textDecoration: 'none' }}>
+                <div className="icon-box">
+                  <EmailIcon />
+                </div>
+                <span>oligoudreault@gmail.com</span>
+              </a>
+
+               <a href="tel:5143481921" className="contact-detail-item" style={{ textDecoration: 'none' }}>
+                <div className="icon-box">
+                  <PhoneIcon />
+                </div>
+                <span>+1 514-348-1921</span>
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <p style={{ color: '#71717a', fontSize: '0.9em', marginBottom: '15px' }}>{t.contact.socialLabel}</p>
+            <div className="social-links">
+              <a href="https://github.com/LePingouins" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="GitHub">
+                <GithubIcon width={20} height={20} />
+              </a>
+              <a href="https://www.linkedin.com/in/olivier-goudreault-09120a386/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="LinkedIn">
+                <LinkedinIcon width={20} height={20} />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="contact-form-panel">
+          {status === 'success' ? (
+            <div className="success-message-container">
+              <div className="success-icon-large">
+                <SendIcon width={64} height={64} />
+              </div>
+              <h3 className="success-title">{t.contact.form.successTitle}</h3>
+              <p className="success-desc">{t.contact.form.successDesc}</p>
+              <button 
+                onClick={() => setStatus('idle')}
+                className="submit-btn" 
+                style={{ marginTop: '30px', background: 'transparent', border: '1px solid #3f3f46' }}
+              >
+                {t.contact.form.sendAnother}
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <div className="form-header">
+                <h3>{t.contact.form.title}</h3>
+              </div>
+              
+              <div className="form-group">
+                <input 
+                  type="text" 
+                  name="name" 
+                  className="form-input" 
+                  placeholder={t.contact.form.name}
+                  value={form.name}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <input 
+                  type="email" 
+                  name="email" 
+                  className="form-input" 
+                  placeholder={t.contact.form.email}
+                  value={form.email}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <input 
+                  type="text" 
+                  name="subject" 
+                  className="form-input" 
+                  placeholder={t.contact.form.subject}
+                  value={form.subject}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <textarea 
+                  name="message" 
+                  className="form-textarea" 
+                  placeholder={t.contact.form.message}
+                  value={form.message}
+                  onChange={handleChange}
+                />
+              </div>
+
+              {errorMessage && status === 'error' && (
+                <div className="error-message">
+                  {errorMessage}
+                </div>
+              )}
+
+              <button type="submit" className="submit-btn" disabled={status === 'submitting'}>
+                {status === 'submitting' ? (
+                  <>
+                    <span className="sc-spinner" /> 
+                    {t.contact.form.submitting}
+                  </>
+                ) : (
+                  <>
+                    {t.contact.form.submit} <SendIcon width={16} height={16} />
+                  </>
+                )}
+              </button>
+            </form>
+          )}
+        </div>
       </div>
     </div>
   );

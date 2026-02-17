@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ArchiveIcon from './ArchiveIcon';
+import { LanguageContext } from './LanguageContext';
 
 interface ContactMessage {
   id: number;
@@ -17,18 +18,19 @@ interface ContactArchivedSectionProps {
 
 
 const ContactArchivedSection: React.FC<ContactArchivedSectionProps> = ({ contacts, onDelete, onUnarchive }) => {
+  const { t } = useContext(LanguageContext);
   return (
     <section>
       <div className="dashboard-content">
-        <h2 style={{ textAlign: 'center', marginTop: 32, fontSize: '2em', color: '#fbbf24' }}>Archived Contacts</h2>
+        <h2 style={{ textAlign: 'center', marginTop: 32, fontSize: '2em', color: '#fbbf24' }}>{t.archive.contactsTitle}</h2>
         <table className="admin-feedback-table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Message</th>
-              <th>Date</th>
-              <th>Actions</th>
+              <th>{t.archive.table.name}</th>
+              <th>{t.archive.table.email}</th>
+              <th>{t.archive.table.message}</th>
+              <th>{t.archive.table.date}</th>
+              <th>{t.archive.table.actions}</th>
             </tr>
           </thead>
           <tbody>
@@ -43,11 +45,11 @@ const ContactArchivedSection: React.FC<ContactArchivedSectionProps> = ({ contact
                 <td style={{ display: 'flex', alignItems: 'center', gap: 10, overflow: 'visible', minWidth: 0 }}>
                   {onDelete && (
                     <button onClick={() => onDelete(c.id)}>
-                      Delete
+                      {t.archive.action.delete}
                     </button>
                   )}
                   {onUnarchive && (
-                    <button className="archive-icon-btn" title="Unarchive" onClick={() => onUnarchive(c.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+                    <button className="archive-icon-btn" title={t.archive.action.unarchive} onClick={() => onUnarchive(c.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
                       <ArchiveIcon style={{ verticalAlign: 'middle', opacity: 0.7 }} />
                     </button>
                   )}

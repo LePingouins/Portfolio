@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { fetchArchivedFeedbacks, unarchiveFeedback, deleteFeedback, fetchArchivedContactMessages, deleteContactMessage } from '../services/api';
 import FeedbackSection from '../components/FeedbackSection';
 import ContactArchivedSection from '../components/ContactArchivedSection';
 import { fetchArchivedProjects, unarchiveProject } from '../services/api';
+import { LanguageContext } from '../components/LanguageContext';
 
 
 interface Feedback {
@@ -34,6 +35,7 @@ interface ContactMessage {
 }
 
 const Archive: React.FC = () => {
+  const { t } = useContext(LanguageContext);
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [archivedContacts, setArchivedContacts] = useState<ContactMessage[]>([]);
   const [archivedProjects, setArchivedProjects] = useState<Project[]>([]);
@@ -86,18 +88,18 @@ const Archive: React.FC = () => {
           admin
         />
         <section>
-          <h2 style={{ textAlign: 'center', marginTop: 32, fontSize: '2em', color: '#fbbf24' }}>Archived Projects</h2>
-          {loadingProjects ? <div>Loading...</div> : archivedProjects.length === 0 ? (
-            <div>No archived projects found.</div>
+          <h2 style={{ textAlign: 'center', marginTop: 32, fontSize: '2em', color: '#fbbf24' }}>{t.archive.projectsTitle}</h2>
+          {loadingProjects ? <div>{t.archive.loading}</div> : archivedProjects.length === 0 ? (
+            <div>{t.archive.noProjects}</div>
           ) : (
             <table className="admin-feedback-table">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>Tech Stack</th>
-                  <th>Links</th>
-                  <th>Actions</th>
+                  <th>{t.archive.table.name}</th>
+                  <th>{t.archive.table.description}</th>
+                  <th>{t.archive.table.techStack}</th>
+                  <th>{t.archive.table.links}</th>
+                  <th>{t.archive.table.actions}</th>
                 </tr>
               </thead>
               <tbody>
@@ -109,11 +111,11 @@ const Archive: React.FC = () => {
                     </td>
                     <td>{p.techStack && p.techStack.length > 0 ? p.techStack.join(', ') : '-'}</td>
                     <td>
-                      <a href={p.projectLink} target="_blank" rel="noopener noreferrer" style={{ color: '#4faaff', marginRight: 12 }}>Project</a>
-                      {p.websiteLink && <a href={p.websiteLink} target="_blank" rel="noopener noreferrer" style={{ color: '#4faaff', marginRight: 12 }}>Website</a>}
+                      <a href={p.projectLink} target="_blank" rel="noopener noreferrer" style={{ color: '#4faaff', marginRight: 12 }}>{t.archive.link.project}</a>
+                      {p.websiteLink && <a href={p.websiteLink} target="_blank" rel="noopener noreferrer" style={{ color: '#4faaff', marginRight: 12 }}>{t.archive.link.website}</a>}
                     </td>
                     <td style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <button className="archive-icon-btn" title="Unarchive" onClick={() => handleUnarchiveProject(p.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+                      <button className="archive-icon-btn" title={t.archive.action.unarchive} onClick={() => handleUnarchiveProject(p.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <rect x="3" y="7" width="18" height="13" rx="2" fill="#fbbf24" stroke="#b45309" strokeWidth="1.5" />
                           <rect x="1" y="3" width="22" height="4" rx="1.5" fill="#fbbf24" stroke="#b45309" strokeWidth="1.5" />

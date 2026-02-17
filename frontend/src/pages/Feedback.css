@@ -1,108 +1,204 @@
-.comment-scroll::-webkit-scrollbar {
-  height: 8px;
-  background: #23242a;
-  border-radius: 6px;
+.feedback-page-bg {
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background: #121215;
+    position: relative;
+    overflow-x: hidden;
+    padding: 10px 20px 80px 20px;
 }
-.comment-scroll::-webkit-scrollbar-thumb {
-  background: #ef4444;
-  border-radius: 6px;
-  border: 2px solid #23242a;
+
+/* Background Animations (Consistent with Contact) */
+.bg-anim-circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
+    animation: floatAnim 15s ease-in-out infinite alternate;
 }
-.comment-scroll::-webkit-scrollbar-thumb:hover {
-  background: #b91c1c;
+
+.bg-anim-circle1 {
+    width: 500px;
+    height: 500px;
+    left: -100px;
+    top: -100px;
+    background: radial-gradient(circle, #8b5cf6 0%, transparent 70%); /* Violet */
 }
-.comment-scroll::-webkit-scrollbar-corner {
-  background: transparent;
+
+.bg-anim-circle2 {
+    width: 400px;
+    height: 400px;
+    right: -50px;
+    bottom: -50px;
+    background: radial-gradient(circle, #ec4899 0%, transparent 70%); /* Pink */
 }
-/* For Firefox */
-.comment-scroll {
-  scrollbar-color: #ef4444 #23242a;
-  scrollbar-width: thin;
+
+.bg-anim-circle3 {
+    width: 300px;
+    height: 300px;
+    left: 40%;
+    top: 40%;
+    background: radial-gradient(circle, #06b6d4 0%, transparent 70%); /* Cyan */
+    animation-delay: -5s;
 }
-.fab-hint-bubble {
-  /* ...existing styles... */
-  transition: opacity 0.2s, filter 0.2s;
+
+@keyframes floatAnim {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(30px, 30px); }
 }
-.fab-hint-bubble:hover {
-  opacity: 1.5;
-  filter: blur(0.8px) grayscale(0.1);
+
+.feedback-container {
+    width: 100%;
+    max-width: 1200px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
 }
-/* FAB Hint Bubble */
-.fab-hint-bubble {
-  position: fixed;
-  right: 110px;
-  bottom: 120px;
-  background: #23272f;
-  color: #fff;
-  border-radius: 18px 18px 18px 6px;
-  box-shadow: 0 4px 24px #000a;
-  padding: 16px 22px 16px 18px;
-  font-size: 1.08rem;
-  font-weight: 500;
-  z-index: 130;
-  max-width: 240px;
-  border: 2px solid #ef4444;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  animation: fabHintPop 0.4s cubic-bezier(.4,1.6,.6,1);
+
+@media (min-width: 900px) {
+    .feedback-container {
+        flex-direction: row;
+        align-items: flex-start;
+    }
 }
-@keyframes fabHintPop {
-  from { opacity: 0; transform: translateY(30px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+
+/* Left Panel: Feedback Wall */
+.feedback-wall {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
-.fab-hint-bubble::after {
-  content: '';
-  position: absolute;
-  right: -18px;
-  bottom: 12px;
-  width: 0; height: 0;
-  border-top: 16px solid transparent;
-  border-bottom: 16px solid transparent;
-  border-left: 18px solid #23272f;
-  filter: drop-shadow(0 0 4px #ef4444cc);
+
+.feedback-header {
+    margin-bottom: 20px;
 }
-.fab-hint-close {
-  background: none;
-  border: none;
-  color: #ef4444;
-  font-size: 1.2rem;
-  cursor: pointer;
-  margin-left: 4px;
-  margin-right: -6px;
-  margin-top: -8px;
-  transition: color 0.2s;
+
+.feedback-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(to right, #fff, #a5b4fc);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0 0 10px 0;
 }
-.fab-hint-close:hover {
-  color: #fff;
+
+.feedback-header p {
+    color: #a1a1aa;
+    font-size: 1.1rem;
+    line-height: 1.6;
 }
-.fab-add-feedback {
-  position: fixed;
-  bottom: 90px;
-  right: 36px;
-  z-index: 120;
-  background: rgba(30, 34, 44, 0.7);
-  border: 2.5px solid #ef4444;
-  box-shadow: 0 0 24px #ef444499, 0 2px 24px #000a;
-  color: #ef4444;
-  border-radius: 50%;
-  width: 68px;
-  height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.2rem;
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-  transition: box-shadow 0.2s, border 0.2s, background 0.2s, transform 0.15s;
+
+.feedback-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 10px;
 }
-.fab-add-feedback:hover {
-  background: rgba(0, 255, 231, 0.12);
-  border-color: #fff;
-  box-shadow: 0 0 32px #ef4444cc, 0 8px 32px #000c;
-  color: #fff;
-  transform: scale(1.09);
+
+/* Scrollbar for grid */
+.feedback-grid::-webkit-scrollbar {
+    width: 6px;
 }
+.feedback-grid::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
+}
+.feedback-grid::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 3px;
+}
+
+.feedback-card {
+    background: rgba(30, 30, 35, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.2s, background 0.2s;
+}
+
+.feedback-card:hover {
+    transform: translateY(-4px);
+    background: rgba(30, 30, 35, 0.8);
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.card-name {
+    font-weight: 700;
+    color: #e2e8f0;
+}
+
+.card-date {
+    font-size: 0.8rem;
+    color: #71717a;
+}
+
+.card-stars {
+    display: flex;
+    gap: 2px;
+    color: #fbbf24;
+    margin-bottom: 12px;
+}
+
+.card-comment {
+    color: #d4d4d8;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.card-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.1);
+    color: #aaa;
+    margin-top: 12px;
+}
+
+/* Right Panel: Feedback Form Wrapper */
+.feedback-form-wrapper {
+    flex: 0 0 450px; /* Fixed width on desktop */
+    width: 100%;
+    background: rgba(20, 20, 25, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 30px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    position: sticky;
+    top: 100px; 
+}
+
+@media (max-width: 900px) {
+    .feedback-form-wrapper {
+        flex: auto;
+        position: relative;
+        top: 0;
+    }
+    
+    .feedback-grid {
+        max-height: 400px;
+    }
+}
+
 .fab-icon {
   display: flex;
   align-items: center;
@@ -489,3 +585,44 @@
     padding: 10px 6px;
   }
 }
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.feedback-header {
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.feedback-card {
+    opacity: 0; /* Star hidden for animation */
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Form Wrapper Animation */
+.feedback-form-wrapper {
+    animation: slideInRight 0.8s ease-out forwards;
+    opacity: 0;
+    animation-delay: 0.3s;
+}
+
+/* Form itself matching contact style if needed, but wrapper handles entrance */

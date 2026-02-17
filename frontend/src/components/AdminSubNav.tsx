@@ -36,7 +36,9 @@ const AdminSubNav: React.FC<AdminSubNavProps> = ({ current, onNavigate, visible 
               className={
                 'admin-subnav-btn' + (current === section.key ? ' active' : '')
               }
-              onClick={() => onNavigate(section.key)}
+              onClick={() => {
+                if (current !== section.key) onNavigate(section.key);
+              }}
               aria-current={current === section.key ? 'page' : undefined}
             >
               {section.label}

@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { LanguageContext } from './LanguageContext';
 
 const ResumeDownload: React.FC = () => {
-  const { language } = useContext(LanguageContext);
+  const { language, t } = useContext(LanguageContext);
   return (
     <div style={{ textAlign: 'center', margin: '2em 0' }}>
       <a
@@ -24,12 +24,12 @@ const ResumeDownload: React.FC = () => {
           cursor: 'pointer',
           transition: 'background 0.2s',
         }}
-        aria-label={language === 'fr' ? 'Télécharger le CV en PDF' : 'Download resume as PDF'}
+        aria-label={t.about.resumeBtn}
         tabIndex={0}
         onMouseOver={e => (e.currentTarget.style.background = '#b91c1c')}
         onMouseOut={e => (e.currentTarget.style.background = '#ef4444')}
       >
-        {language === 'fr' ? 'Télécharger le CV (PDF)' : 'Download Resume (PDF)'}
+        {t.about.resumeBtn}
       </a>
     </div>
   );
