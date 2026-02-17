@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AdminLogin.css';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:8080').replace(/\/$/, '');
+
 
 const AdminLogin: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -14,7 +15,12 @@ const AdminLogin: React.FC = () => {
     e.preventDefault();
     setError(null);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      // If API_BASE_URL ends with /api, use it directly, otherwise append /api
+      const url = API_BASE_URL.endsWith('/api') 
+        ? `${API_BASE_URL}/auth/login` 
+        : `${API_BASE_URL}/api/auth/login`;
+
+      const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
