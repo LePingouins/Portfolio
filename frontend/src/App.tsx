@@ -16,6 +16,7 @@ import Footer from './components/Footer';
 import { ThemeProvider } from './components/ThemeContext';
 import { LanguageProvider } from './components/LanguageContext';
 import { AuthProvider } from './components/AuthContext';
+import { useAuth } from './components/useAuth';
 import Work from './pages/Work';
 import Archive from './pages/Archive';
 
@@ -23,22 +24,30 @@ import Archive from './pages/Archive';
 function AppRouter() {
   const location = useLocation();
   const [subNavVisible, setSubNavVisible] = React.useState(false);
+  const { isAuthenticated } = useAuth();
+  
   // Match /admin or /admin/section
   const adminMatch = location.pathname.startsWith('/admin');
   const navigate = useNavigate();
   const handleNavigate = (section: string) => {
     navigate(`/admin/${section}`);
   };
-  // Determine current admin section from the path
+
+  // Determine current admin section from the path - or default if just viewing user page
   let currentSection = '';
   if (adminMatch) {
     const match = location.pathname.match(/^\/admin\/?([^/]*)/);
+    
     if (match && match[1]) {
       currentSection = match[1];
     } else {
       currentSection = 'feedbacks';
     }
   }
+
+  // Force show subnav if admin on admin routes OR if user is authenticated (admin) on any route
+  const showSubNav = isAuthenticated || adminMatch;
+  
   return (
     <>
       <div
@@ -47,11 +56,11 @@ function AppRouter() {
         style={{ position: 'relative', zIndex: 2000 }}
       >
         <Navbar />
-        {adminMatch && (
+        {showSubNav && (
           <AdminSubNav
             current={currentSection}
             onNavigate={handleNavigate}
-            visible={subNavVisible}
+            visible={subNavVisible || isAuthenticated} 
           />
         )}
       </div>

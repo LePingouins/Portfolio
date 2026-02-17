@@ -10,11 +10,11 @@ const Navbar: React.FC = () => {
   const { isAuthenticated, logout } = useAuth();
 
   return (
-    <nav className="navbar minimal-navbar" aria-label="Main navigation" style={{ position: 'relative', height: '64px' }}>
-      <div style={{ position: 'absolute', left: '2vw', top: '50%', transform: 'translateY(-50%)' }}>
+    <nav className="navbar minimal-navbar" aria-label="Main navigation" style={{ position: 'relative', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div className="navbar-brand-container" style={{ position: 'absolute', left: '2vw', top: '50%', transform: 'translateY(-50%)' }}>
         <div className="navbar-brand">{t.navbar.brand}</div>
       </div>
-      <div style={{ position: 'absolute', right: '24px', top: '50%', transform: 'translateY(-50%)', display: 'flex', gap: 4, zIndex: 1000 }}>
+      <div className="navbar-actions-container" style={{ position: 'absolute', right: '2vw', top: '50%', transform: 'translateY(-50%)', display: 'flex', gap: 4, zIndex: 1000 }}>
         <button onClick={toggleLanguage} style={{ background: '#232323', color: '#fff', border: '1px solid #444', borderRadius: 6, padding: '4px 10px', cursor: 'pointer', fontWeight: 600, fontSize: 15 }}>
           {t.navbar.language}
         </button>
@@ -51,7 +51,7 @@ const Navbar: React.FC = () => {
           </Link>
         )}
       </div>
-      <div style={{ position: 'absolute', left: 0, right: 0, top: '50%', transform: 'translateY(-50%)', display: 'flex', justifyContent: 'center', alignItems: 'center', pointerEvents: 'none' }}>
+      <div className="navbar-links-container" style={{ position: 'absolute', left: 0, right: 0, top: '50%', transform: 'translateY(-50%)', display: 'flex', justifyContent: 'center', alignItems: 'center', pointerEvents: 'none' }}>
         <ul className="navbar-links minimal-links" role="menubar" style={{ margin: 0, pointerEvents: 'auto' }}>
           <li role="none"><Link to="/" role="menuitem">{t.navbar.home}</Link></li>
           <li role="none"><Link to="/about" role="menuitem">{t.navbar.about}</Link></li>

@@ -32,6 +32,53 @@
   padding: 0;
   font-size: 1.08em;
   font-family: 'Segoe UI', 'Arial', sans-serif;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  justify-content: center; /* Center items when wrapping */
+}
+
+@media (max-width: 900px) {
+  .minimal-navbar {
+    padding: 1rem !important; /* Reduce padding on mobile */
+    height: auto !important; /* Allow height to grow */
+    min-height: 64px;
+    flex-wrap: wrap;
+    justify-content: space-between !important;
+    gap: 15px;
+    align-items: center !important;
+  }
+  
+  .navbar-brand-container {
+      position: static !important;
+      transform: none !important;
+      order: 1;
+  }
+  
+  .navbar-brand {
+    margin-bottom: 0;
+  }
+
+  /* Right side buttons container */
+  .navbar-actions-container {
+    position: static !important;
+    transform: none !important;
+    order: 2;
+    z-index: auto !important;
+  }
+
+  /* Links container */
+  .navbar-links-container {
+    position: static !important;
+    transform: none !important;
+    width: 100% !important;
+    margin-top: 5px;
+    order: 3;
+    pointer-events: auto !important;
+  }
+  
+  .minimal-links {
+    gap: 0.8em;
+    font-size: 0.9em;
+  }
 }
 .minimal-links li a {
   text-decoration: none;
@@ -40,6 +87,7 @@
   padding: 0.2em 0.7em;
   border-radius: 6px;
   transition: background 0.2s, color 0.2s;
+  white-space: nowrap; /* Prevent line breaks on small screens */
 }
 .minimal-links li a:hover {
   background: #232323;
