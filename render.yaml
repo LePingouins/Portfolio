@@ -38,14 +38,14 @@ services:
     plan: free
     branch: main
     envVars:
-      - key: API_URL
+      - key: API_HOST
         fromService:
           type: web
           name: portfolio-backend
-          property: url
+          property: host
 
 databases:
   - name: portfolio-db
     databaseName: portfolio
-    user: postgres
+    user: portfolio_user
     plan: free
