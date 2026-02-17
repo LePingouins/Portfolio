@@ -1,44 +1,10 @@
-import React, { useState } from 'react';
-import '../pages/AdminDashboard.css'; // Reuse existing styles if possible or create new one
-
-export interface WorkExperience {
-    id: number;
-    title: string;
-    company: string;
-    period: string;
-    location: string;
-    responsibilities: string[];
-}
-
-const initialWorkExperiences: WorkExperience[] = [
-    {
-        id: 1,
-        title: 'Data Entry Clerk / Office Assistant',
-        company: 'Horizon Nature',
-        period: '2021 - 2023',
-        location: 'Saint-Léonard, Montréal, QC',
-        responsibilities: [
-            'Entered and verified high-volume data with precision and confidentiality.',
-            'Supported daily operations and coordinated document management.'
-        ]
-    },
-    {
-        id: 2,
-        title: 'Handler',
-        company: 'Horizon Nature',
-        period: '2019 - 2021',
-        location: 'Saint-Léonard, Montréal, QC',
-        responsibilities: [
-            'Movement, organization, and preparation of materials in a dynamic environment',
-            'Maintained accuracy and teamwork in daily tasks',
-            'Developed reliability and time management skills'
-        ]
-    }
-];
+import React, { useState, useEffect } from 'react';
+import type { WorkExperience } from '../models/WorkExperience';
+import { addWorkExperience, deleteWorkExperience, fetchWorkExperiences, type WorkExperienceForm } from '../services/api';
 
 const AdminWork: React.FC = () => {
-    const [experiences, setExperiences] = useState<WorkExperience[]>(initialWorkExperiences);
-    const [form, setForm] = useState<Omit<WorkExperience, 'id'>>({
+    const [experiences, setExperiences] = useState<WorkExperience[]>([]);
+    const [form, setForm] = useState<WorkExperienceForm>({
         title: '',
         company: '',
         period: '',
@@ -46,6 +12,22 @@ const AdminWork: React.FC = () => {
         responsibilities: []
     });
     const [responsibilityInput, setResponsibilityInput] = useState('');
+
+    useEffect(() => {
+        let isMounted = true;
+        const loadInitialData = async () => {
+            try {
+                const data = await fetchWorkExperiences();
+                if (isMounted) {
+                    setExperiences(data);
+                }
+            } catch (error) {
+                console.error('Failed to load work experiences', error);
+            }
+        };
+        void loadInitialData();
+        return () => { isMounted = false; };
+    }, []);
 
     const handleAddResponsibility = () => {
         if (responsibilityInput.trim()) {
@@ -64,29 +46,48 @@ const AdminWork: React.FC = () => {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        const newExperience: WorkExperience = {
-            id: Date.now(),
-            ...form
-        };
-        setExperiences(prev => [...prev, newExperience]);
-        setForm({
-            title: '',
-            company: '',
-            period: '',
-            location: '',
-            responsibilities: []
-        });
+    const fetchAndSetExperiences = async () => {
+        try {
+            const data = await fetchWorkExperiences();
+            setExperiences(data);
+        } catch (error) {
+            console.error('Failed to load work experiences', error);
+        }
     };
 
-    const handleDelete = (id: number) => {
-        setExperiences(prev => prev.filter(exp => exp.id !== id));
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            await addWorkExperience(form);
+            await fetchAndSetExperiences();
+            setForm({
+                title: '',
+                company: '',
+                period: '',
+                location: '',
+                responsibilities: []
+            });
+        } catch (error) {
+            console.error('Failed to add work experience', error);
+            alert('Failed to add work experience');
+        }
+    };
+
+    const handleDelete = async (id: number) => {
+        if (window.confirm("Are you sure you want to delete this experience?")) {
+            try {
+                await deleteWorkExperience(id);
+                setExperiences(prev => prev.filter(exp => exp.id !== id));
+            } catch (error) {
+                console.error('Failed to delete work experience', error);
+                alert('Failed to delete work experience');
+            }
+        }
     };
 
     return (
         <div className="admin-work-container" style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto', color: '#fff' }}>
-            <h2>Manage Work Experience</h2>
+            <h2 style={{ textAlign: 'center' }}>Manage Work Experience</h2>
             
             <form onSubmit={handleSubmit} style={{ marginBottom: '2rem', background: '#333', padding: '1.5rem', borderRadius: '8px' }}>
                 <div style={{ marginBottom: '1rem' }}>
@@ -151,7 +152,7 @@ const AdminWork: React.FC = () => {
                     </ul>
                 </div>
 
-                <button type="submit" style={{ width: '100%', padding: '0.75rem', background: '#2196F3', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Add Experience</button>
+                <button type="submit" style={{ width: '100%', padding: '0.75rem', background: '#f44336', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Add Experience</button>
             </form>
 
             <div className="experiences-list">

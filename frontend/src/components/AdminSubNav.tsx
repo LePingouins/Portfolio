@@ -14,7 +14,7 @@ const sections = [
   { key: 'projects', label: 'Projects' },
   { key: 'skills', label: 'Skills' },
   { key: 'work', label: 'Work' },
-  { key: 'messages', label: 'Messages' },
+  { key: 'hobbies', label: 'Hobbies' },
 ];
 
 const AdminSubNav: React.FC<AdminSubNavProps> = ({ current, onNavigate, visible }) => {

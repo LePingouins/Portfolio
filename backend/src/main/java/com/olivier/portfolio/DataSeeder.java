@@ -71,8 +71,53 @@ public class DataSeeder {
                 p.setTechStack(Arrays.asList("React", "Spring Boot", "JavaScript", "TypeScript"));
                 p.setArchived(false);
                 
-                projectRepo.save(p);
                 System.out.println("Seeded project: Champlain PetClinic");
+                projectRepo.save(p);
+            }
+        };
+    }
+
+    @Bean
+    public CommandLineRunner seedWorkExperience(WorkExperienceRepository workRepo) {
+        return args -> {
+            if (workRepo.count() == 0) {
+                WorkExperience w1 = new WorkExperience();
+                w1.setTitle("Stage de fin d'études");
+                w1.setCompany("Horizon Nature");
+                w1.setPeriod("Été 2024");
+                w1.setLocation("Saint-Laurent, Montréal, QC");
+                w1.setResponsibilities(Arrays.asList(
+                    "Développement d'une application full-stack pour la gestion d'inventaire",
+                    "Participation aux réunions quotidiennes (scrum)",
+                    "Collaboration avec l'équipe de développement pour résoudre les bugs"
+                ));
+                workRepo.save(w1);
+                
+                WorkExperience w2 = new WorkExperience();
+                w2.setTitle("Travail d'été");
+                w2.setCompany("Horizon Nature");
+                w2.setPeriod("2018 - 2023");
+                w2.setLocation("Saint-Laurent, Montréal, QC");
+                w2.setResponsibilities(Arrays.asList(
+                    "Manutention de marchandises",
+                    "Travail d'équipe",
+                    "Gestion du temps et des délais"
+                ));
+                workRepo.save(w2);
+                
+                System.out.println("Seeded work experiences");
+            }
+        };
+    }
+
+    @Bean
+    public CommandLineRunner seedHobbies(HobbyRepository hobbyRepo) {
+        return args -> {
+            if (hobbyRepo.count() == 0) {
+                Hobby gaming = new Hobby();
+                gaming.setName("Gaming");
+                hobbyRepo.save(gaming);
+                System.out.println("Seeded hobby: Gaming");
             }
         };
     }

@@ -3,34 +3,47 @@ package com.olivier.portfolio;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "work_experience")
 public class WorkExperience {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    private String title;
     private String company;
-    private String position;
-    private String description;
-    private String startDate;
-    private String endDate;
+    private String period;
+    private String location;
+
+    @ElementCollection
+    @CollectionTable(name = "work_experience_responsibilities", joinColumns = @JoinColumn(name = "work_experience_id"))
+    @Column(name = "responsibility")
+    private java.util.List<String> responsibilities;
 
     public WorkExperience() {}
-    public WorkExperience(String company, String position, String description, String startDate, String endDate) {
+
+    public WorkExperience(String title, String company, String period, String location, java.util.List<String> responsibilities) {
+        this.title = title;
         this.company = company;
-        this.position = position;
-        this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.period = period;
+        this.location = location;
+        this.responsibilities = responsibilities;
     }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
     public String getCompany() { return company; }
     public void setCompany(String company) { this.company = company; }
-    public String getPosition() { return position; }
-    public void setPosition(String position) { this.position = position; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public String getStartDate() { return startDate; }
-    public void setStartDate(String startDate) { this.startDate = startDate; }
-    public String getEndDate() { return endDate; }
-    public void setEndDate(String endDate) { this.endDate = endDate; }
+    
+    public String getPeriod() { return period; }
+    public void setPeriod(String period) { this.period = period; }
+    
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
+    
+    public java.util.List<String> getResponsibilities() { return responsibilities; }
+    public void setResponsibilities(java.util.List<String> responsibilities) { this.responsibilities = responsibilities; }
 }

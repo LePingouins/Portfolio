@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import FeedbackSection from '../components/FeedbackSection';
 import AdminProjects from '../components/AdminProjects';
 import AdminWork from '../components/AdminWork';
+import AdminHobbies from '../components/AdminHobbies';
 import type { ProjectForm } from '../components/AdminProjects';
 import { addProject } from '../services/api';
 import { fetchAllFeedbacks, acceptFeedback, rejectFeedback, deleteFeedback, archiveFeedback } from '../services/api';
@@ -93,6 +94,9 @@ const AdminDashboard: React.FC = () => {
           )}
           {adminSection === 'work' && (
             <AdminWork />
+          )}
+          {adminSection === 'hobbies' && (
+            <AdminHobbies />
           )}
           {adminSection === 'skills' && (
             <Suspense fallback={<div>Loading...</div>}>

@@ -1,4 +1,4 @@
-import { WorkExperience } from '../models/WorkExperience';
+import type { WorkExperience } from '../models/WorkExperience';
 
 export const initialWorkExperiences: WorkExperience[] = [
     {

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './About.css';
-import { fetchSkills } from '../services/api';
+import { fetchSkills, fetchHobbies, type Hobby } from '../services/api';
 import ResumeDownload from '../components/ResumeDownload';
 import { useContext } from 'react';
 import { LanguageContext } from '../components/LanguageContext';
 
 const About: React.FC = () => {
   const [skills, setSkills] = useState<string[]>([]);
+  const [hobbies, setHobbies] = useState<Hobby[]>([]);
   const { language, t } = useContext(LanguageContext);
   const [loaded, setLoaded] = useState(false);
 
@@ -19,6 +20,8 @@ const About: React.FC = () => {
         setSkills(data);
       }
     });
+
+    fetchHobbies().then(setHobbies).catch(console.error);
 
     // Trigger animations
     const timer = setTimeout(() => setLoaded(true), 100);
@@ -59,8 +62,12 @@ const About: React.FC = () => {
                </div>
                <div className="stat-card delay-200 reveal">
                  <span className="stat-icon">🎮</span>
-                 <span className="stat-value">{t.about.stats.hobby}</span>
-                 <span className="stat-label">{t.about.stats.hobbyValue}</span>
+                 <span className="stat-value">{hobbies.length > 0 ? (hobbies.length > 1 ? "Hobbies" : "Hobby") : t.about.stats.hobby}</span>
+                 <span className="stat-label">
+                   {hobbies.length > 0 
+                     ? hobbies.map(h => h.name).join(", ") 
+                     : t.about.stats.hobbyValue}
+                 </span>
                </div>
                <div className="stat-card delay-300 reveal">
                  <span className="stat-icon">🚀</span>

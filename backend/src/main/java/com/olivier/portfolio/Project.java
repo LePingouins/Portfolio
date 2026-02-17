@@ -4,6 +4,7 @@ package com.olivier.portfolio;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "project")
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +21,8 @@ public class Project {
     private String imageUrl;
 
     @ElementCollection
+    @CollectionTable(name = "project_tech_stack", joinColumns = @JoinColumn(name = "project_id"))
+    @Column(name = "tech_stack")
     private java.util.List<String> techStack;
 
     private Boolean archived = false;

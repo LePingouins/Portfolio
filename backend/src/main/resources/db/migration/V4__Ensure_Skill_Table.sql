@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS skill (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255),
+    level VARCHAR(50)
+);

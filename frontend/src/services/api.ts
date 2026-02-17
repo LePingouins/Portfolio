@@ -158,11 +158,17 @@ export interface Skill {
   id?: number;
   name: string;
 }
-export interface Work {
-  id?: number;
-  company: string;
-  position: string;
+export interface WorkExperience {
+    id?: number;
+    title: string;
+    company: string;
+    period: string;
+    location: string;
+    responsibilities: string[];
 }
+
+export type WorkExperienceForm = Omit<WorkExperience, 'id'>;
+
 export interface Education {
   id?: number;
   school: string;
@@ -175,6 +181,7 @@ export interface Resume {
 export interface Hobby {
   id?: number;
   name: string;
+  description?: string;
 }
 export interface ContactInfo {
   id?: number;
@@ -264,25 +271,25 @@ export async function deleteSkill(id: number) {
 }
 
 // Work Experience
-export async function fetchWork() {
+export async function fetchWorkExperiences() {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/work` : `${API_BASE_URL}/api/work`;
   const res = await fetch(url);
   if (!res.ok) throw new Error('Failed to fetch work experience');
   return res.json();
 }
-export async function addWork(work: Work) {
+export async function addWorkExperience(work: WorkExperience) {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/work` : `${API_BASE_URL}/api/work`;
   const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(work) });
   if (!res.ok) throw new Error('Failed to add work experience');
   return res.json();
 }
-export async function updateWork(id: number, work: Work) {
+export async function updateWorkExperience(id: number, work: WorkExperience) {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/work/${id}` : `${API_BASE_URL}/api/work/${id}`;
   const res = await fetch(url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(work) });
   if (!res.ok) throw new Error('Failed to update work experience');
   return res.json();
 }
-export async function deleteWork(id: number) {
+export async function deleteWorkExperience(id: number) {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/work/${id}` : `${API_BASE_URL}/api/work/${id}`;
   const res = await fetch(url, { method: 'DELETE' });
   if (!res.ok) throw new Error('Failed to delete work experience');

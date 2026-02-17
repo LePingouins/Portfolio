@@ -3,6 +3,7 @@ package com.olivier.portfolio;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "skill")
 public class Skill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
