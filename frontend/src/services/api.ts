@@ -126,7 +126,7 @@ export async function submitContactMessage(message: { name: string; email: strin
 
 // Simple service to fetch backend hello endpoint
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:8080').replace(/\/$/, '');
 
 export async function fetchHello() {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/hello` : `${API_BASE_URL}/api/hello`;
