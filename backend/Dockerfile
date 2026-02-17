@@ -26,8 +26,8 @@ WORKDIR /app
 # Copy the built jar from the builder image
 COPY --from=0 /app/build/libs/*.jar app.jar
 
-# Expose port 10000
-EXPOSE 10000
+# Expose port 8080
+EXPOSE 8080
 
 # Run the application
 ENTRYPOINT ["java", "-Xmx256m", "-jar", "app.jar"]

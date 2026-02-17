@@ -49,7 +49,7 @@ services:
     branch: main
     envVars:
       - key: API_URL
-        value: http://portfolio-backend:10000
+        value: http://portfolio-backend:8080
 
 
 databases:
