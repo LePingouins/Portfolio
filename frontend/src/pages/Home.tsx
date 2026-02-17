@@ -1,13 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { LanguageContext } from '../components/LanguageContext';
-import { useTheme } from '../components/ThemeContext';
 import Timeline from '../components/TimelineSection';
 
 import './Home.css';
 
 const Home: React.FC = () => {
   const { language, t } = useContext(LanguageContext);
-  const { theme, toggleTheme } = useTheme();
 
   // Content configuration
   const titleText = t.home.title;
@@ -65,13 +63,7 @@ const Home: React.FC = () => {
       <div className="bg-gradient-orb orb-3" />
 
       <header className="home-header">
-         <button
-            className="theme-toggle-btn"
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-          >
-            {theme === 'dark' ? '🌙' : '☀️'}
-          </button>
+         {/* Theme toggle removed per user request */}
       </header>
       
       <main className="home-content-wrapper">
