@@ -48,8 +48,11 @@ services:
     plan: free
     branch: main
     envVars:
-      - key: API_URL
-        value: http://portfolio-backend:8080
+      - key: API_HOST
+        fromService:
+          type: web
+          name: portfolio-backend
+          property: host
 
 
 databases:
