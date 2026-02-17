@@ -30,6 +30,5 @@ COPY --from=0 /app/build/libs/*.jar app.jar
 EXPOSE 8080
 
 # Run the application
-# We need to replace 'postgresql://' with 'jdbc:postgresql://' in the SPRING_DATASOURCE_URL environment variable
-# because Render provides the former, but the JDBC driver expects the latter.
-ENTRYPOINT ["/bin/sh", "-c", "export SPRING_DATASOURCE_URL=$(echo $SPRING_DATASOURCE_URL | sed 's/postgresql:\\/\\//jdbc:postgresql:\\/\\//'); java -jar app.jar"]
+# We use a robust sed default that handles both http:// and postgresql:// style replacements if needed
+ENTRYPOINT ["/bin/sh", "-c", "export SPRING_DATASOURCE_URL=$(echo $SPRING_DATASOURCE_URL | sed 's|^postgresql://|jdbc:postgresql://|'); java -jar app.jar"]
