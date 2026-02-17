@@ -7,7 +7,10 @@ services:
     dockerfilePath: ./backend/Dockerfile
     plan: free
     branch: main
+    healthCheckPath: /api/hello
     envVars:
+      - key: PORT
+        value: 8080
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: SPRING_DATASOURCE_URL
