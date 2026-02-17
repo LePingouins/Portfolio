@@ -11,7 +11,7 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: SPRING_DATASOURCE_URL
-        value: "jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}"
+        value: "jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require"
       - key: DB_HOST
         fromDatabase:
           name: portfolio-db
