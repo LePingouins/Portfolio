@@ -1,4 +1,8 @@
-const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:8080').replace(/\/$/, '');
+// In production (Docker/Nginx), use relative path to let Nginx proxy handle it.
+// In development, use VITE_API_URL or localhost.
+export const API_BASE_URL = import.meta.env.PROD 
+  ? '' 
+  : (import.meta.env.VITE_API_URL || 'http://localhost:8080').replace(/\/$/, '');
 
 // Gemini skill suggestions (proxy)
 export async function fetchGeminiSkillSuggestions(query: string, model: 'flash' | 'pro' = 'flash') {
