@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import { LanguageContext } from './LanguageContext';
 
 const ResumeDownload: React.FC = () => {
+  // forcing update
   const { t } = useContext(LanguageContext);
   return (
     <div style={{ textAlign: 'center', margin: '2em 0' }}>

@@ -4,6 +4,7 @@ import './Footer.css';
 import { LanguageContext } from './LanguageContext';
 
 const Footer: React.FC = () => {
+  // forcing update
   const year = new Date().getFullYear();
   const { t } = useContext(LanguageContext);
   return (
