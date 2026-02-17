@@ -1,0 +1,140 @@
+/* Background Gradients */
+.work-bg-highlight {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.highlight-1 {
+  width: 500px;
+  height: 500px;
+  background: var(--color-primary, #646cff);
+  top: -100px;
+  right: -100px;
+  animation: float 20s ease-in-out infinite;
+}
+
+.highlight-2 {
+  width: 400px;
+  height: 400px;
+  background: var(--color-secondary, #ff4444);
+  bottom: 0;
+  left: -50px;
+  animation: float 15s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(30px, 50px); }
+  100% { transform: translate(0, 0); }
+}
+
+.work-page-wrapper {
+  min-height: 100vh;
+  padding: 100px 24px 60px;
+  background: var(--color-bg);
+  position: relative;
+  overflow-x: hidden;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.work-container {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+}
+
+.work-title {
+  font-size: 3rem;
+  margin-bottom: 3rem;
+  text-align: center;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.work-card {
+  background: rgba(30, 30, 30, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.work-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+  background: rgba(40, 40, 40, 0.7);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.work-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+}
+
+.work-role {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-primary, #646cff);
+  margin: 0;
+}
+
+.work-company {
+  font-size: 1.2rem;
+  color: #ccc;
+  margin-top: 0.25rem;
+}
+
+.work-meta {
+  text-align: right;
+  font-size: 1rem;
+  color: #aaa;
+}
+
+.work-responsibilities {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.work-responsibilities li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+  color: #ddd;
+}
+
+.work-responsibilities li::before {
+  content: "▹";
+  position: absolute;
+  left: 0;
+  color: var(--color-primary, #646cff);
+}
+
+@media (max-width: 600px) {
+  .work-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .work-meta {
+    text-align: left;
+  }
+}

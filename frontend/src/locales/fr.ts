@@ -5,6 +5,7 @@ export default {
     about: "À propos",
     projects: "Projets",
     contact: "Contact",
+    work: "Expérience",
     feedback: "Avis",
     login: "Connexion",
     language: "EN"

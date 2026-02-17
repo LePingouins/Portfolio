@@ -15,7 +15,9 @@ import AdminSubNav from './components/AdminSubNav';
 import Footer from './components/Footer';
 import { ThemeProvider } from './components/ThemeContext';
 import { LanguageProvider } from './components/LanguageContext';
+import Work from './pages/Work';
 import Archive from './pages/Archive';
+
 
 function AppRouter() {
   const location = useLocation();
@@ -56,6 +58,7 @@ function AppRouter() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/work" element={<Work />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/feedback" element={<Feedback />} />

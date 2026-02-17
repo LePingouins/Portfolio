@@ -39,6 +39,7 @@ const Navbar: React.FC = () => {
           <li role="none"><Link to="/" role="menuitem">{t.navbar.home}</Link></li>
           <li role="none"><Link to="/about" role="menuitem">{t.navbar.about}</Link></li>
           <li role="none"><Link to="/projects" role="menuitem">{t.navbar.projects}</Link></li>
+          <li role="none"><Link to="/work" role="menuitem">{t.navbar.work}</Link></li>
           <li role="none"><Link to="/contact" role="menuitem">{t.navbar.contact}</Link></li>
           <li role="none"><Link to="/feedback" role="menuitem">{t.navbar.feedback}</Link></li>
         </ul>

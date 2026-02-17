@@ -3,6 +3,7 @@ const LazyAdminSkills = lazy(() => import('./AdminSkills'));
 import { useNavigate, useParams } from 'react-router-dom';
 import FeedbackSection from '../components/FeedbackSection';
 import AdminProjects from '../components/AdminProjects';
+import AdminWork from '../components/AdminWork';
 import type { ProjectForm } from '../components/AdminProjects';
 import { addProject } from '../services/api';
 import { fetchAllFeedbacks, acceptFeedback, rejectFeedback, deleteFeedback, archiveFeedback } from '../services/api';
@@ -89,6 +90,9 @@ const AdminDashboard: React.FC = () => {
                 window.alert('Failed to add project.');
               }
             }} />
+          )}
+          {adminSection === 'work' && (
+            <AdminWork />
           )}
           {adminSection === 'skills' && (
             <Suspense fallback={<div>Loading...</div>}>
