@@ -1,6 +1,5 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 const LazyAdminSkills = lazy(() => import('./AdminSkills'));
-const LazyAdminTestimonials = lazy(() => import('./AdminTestimonials'));
 import { useNavigate, useParams } from 'react-router-dom';
 import FeedbackSection from '../components/FeedbackSection';
 import AdminProjects from '../components/AdminProjects';
@@ -90,11 +89,6 @@ const AdminDashboard: React.FC = () => {
                 window.alert('Failed to add project.');
               }
             }} />
-          )}
-          {adminSection === 'testimonials' && (
-            <Suspense fallback={<div>Loading...</div>}>
-              <LazyAdminTestimonials />
-            </Suspense>
           )}
           {adminSection === 'skills' && (
             <Suspense fallback={<div>Loading...</div>}>

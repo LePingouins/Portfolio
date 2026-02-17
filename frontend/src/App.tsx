@@ -16,7 +16,6 @@ import Footer from './components/Footer';
 import { ThemeProvider } from './components/ThemeContext';
 import { LanguageProvider } from './components/LanguageContext';
 import Archive from './pages/Archive';
-import TestimonialsPage from './pages/TestimonialsPage';
 
 function AppRouter() {
   const location = useLocation();
@@ -58,7 +57,6 @@ function AppRouter() {
         <Route path="/about" element={<About />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/testimonials" element={<TestimonialsPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/feedback" element={<Feedback />} />
         <Route path="/blog" element={<Blog />} />

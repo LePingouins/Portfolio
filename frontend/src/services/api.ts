@@ -380,43 +380,6 @@ export async function deleteContactInfo(id: number) {
   if (!res.ok) throw new Error('Failed to delete contact info');
 }
 
-// Testimonials
-export async function fetchTestimonials() {
-  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/testimonials` : `${API_BASE_URL}/api/testimonials`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error('Failed to fetch testimonials');
-  return res.json();
-}
-export async function fetchAllTestimonials() {
-  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/testimonials/all` : `${API_BASE_URL}/api/testimonials/all`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error('Failed to fetch all testimonials');
-  return res.json();
-}
-export async function submitTestimonial(testimonial: TestimonialPayload) {
-  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/testimonials` : `${API_BASE_URL}/api/testimonials`;
-  const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(testimonial) });
-  if (!res.ok) throw new Error('Failed to submit testimonial');
-  return res.json();
-}
-export async function approveTestimonial(id: number) {
-  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/testimonials/${id}/approve` : `${API_BASE_URL}/api/testimonials/${id}/approve`;
-  const res = await fetch(url, { method: 'PUT' });
-  if (!res.ok) throw new Error('Failed to approve testimonial');
-  return res.json();
-}
-export async function rejectTestimonial(id: number) {
-  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/testimonials/${id}/reject` : `${API_BASE_URL}/api/testimonials/${id}/reject`;
-  const res = await fetch(url, { method: 'PUT' });
-  if (!res.ok) throw new Error('Failed to reject testimonial');
-  return res.json();
-}
-export async function deleteTestimonial(id: number) {
-  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/testimonials/${id}` : `${API_BASE_URL}/api/testimonials/${id}`;
-  const res = await fetch(url, { method: 'DELETE' });
-  if (!res.ok) throw new Error('Failed to delete testimonial');
-}
-
 // Messages
 export async function fetchMessages() {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/messages` : `${API_BASE_URL}/api/messages`;

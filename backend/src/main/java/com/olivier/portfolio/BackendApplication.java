@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import org.springframework.beans.factory.annotation.Value;
+
 @SpringBootApplication
 public class BackendApplication {
 
@@ -15,10 +17,10 @@ public class BackendApplication {
 	}
 
 	@Bean
-	public CommandLineRunner createDefaultAdmin(@Autowired AdminUserRepository adminRepo) {
+	public CommandLineRunner createDefaultAdmin(@Autowired AdminUserRepository adminRepo,
+												@Value("${admin.username}") String username,
+												@Value("${admin.password}") String password) {
 		return args -> {
-			String username = "oligoudreault@gmail.com";
-			String password = "Juliesamoli123*";
 			if (adminRepo.findByUsername(username).isEmpty()) {
 				String hash = new BCryptPasswordEncoder().encode(password);
 				adminRepo.save(new AdminUser(username, hash));

@@ -9,25 +9,6 @@ export default {
     login: "Connexion",
     language: "EN"
   },
-  testimonials: {
-    nav: "Témoignages",
-    title: "Partagez votre expérience",
-    subtitle: "J'aimerais connaître votre avis sur notre collaboration !",
-    successTitle: "Merci !",
-    successMessage: "Votre témoignage a été soumis avec succès et est en attente d'approbation.",
-    submitAnother: "Soumettre un autre",
-    form: {
-      namePlaceholder: "Votre Nom",
-      rolePlaceholder: "Votre Rôle / Titre (Optionnel)",
-      avatarPlaceholder: "URL de l'avatar (Optionnel)",
-      messagePlaceholder: "Partagez votre expérience...",
-    },
-    button: {
-      submit: "Soumettre le témoignage",
-      submitting: "Envoi en cours...",
-    },
-    approvalNote: "Note : Tous les témoignages sont examinés avant d'être publiés."
-  },
   home: {
     title: "Portfolio",
     titleSuffix: "|",

@@ -1,8 +1,8 @@
-import React, { useEffect, useState, Suspense, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { LanguageContext } from '../components/LanguageContext';
 import { useTheme } from '../components/ThemeContext';
 import Timeline from '../components/TimelineSection';
-const Testimonials = React.lazy(() => import('../components/Testimonials'));
+
 import './Home.css';
 
 const Home: React.FC = () => {
@@ -106,12 +106,7 @@ const Home: React.FC = () => {
            <Timeline items={timelineItems} />
         </section>
 
-        {/* TESTIMONIALS SECTION */}
-        <section className="testimonials-wrapper fade-in-up delay-200">
-          <Suspense fallback={<div className="loading-spinner">Is someone saying something nice?...</div>}>
-            <Testimonials />
-          </Suspense>
-        </section>
+
 
       </main>
     </div>

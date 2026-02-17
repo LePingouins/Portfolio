@@ -9,25 +9,6 @@ export default {
     login: "Login",
     language: "FR"
   },
-  testimonials: {
-    nav: "Testimonials",
-    title: "Share Your Experience",
-    subtitle: "I'd love to hear your thoughts on working together!",
-    successTitle: "Thank You!",
-    successMessage: "Your testimonial has been submitted successfully and is pending approval.",
-    submitAnother: "Submit Another",
-    form: {
-      namePlaceholder: "Your Name",
-      rolePlaceholder: "Your Role / Job Title (Optional)",
-      avatarPlaceholder: "Avatar URL (Optional)",
-      messagePlaceholder: "Share your experience...",
-    },
-    button: {
-      submit: "Submit Testimonial",
-      submitting: "Submitting...",
-    },
-    approvalNote: "Note: All testimonials are reviewed before being published."
-  },
   home: {
     title: "Portfolio",
     titleSuffix: "|",
