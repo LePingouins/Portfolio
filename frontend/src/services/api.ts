@@ -1,3 +1,5 @@
+const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:8080').replace(/\/$/, '');
+
 // Gemini skill suggestions (proxy)
 export async function fetchGeminiSkillSuggestions(query: string, model: 'flash' | 'pro' = 'flash') {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/gemini/suggest-skills` : `${API_BASE_URL}/api/gemini/suggest-skills`;
