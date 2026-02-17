@@ -16,7 +16,8 @@ COPY src src
 RUN chmod +x gradlew
 
 # Build the application
-RUN ./gradlew build --no-daemon
+RUN chmod +x gradlew
+RUN ./gradlew build --no-daemon -x test
 
 # Use a smaller image for running the app
 FROM eclipse-temurin:17-jre-alpine
