@@ -30,5 +30,5 @@ COPY --from=0 /app/build/libs/*.jar app.jar
 EXPOSE 8080
 
 # Run the application
-# We use a robust sed default that handles both http:// and postgresql:// style replacements if needed
-ENTRYPOINT ["/bin/sh", "-c", "export SPRING_DATASOURCE_URL=$(echo $SPRING_DATASOURCE_URL | sed 's|^postgresql://|jdbc:postgresql://|'); java -jar app.jar"]
+# Use a more explicit string replacement that properly escapes special characters
+ENTRYPOINT ["/bin/sh", "-c", "export SPRING_DATASOURCE_URL=\"jdbc:${SPRING_DATASOURCE_URL}\"; java -jar app.jar"]
