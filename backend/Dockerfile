@@ -30,5 +30,4 @@ COPY --from=0 /app/build/libs/*.jar app.jar
 EXPOSE 8080
 
 # Run the application
-# Use a more explicit string replacement that properly escapes special characters
-ENTRYPOINT ["/bin/sh", "-c", "export SPRING_DATASOURCE_URL=\"jdbc:${SPRING_DATASOURCE_URL}\"; java -jar app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
