@@ -101,7 +101,10 @@ export async function submitFeedback(feedback: { name: string; comment: string }
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(feedback),
   });
-  if (!res.ok) throw new Error('Failed to submit feedback');
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(errorText || 'Failed to submit feedback');
+  }
   return res.json();
 }
 

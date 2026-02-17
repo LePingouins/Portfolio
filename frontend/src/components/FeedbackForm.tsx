@@ -43,6 +43,19 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
     setError(null);
     if (honeypot) return;
     
+    // Check localStorage for rate limit (10 mins)
+    const lastFeedbackTime = localStorage.getItem('lastFeedbackTime');
+    if (lastFeedbackTime) {
+      const diff = Date.now() - parseInt(lastFeedbackTime, 10);
+      if (diff < 10 * 60 * 1000) {
+        const remaining = Math.ceil((10 * 60 * 1000 - diff) / 60000);
+        setError(language === 'fr' 
+          ? `Veuillez attendre ${remaining} minute(s) avant d'envoyer un autre commentaire.` 
+          : `Please wait ${remaining} minute(s) before submitting another feedback.`);
+        return;
+      }
+    }
+
     if (!name.trim() || !comment.trim()) {
       setError(language === 'fr' ? 'Champs requis.' : 'Please fill in all fields.');
       return;
@@ -63,13 +76,21 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
       const enrichedComment = `[${category.toUpperCase()}] [${rating}/5 Stars] - ${comment}`;
       
       await submitFeedback({ name, comment: enrichedComment }); // Adapting to existing API
+      
+      // Store timestamp
+      localStorage.setItem('lastFeedbackTime', Date.now().toString());
+      
       setSuccess(true);
       onSubmit(name, enrichedComment);
       setName('');
       setComment('');
       setRating(5);
-    } catch {
-      setError(language === 'fr' ? "Erreur d'envoi." : 'Failed to submit.');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError(language === 'fr' ? "Erreur d'envoi." : 'Failed to submit.');
+      }
     } finally {
         setLoading(false);
     }
