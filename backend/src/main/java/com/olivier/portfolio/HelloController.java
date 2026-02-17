@@ -8,7 +8,7 @@ public class HelloController {
 
     @GetMapping("/")
     public String root() {
-        return "Backend is running!";
+        return "Backend is running!!";
     }
 
     @GetMapping("/api/hello")
