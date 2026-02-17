@@ -4,7 +4,7 @@ services:
     name: portfolio-backend
     env: docker
     dockerContext: ./backend
-    dockerfilePath: Dockerfile
+    dockerfilePath: ./backend/Dockerfile
     plan: free
     branch: main
     envVars:
