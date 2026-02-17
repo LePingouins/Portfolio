@@ -21,7 +21,7 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
           {project.imageUrl && <img src={project.imageUrl} alt={project.name} className="project-image" />}
           <div className="project-links">
             <a href={project.projectLink} target="_blank" rel="noopener noreferrer">Project Link</a>
-            <a href={project.websiteLink} target="_blank" rel="noopener noreferrer">Website Link</a>
+            {project.websiteLink && <a href={project.websiteLink} target="_blank" rel="noopener noreferrer">Website Link</a>}
           </div>
         </div>
       ))}
