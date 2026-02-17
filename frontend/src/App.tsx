@@ -15,6 +15,7 @@ import AdminSubNav from './components/AdminSubNav';
 import Footer from './components/Footer';
 import { ThemeProvider } from './components/ThemeContext';
 import { LanguageProvider } from './components/LanguageContext';
+import { AuthProvider } from './components/AuthContext';
 import Work from './pages/Work';
 import Archive from './pages/Archive';
 
@@ -79,13 +80,15 @@ function AppRouter() {
 
 function App() {
   return (
-    <LanguageProvider>
-      <ThemeProvider>
-        <Router>
-          <AppRouter />
-        </Router>
-      </ThemeProvider>
-    </LanguageProvider>
+    <AuthProvider>
+      <LanguageProvider>
+        <ThemeProvider>
+          <Router>
+            <AppRouter />
+          </Router>
+        </ThemeProvider>
+      </LanguageProvider>
+    </AuthProvider>
   );
 }
 

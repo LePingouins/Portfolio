@@ -16,9 +16,24 @@ const Contact: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Check localStorage for rate limit (10 mins)
+    const lastContactTime = localStorage.getItem('lastContactTime');
+    if (lastContactTime) {
+      const diff = Date.now() - parseInt(lastContactTime, 10);
+      const cooldownTime = 10 * 60 * 1000; // 10 minutes
+      if (diff < cooldownTime) {
+        const remaining = Math.ceil((cooldownTime - diff) / 60000);
+        const errorTemplate = t.contact.form.cooldown || `Please wait ${remaining} minute(s) before sending another message.`;
+        setErrorMessage(errorTemplate.replace('{minutes}', remaining.toString()));
+        setStatus('error');
+        return;
+      }
+    }
     
     if (!form.name.trim() || !form.email.trim() || !form.subject.trim() || !form.message.trim()) {
       setErrorMessage(t.contact.form.errorInit);
+      setStatus('error');
       return;
     }
 
@@ -26,6 +41,7 @@ const Contact: React.FC = () => {
     
     try {
       await submitContactMessage(form);
+      localStorage.setItem('lastContactTime', Date.now().toString());
       setStatus('success');
       setForm({ name: '', email: '', subject: '', message: '' });
     } catch (error) {

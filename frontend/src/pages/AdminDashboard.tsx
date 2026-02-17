@@ -8,6 +8,7 @@ import AdminHobbies from '../components/AdminHobbies';
 import type { ProjectForm } from '../components/AdminProjects';
 import { addProject } from '../services/api';
 import { fetchAllFeedbacks, acceptFeedback, rejectFeedback, deleteFeedback, archiveFeedback } from '../services/api';
+import { useAuth } from '../components/useAuth';
 
 interface Feedback {
   id: number;
@@ -21,6 +22,7 @@ const AdminDashboard: React.FC = () => {
   // Use universal content-safe background utility for all admin pages
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const { section } = useParams();
   // Normalize section: default to 'feedbacks' if not present or if 'feedback' (singular), but handle /admin/projects
   let adminSection = section;
@@ -35,13 +37,12 @@ const AdminDashboard: React.FC = () => {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    if (!token) {
+    if (!isAuthenticated) {
       navigate('/admin-login');
       return;
     }
     fetchAllFeedbacks().then(setFeedbacks).catch(() => setFeedbacks([]));
-  }, [navigate]);
+  }, [navigate, isAuthenticated]);
 
   const handleAccept = async (id: number) => {
     await acceptFeedback(id);

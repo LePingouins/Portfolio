@@ -8,6 +8,7 @@ export default {
     work: "Experience",
     feedback: "Feedback",
     login: "Login",
+    logout: "Log Out",
     language: "FR"
   },
   home: {
@@ -79,7 +80,8 @@ export default {
       successDesc: "Thanks for reaching out. I'll get back to you as soon as possible.",
       sendAnother: "Send another message",
       errorInit: "Please fill in all fields.",
-      errorSend: "Failed to send message. Please try again."
+      errorSend: "Failed to send message. Please try again.",
+      cooldown: "Please wait {minutes} minute(s) before sending another message."
     }
   },
   feedback: {

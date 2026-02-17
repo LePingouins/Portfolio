@@ -1,12 +1,12 @@
 .contact-page-bg {
     min-height: 100vh;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     background: #121215;
     position: relative;
-    overflow: hidden;
-    padding: 10px 20px 80px 20px;
+    padding: 80px 20px 80px 20px;
+    overflow-x: hidden; /* Prevent horizontal scroll from bg anims */
 }
 
 /* Updated Background Animations */
@@ -56,7 +56,40 @@
     z-index: 10;
 }
 
-@media (min-width: 768px) {
+/* Mobile adjustments to prevent content squashing/overflow */
+@media (max-width: 900px) {
+    .contact-page-bg {
+        padding: 80px 15px 40px 15px; /* More padding top for taller navbars */
+        align-items: flex-start;
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
+    }
+
+    .contact-card-wrapper {
+        flex-direction: column;
+        width: 100%;
+        max-width: 600px; /* Limit width on tablets/mobile for better readability */
+        margin-top: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    
+    .contact-info-panel {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 30px;
+    }
+
+    .contact-form-panel {
+        padding: 30px;
+    }
+
+    .contact-info-header h2 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (min-width: 901px) {
     .contact-card-wrapper {
         flex-direction: row;
         min-height: 550px;

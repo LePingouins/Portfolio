@@ -8,6 +8,7 @@ export default {
     work: "Expérience",
     feedback: "Avis",
     login: "Connexion",
+    logout: "Déconnexion",
     language: "EN"
   },
   home: {
@@ -79,7 +80,8 @@ export default {
       successDesc: "Merci de m'avoir contacté. Je vous répondrai dès que possible.",
       sendAnother: "Envoyer un autre message",
       errorInit: "Veuillez remplir tous les champs.",
-      errorSend: "Échec de l'envoi. Veuillez réessayer."
+      errorSend: "Échec de l'envoi. Veuillez réessayer.",
+      cooldown: "Veuillez attendre {minutes} minute(s) avant d'envoyer un autre message."
     }
   },
   feedback: {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AdminLogin.css';
+import { useAuth } from '../components/useAuth';
 
 import { API_BASE_URL } from '../services/api';
 
@@ -9,6 +10,7 @@ const AdminLogin: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +27,7 @@ const AdminLogin: React.FC = () => {
       });
       if (!res.ok) throw new Error('Invalid credentials');
       const data = await res.json();
-      localStorage.setItem('adminToken', data.token);
+      login(data.token);
       navigate('/admin');
     } catch (err: unknown) {
       if (err instanceof Error) {
