@@ -1,12 +1,44 @@
 .feedback-page-bg {
     min-height: 100vh;
     display: flex;
-    align-items: flex-start;
     justify-content: center;
     background: #121215;
     position: relative;
     overflow-x: hidden;
-    padding: 10px 20px 80px 20px;
+    padding: 80px 20px 40px 20px; /* Adjusted padding match nav bar and mobile */
+}
+
+@media (max-width: 900px) {
+    .feedback-page-bg {
+        padding: 90px 15px 30px 15px; /* Increase top padding to clear navbar */
+        align-items: flex-start;
+    }
+
+    .feedback-container {
+        flex-direction: column;
+        gap: 30px;
+        align-items: stretch;
+    }
+    
+    .feedback-wall {
+        order: 2;
+        width: 100%;
+        padding-right: 0;
+    }
+
+    .feedback-form-wrapper {
+        order: 1;
+        flex: auto;
+        max-width: 100%; /* Reset max-width for mobile */
+        position: relative;
+        top: 0;
+        padding: 20px;
+        box-sizing: border-box; /* IMPORTANT */
+    }
+    
+    .feedback-grid {
+        max-height: 400px;
+    }
 }
 
 /* Background Animations (Consistent with Contact) */
@@ -175,7 +207,8 @@
 
 /* Right Panel: Feedback Form Wrapper */
 .feedback-form-wrapper {
-    flex: 0 0 450px; /* Fixed width on desktop */
+    flex: 0 1 450px; /* Allow shrinking on desktop if needed, max 450px */
+    max-width: 450px;
     width: 100%;
     background: rgba(20, 20, 25, 0.8);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -184,7 +217,7 @@
     backdrop-filter: blur(20px);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     position: sticky;
-    top: 100px; 
+    top: 100px;
 }
 
 @media (max-width: 900px) {
@@ -192,6 +225,10 @@
         flex: auto;
         position: relative;
         top: 0;
+        max-width: 100%; /* Ensure override of the 450px */
+        width: 100%; /* Force width */
+        padding: 20px;
+        box-sizing: border-box; 
     }
     
     .feedback-grid {

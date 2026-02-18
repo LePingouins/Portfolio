@@ -60,7 +60,6 @@
 }
 
 /* Futuristic Nerdy Sub-Navbar */
-/* Hidden by default, shown on navbar hover */
 
 
 /* Sub-navbar container */
@@ -103,6 +102,7 @@
 
 /* Sub-navbar buttons */
 .admin-subnav-btn {
+  white-space: nowrap; /* Prevent text wrapping */
   background: #232323;
     border: none;
   color: #e0e0e0;
@@ -129,3 +129,40 @@
 }
 
 
+
+@media (max-width: 1200px) {
+  .admin-subnav {
+    position: fixed; /* Stick to viewport bottom */
+    top: auto !important;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) !important;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    z-index: 2000;
+    justify-content: flex-start; /* Allow scrolling from start */
+    padding: 0 10px; /* Add padding for scroll content */
+  }
+
+  /* Make items center-aligned if they fit, but capable of scrolling if not */
+  .admin-subnav::after {
+    content: '';
+    min-width: 10px; /* Spacer */
+  }
+
+  .admin-subnav.visible {
+    top: auto !important; /* Override default top: 64px */
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) !important;
+  }
+  
+  .admin-subnav-submenu {
+    top: auto;
+    bottom: 100%;
+    border-radius: 10px 10px 0 0;
+    margin-bottom: 5px;
+  }
+}

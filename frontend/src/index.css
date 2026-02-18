@@ -79,3 +79,14 @@ ul, ol {
 main, .main-content, .container {
   padding: 2rem;
 }
+
+/* Fix Admin Dashboard overlap with bottom nav on mobile */
+@media (max-width: 900px) {
+  .content-safe-bg {
+    padding-bottom: 80px !important; /* Ensure content isn't covered by admin nav */
+  }
+  
+  .dashboard-content {
+    margin-bottom: 40px; /* Extra breathing room */
+  }
+}

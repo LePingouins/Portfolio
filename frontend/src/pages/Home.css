@@ -244,3 +244,29 @@ body {
   .home-content-wrapper { gap: 40px; }
   .hero-section { min-height: auto; margin-top: 40px; padding-bottom: 40px;}
 }
+
+@media (max-width: 900px) {
+  .home-page-container {
+    padding-top: 100px; /* Ensure content is below fixed navbar */
+  }
+  
+  .home-content-wrapper {
+    padding: 0 16px;
+    gap: 40px;
+  }
+  
+  .hero-section {
+    margin-top: 20px;
+    padding: 30px 20px;
+  }
+  
+  .hero-title {
+    font-size: 2rem; /* Smaller font on mobile */
+  }
+}
+
+@media (max-width: 900px) {
+  .home-page-container {
+    padding-top: 120px !important;
+  }
+}

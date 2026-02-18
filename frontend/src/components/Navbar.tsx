@@ -1,6 +1,6 @@
 import React from 'react';
 import './Navbar.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { LanguageContext } from './LanguageContext';
 import { useAuth } from './useAuth';
@@ -8,6 +8,14 @@ import { useAuth } from './useAuth';
 const Navbar: React.FC = () => {
   const { toggleLanguage, t } = useContext(LanguageContext);
   const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    navigate('/');
+    setTimeout(() => {
+      logout();
+    }, 0);
+  };
 
   return (
     <nav className="navbar minimal-navbar" aria-label="Main navigation" style={{ position: 'relative', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -20,7 +28,7 @@ const Navbar: React.FC = () => {
         </button>
         {isAuthenticated ? (
           <button
-            onClick={logout}
+            onClick={handleLogout}
             style={{
               padding: '8px 16px',
               borderRadius: 8,
