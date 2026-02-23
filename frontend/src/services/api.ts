@@ -2,9 +2,8 @@
 // In development, use VITE_API_URL or localhost.
 import { getDeviceFingerprint, ensureSessionId } from '../utils/fingerprint';
 
-export const API_BASE_URL = import.meta.env.PROD 
-  ? '' 
-  : (import.meta.env.VITE_API_URL || 'http://localhost:8080').replace(/\/$/, '');
+const rawApi = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:8080');
+export const API_BASE_URL = String(rawApi).replace(/\/$/, '');
 
 // Gemini skill suggestions (proxy)
 export async function fetchGeminiSkillSuggestions(query: string, model: 'flash' | 'pro' = 'flash') {
