@@ -18,8 +18,9 @@ public class MessageRateLimitFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         String path = req.getRequestURI();
-        // Only apply to contact endpoints
-        if (!("/api/contact-messages".equals(path) || "/api/messages".equals(path)) || !"POST".equalsIgnoreCase(req.getMethod())) {
+        // Only apply to contact and feedback endpoints
+        boolean isProtected = "/api/contact-messages".equals(path) || "/api/messages".equals(path) || "/api/feedback".equals(path);
+        if (!isProtected || !"POST".equalsIgnoreCase(req.getMethod())) {
             chain.doFilter(req, res);
             return;
         }

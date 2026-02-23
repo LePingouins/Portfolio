@@ -9,6 +9,8 @@ services:
       - SPRING_PROFILES_ACTIVE=prod
       - ADMIN_USERNAME=${ADMIN_USERNAME}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      # Cloudflare Turnstile secret must be supplied via environment or secret manager
+      - CLOUDFLARE_TURNSTILE_SECRET=${CLOUDFLARE_TURNSTILE_SECRET}
     # Uncomment if you want to persist data or logs
     # volumes:
     #   - ./backend/data:/app/data

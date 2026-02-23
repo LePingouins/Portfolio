@@ -12,6 +12,14 @@
     <meta property="og:description" content="Portfolio website for Olivier Goudreault, Computer Science Technology graduate and web developer." />
     <meta property="og:image" content="/olivierlogo.png" />
     <meta property="og:type" content="website" />
+    <!-- Ensure runtime access to the Turnstile site key (injected from Vite env) -->
+    <meta name="turnstile-site-key" content="%VITE_CLOUDFLARE_TURNSTILE_SITE_KEY%">
+    <!--
+      DEV: a relaxed CSP to allow Turnstile scripts during local testing.
+      This meta will be active in dev if you keep the placeholder value in .env and
+      restart the dev server. Remove or tighten for production.
+    -->
+    %VITE_ALLOW_TURNSITLE_CSP_META%
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>

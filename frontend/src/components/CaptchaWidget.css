@@ -1,0 +1,18 @@
+.captcha-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.5);
+  z-index: 1200;
+}
+.captcha-box {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 320px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.captcha-box h3 { margin: 0 0 8px 0; }
+.captcha-box p { margin: 0 0 12px 0; color: #444; }

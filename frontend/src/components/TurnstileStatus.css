@@ -1,0 +1,15 @@
+.turnstile-status{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:0.9rem;
+  color:#d1d5db;
+}
+.turnstile-status .ts-label{font-size:0.85rem;color:inherit}
+.turnstile-status .ts-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.turnstile-status .ts-dot--loading{background:linear-gradient(90deg,#f59e0b,#f97316)}
+.turnstile-status .ts-check{color:#10b981;font-weight:700}
+.turnstile-status .ts-x{color:#ef4444;font-weight:700}
+.turnstile-status--missing{opacity:0.7}
+.turnstile-status--loading{opacity:0.95}
+.turnstile-status--ready{opacity:1}

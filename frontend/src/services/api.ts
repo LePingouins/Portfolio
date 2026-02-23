@@ -1,5 +1,7 @@
 // In production (Docker/Nginx), use relative path to let Nginx proxy handle it.
 // In development, use VITE_API_URL or localhost.
+import { getDeviceFingerprint, ensureSessionId } from '../utils/fingerprint';
+
 export const API_BASE_URL = import.meta.env.PROD 
   ? '' 
   : (import.meta.env.VITE_API_URL || 'http://localhost:8080').replace(/\/$/, '');
@@ -96,13 +98,22 @@ export async function fetchArchivedFeedbacks() {
 // Feedback
 export async function submitFeedback(feedback: { name: string; comment: string }) {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/feedback` : `${API_BASE_URL}/api/feedback`;
+  
+  // ensure a session id cookie for cross-IP continuity
+  try { ensureSessionId(); } catch { /* ignore */ }
+  const fp = await getDeviceFingerprint().catch(() => 'no-fp');
+
   const res = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json', 'X-Device-Fingerprint': fp },
     body: JSON.stringify(feedback),
   });
   if (!res.ok) {
     const errorText = await res.text();
+    if (res.status === 403 && res.headers.get('X-Require-Captcha')) {
+        throw { type: 'captcha', message: errorText || 'CAPTCHA required' };
+    }
     throw new Error(errorText || 'Failed to submit feedback');
   }
   return res.json();
@@ -122,7 +133,6 @@ export async function deleteContactMessage(id: number) {
   if (!res.ok) throw new Error('Failed to delete contact message');
 }
 
-import { getDeviceFingerprint, ensureSessionId } from '../utils/fingerprint';
 
 export async function submitContactMessage(message: { name: string; email: string; subject: string; message: string }) {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/contact-messages` : `${API_BASE_URL}/api/contact-messages`;
@@ -138,6 +148,10 @@ export async function submitContactMessage(message: { name: string; email: strin
   });
   if (!res.ok) {
     const text = await res.text().catch(() => '');
+    // If backend signals a captcha requirement, surface that to the caller
+    if (res.status === 403 && res.headers.get('X-Require-Captcha')) {
+      throw { type: 'captcha', message: text || 'CAPTCHA required' };
+    }
     throw new Error(text || 'Failed to submit contact message');
   }
   return res.json();

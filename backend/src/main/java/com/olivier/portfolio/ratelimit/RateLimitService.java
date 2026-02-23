@@ -45,15 +45,22 @@ public class RateLimitService {
             List<String> res = evalLua(tokenScriptText, key,
                     String.valueOf(nowMs()), String.valueOf(capacity), String.valueOf(refillPerMs),
                     String.valueOf(consume), String.valueOf(ttlMs));
-            if (res != null && res.size() >= 2) {
-                long allowed = Long.parseLong(res.get(0));
-                double tokens = Double.parseDouble(res.get(1));
-                return allowed == 1 ? new Decision(Action.ALLOW, "ok", tokens) : new Decision(Action.BLOCK_AND_COUNT, "rate_limit", tokens);
+            if (res != null) {
+                if (res.size() >= 2) {
+                    long allowed = Long.parseLong(res.get(0));
+                    double tokens = Double.parseDouble(res.get(1));
+                    return allowed == 1 ? new Decision(Action.ALLOW, "ok", tokens) : new Decision(Action.BLOCK_AND_COUNT, "rate_limit", tokens);
+                } else {
+                     // Empty result from script, assume permissive
+                     return new Decision(Action.ALLOW, "script_empty", 0);
+                }
             }
         } catch (Exception ex) {
             // on failure, be permissive
+            return new Decision(Action.ALLOW, "error_permissive", 0);
         }
-        return new Decision(Action.BLOCK_AND_COUNT, "error", 0);
+        // Fallback for non-exception path where res is null
+        return new Decision(Action.ALLOW, "error_null", 0);
     }
 
     public Decision evaluate(String userId, String ip, String fingerprint, String sessionId) {

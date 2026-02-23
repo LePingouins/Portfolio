@@ -1,7 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import './Contact.css';
 import { LanguageContext } from '../components/LanguageContext';
-import { submitContactMessage } from '../services/api';
+import { submitContactMessage, API_BASE_URL } from '../services/api';
+import CaptchaWidget from '../components/CaptchaWidget';
+import TurnstileStatus from '../components/TurnstileStatus';
 import { EmailIcon, GithubIcon, LinkedinIcon, LocationIcon, SendIcon } from '../components/ContactIcons';
 
 const Contact: React.FC = () => {
@@ -9,6 +11,8 @@ const Contact: React.FC = () => {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [showCaptcha, setShowCaptcha] = useState(false);
+  const preloadedTokenRef = useRef<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -44,8 +48,34 @@ const Contact: React.FC = () => {
       localStorage.setItem('lastContactTime', Date.now().toString());
       setStatus('success');
       setForm({ name: '', email: '', subject: '', message: '' });
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Contact submit error:', error);
+      const e = error as Record<string, unknown>;
+      if (e && e.type === 'captcha') {
+        setShowCaptcha(true);
+        setStatus('idle');
+        return;
+      }
+      setStatus('error');
+      setErrorMessage(t.contact.form.errorSend);
+    }
+  };
+
+  const handleCaptchaVerified = async (token: string) => {
+    try {
+      // send token to backend verify endpoint
+      const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/verify-captcha` : `${API_BASE_URL}/api/verify-captcha`;
+      await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token }) });
+      setShowCaptcha(false);
+      // retry submit
+      setStatus('submitting');
+      await submitContactMessage(form);
+      localStorage.setItem('lastContactTime', Date.now().toString());
+      setStatus('success');
+      setForm({ name: '', email: '', subject: '', message: '' });
+    } catch (err) {
+      console.error('Captcha verify/submit error:', err);
+      setShowCaptcha(false);
       setStatus('error');
       setErrorMessage(t.contact.form.errorSend);
     }
@@ -96,6 +126,26 @@ const Contact: React.FC = () => {
         </div>
 
         <div className="contact-form-panel">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+            <h3 style={{ margin: 0 }}>{t.contact.form.title}</h3>
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+              <TurnstileStatus />
+            </div>
+          </div>
+          {/* Preload invisible widget so Turnstile script and widget are ready when needed */}
+           <CaptchaWidget
+             preload
+             siteKey={import.meta.env.VITE_CLOUDFLARE_TURNSTILE_SITE_KEY || import.meta.env.VITE_RECAPTCHA_SITE_KEY || '1x00000000000000000000AA'}
+             onVerified={(t: string) => { preloadedTokenRef.current = t; }}
+           />
+          {showCaptcha && (
+            // Lazily load site key, prefer Cloudflare Turnstile
+            <CaptchaWidget 
+                siteKey={import.meta.env.VITE_CLOUDFLARE_TURNSTILE_SITE_KEY || import.meta.env.VITE_RECAPTCHA_SITE_KEY || '1x00000000000000000000AA'} 
+                onVerified={handleCaptchaVerified} 
+                onCancel={() => setShowCaptcha(false)} 
+            />
+          )}
           {status === 'success' ? (
             <div className="success-message-container">
               <div className="success-icon-large">
@@ -118,9 +168,12 @@ const Contact: React.FC = () => {
               </div>
               
               <div className="form-group">
+                <label htmlFor="contact-name" style={{ position: 'absolute', left: -9999 }}>{t.contact.form.name}</label>
                 <input 
+                  id="contact-name"
+                  name="name"
+                  aria-label={t.contact.form.name}
                   type="text" 
-                  name="name" 
                   className="form-input" 
                   placeholder={t.contact.form.name}
                   value={form.name}
@@ -129,9 +182,12 @@ const Contact: React.FC = () => {
               </div>
 
               <div className="form-group">
+                <label htmlFor="contact-email" style={{ position: 'absolute', left: -9999 }}>{t.contact.form.email}</label>
                 <input 
+                  id="contact-email"
+                  name="email"
+                  aria-label={t.contact.form.email}
                   type="email" 
-                  name="email" 
                   className="form-input" 
                   placeholder={t.contact.form.email}
                   value={form.email}
@@ -140,9 +196,12 @@ const Contact: React.FC = () => {
               </div>
 
               <div className="form-group">
+                <label htmlFor="contact-subject" style={{ position: 'absolute', left: -9999 }}>{t.contact.form.subject}</label>
                 <input 
+                  id="contact-subject"
+                  name="subject"
+                  aria-label={t.contact.form.subject}
                   type="text" 
-                  name="subject" 
                   className="form-input" 
                   placeholder={t.contact.form.subject}
                   value={form.subject}
@@ -151,8 +210,11 @@ const Contact: React.FC = () => {
               </div>
 
               <div className="form-group">
+                <label htmlFor="contact-message" style={{ position: 'absolute', left: -9999 }}>{t.contact.form.message}</label>
                 <textarea 
+                  id="contact-message"
                   name="message" 
+                  aria-label={t.contact.form.message}
                   className="form-textarea" 
                   placeholder={t.contact.form.message}
                   value={form.message}

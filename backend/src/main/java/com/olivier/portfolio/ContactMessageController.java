@@ -2,6 +2,7 @@ package com.olivier.portfolio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequestMapping("/api/contact-messages")
+// Allow the frontend origin for browser requests (adjust in production as needed)
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class ContactMessageController {
     @Autowired
     private ContactMessageRepository messageRepo;
@@ -55,6 +58,13 @@ public class ContactMessageController {
 
         rateLimitMap.put(clientIp, now);
         return ResponseEntity.ok(messageRepo.save(message));
+    }
+
+    // Dev helper: clear the in-memory simple rate-limit map for testing.
+    @PostMapping("/debug/clear-rate-limit")
+    public ResponseEntity<?> clearRateLimit() {
+        rateLimitMap.clear();
+        return ResponseEntity.ok(Map.of("ok", true));
     }
 
     @PatchMapping("/{id}/archive")

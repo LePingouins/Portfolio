@@ -1,9 +1,11 @@
 
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import './FeedbackForm.css';
-import { submitFeedback } from '../services/api';
+import { submitFeedback, API_BASE_URL } from '../services/api';
 import { LanguageContext } from '../components/LanguageContextValue';
 import { CheckCircleIcon, StarIcon } from './FeedbackIcons';
+import CaptchaWidget from './CaptchaWidget';
+import TurnstileStatus from './TurnstileStatus';
 
 interface FeedbackFormProps {
   onSubmit: (name?: string, comment?: string) => void;
@@ -19,6 +21,8 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [showCaptcha, setShowCaptcha] = useState(false);
+  const preloadedTokenRef = useRef<string | null>(null);
 
   const t = {
     title: language === 'fr' ? 'Votre Avis' : 'Share your thought',
@@ -86,11 +90,44 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
       setComment('');
       setRating(5);
     } catch (err: unknown) {
+      if (typeof err === 'object' && err !== null) {
+        const maybe = err as Record<string, unknown>;
+        if (maybe.type === 'captcha') {
+          setShowCaptcha(true);
+          setLoading(false);
+          return;
+        }
+      }
       if (err instanceof Error) {
         setError(err.message);
       } else {
         setError(language === 'fr' ? "Erreur d'envoi." : 'Failed to submit.');
       }
+    } finally {
+        setLoading(false);
+    }
+  };
+
+  const handleCaptchaVerified = async (token: string) => {
+    try {
+      // send token to backend verify endpoint
+      const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/verify-captcha` : `${API_BASE_URL}/api/verify-captcha`;
+      await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token }) });
+      setShowCaptcha(false);
+      // retry submit
+      setLoading(true);
+      const enrichedComment = `[${category.toUpperCase()}] [${rating}/5 Stars] - ${comment}`;
+      await submitFeedback({ name, comment: enrichedComment });
+      localStorage.setItem('lastFeedbackTime', Date.now().toString());
+      setSuccess(true);
+      onSubmit(name, enrichedComment);
+      setName('');
+      setComment('');
+      setRating(5);
+    } catch (err) {
+      console.error('Captcha verify/submit error:', err);
+      setShowCaptcha(false);
+      setError(language === 'fr' ? "Erreur captcha." : 'Captcha failed.');
     } finally {
         setLoading(false);
     }
@@ -112,35 +149,57 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
 
   return (
     <div className="feedback-form-card">
-        <h2>{t.title}</h2>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+            <h3 style={{ margin: 0 }}>{t.title}</h3>
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+              <TurnstileStatus />
+            </div>
+        </div>
+        {/* Preload invisible widget so Turnstile script and widget are ready when needed */}
+          <CaptchaWidget
+            preload
+            siteKey={import.meta.env.VITE_CLOUDFLARE_TURNSTILE_SITE_KEY || import.meta.env.VITE_RECAPTCHA_SITE_KEY || '1x00000000000000000000AA'}
+            onVerified={(t: string) => { preloadedTokenRef.current = t; }}
+          />
+        {showCaptcha && (
+          <CaptchaWidget 
+             siteKey={import.meta.env.VITE_CLOUDFLARE_TURNSTILE_SITE_KEY || import.meta.env.VITE_RECAPTCHA_SITE_KEY || '1x00000000000000000000AA'} 
+             onVerified={handleCaptchaVerified} 
+             onCancel={() => setShowCaptcha(false)} 
+          />
+        )}
         <p>{t.desc}</p>
 
         {error && <div className="error-banner">{error}</div>}
 
         <form onSubmit={handleSubmit}>
             <div className="frm-group">
-                <label className="frm-label">{t.nameLbl}</label>
-                <input 
-                    className="frm-input"
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                    placeholder="John Doe"
-                />
+              <label className="frm-label" htmlFor="feedback-name">{t.nameLbl}</label>
+              <input 
+                id="feedback-name"
+                name="name"
+                className="frm-input"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                placeholder="John Doe"
+              />
             </div>
 
             <div style={{ display: 'flex', gap: 20 }}>
                 <div className="frm-group" style={{ flex: 1 }}>
-                    <label className="frm-label">{t.catLbl}</label>
-                    <select 
-                        className="frm-select"
-                        value={category}
-                        onChange={e => setCategory(e.target.value)}
-                    >
-                        <option value="general">{t.cats.general}</option>
-                        <option value="content">{t.cats.content}</option>
-                        <option value="feature">{t.cats.feature}</option>
-                        <option value="bug">{t.cats.bug}</option>
-                    </select>
+                  <label className="frm-label" htmlFor="feedback-category">{t.catLbl}</label>
+                  <select 
+                    id="feedback-category"
+                    name="category"
+                    className="frm-select"
+                    value={category}
+                    onChange={e => setCategory(e.target.value)}
+                  >
+                    <option value="general">{t.cats.general}</option>
+                    <option value="content">{t.cats.content}</option>
+                    <option value="feature">{t.cats.feature}</option>
+                    <option value="bug">{t.cats.bug}</option>
+                  </select>
                 </div>
 
                 <div className="frm-group" style={{ flex: 1 }}>
@@ -161,21 +220,25 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
             </div>
 
             <div className="frm-group">
-                <label className="frm-label">{t.commentLbl}</label>
-                <textarea 
-                    className="frm-textarea"
-                    value={comment}
-                    onChange={e => setComment(e.target.value)}
-                    placeholder="..."
-                />
+              <label className="frm-label" htmlFor="feedback-comment">{t.commentLbl}</label>
+              <textarea 
+                id="feedback-comment"
+                name="comment"
+                className="frm-textarea"
+                value={comment}
+                onChange={e => setComment(e.target.value)}
+                placeholder="..."
+              />
             </div>
 
             {/* Honeypot */}
             <input 
-                type="text" 
-                style={{ display: 'none' }} 
-                value={honeypot}
-                onChange={e => setHoneypot(e.target.value)}
+              type="text" 
+              name="hp"
+              id="feedback-hp"
+              style={{ display: 'none' }} 
+              value={honeypot}
+              onChange={e => setHoneypot(e.target.value)}
             />
 
             <button type="submit" className="submit-button" disabled={loading}>

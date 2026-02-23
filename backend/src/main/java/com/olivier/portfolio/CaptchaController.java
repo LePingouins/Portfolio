@@ -18,6 +18,9 @@ public class CaptchaController {
 
     private final StringRedisTemplate redis;
 
+    @Value("${CLOUDFLARE_TURNSTILE_SECRET:}")
+    private String turnstileSecret;
+
     @Value("${RECAPTCHA_SECRET:}")
     private String recaptchaSecret;
 
@@ -30,15 +33,35 @@ public class CaptchaController {
         if (!StringUtils.hasText(token)) return ResponseEntity.badRequest().body(Map.of("ok", false));
 
         boolean ok = false;
-        if (!StringUtils.hasText(recaptchaSecret)) {
+        
+        // Prioritize Turnstile if configured
+        if (StringUtils.hasText(turnstileSecret)) {
+             try {
+                RestTemplate rt = new RestTemplate();
+                // Cloudflare Turnstile verify endpoint
+                String url = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+                
+                // Must send as form data or json
+                Map<String, String> payload = Map.of("secret", turnstileSecret, "response", token);
+                @SuppressWarnings("unchecked")
+                Map<String, Object> resp = (Map<String, Object>) rt.postForObject(url, payload, Map.class);
+                
+                if (resp != null && Boolean.TRUE.equals(resp.get("success"))) ok = true;
+             } catch (Exception ex) {
+                 // log.error("Turnstile verification failed", ex);
+             }
+        } else if (!StringUtils.hasText(recaptchaSecret)) {
             // No secret configured: accept a special local token for development
             ok = "local-test".equals(token);
         } else {
-            RestTemplate rt = new RestTemplate();
-            String url = "https://www.google.com/recaptcha/api/siteverify?secret=" + recaptchaSecret + "&response=" + token;
-            @SuppressWarnings("unchecked")
-            Map<String, Object> resp = (Map<String, Object>) rt.postForObject(url, null, Map.class);
-            if (resp != null && Boolean.TRUE.equals(resp.get("success"))) ok = true;
+            // Fallback to ReCaptcha
+            try {
+                RestTemplate rt = new RestTemplate();
+                String url = "https://www.google.com/recaptcha/api/siteverify?secret=" + recaptchaSecret + "&response=" + token;
+                @SuppressWarnings("unchecked")
+                Map<String, Object> resp = (Map<String, Object>) rt.postForObject(url, null, Map.class);
+                if (resp != null && Boolean.TRUE.equals(resp.get("success"))) ok = true;
+            } catch (Exception ignored) {}
         }
 
         if (ok && StringUtils.hasText(userId) && redis != null) {

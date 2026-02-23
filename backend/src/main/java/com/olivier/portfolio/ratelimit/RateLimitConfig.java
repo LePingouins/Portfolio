@@ -11,7 +11,7 @@ public class RateLimitConfig {
     public FilterRegistrationBean<MessageRateLimitFilter> messageRateLimitFilter(RateLimitService rl) {
         FilterRegistrationBean<MessageRateLimitFilter> reg = new FilterRegistrationBean<>();
         reg.setFilter(new MessageRateLimitFilter(rl));
-        reg.addUrlPatterns("/api/contact-messages", "/api/messages");
+        reg.addUrlPatterns("/api/contact-messages", "/api/messages", "/api/feedback");
         reg.setName("MessageRateLimitFilter");
         reg.setOrder(10);
         return reg;
