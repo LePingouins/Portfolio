@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { LanguageContext } from './LanguageContext';
 import { fetchHobbies, addHobby, deleteHobby, type Hobby } from '../services/api';
 
 const AdminHobbies: React.FC = () => {
@@ -31,6 +32,8 @@ const AdminHobbies: React.FC = () => {
         }
     };
 
+    const { t } = useContext(LanguageContext);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!name.trim()) return;
@@ -41,48 +44,49 @@ const AdminHobbies: React.FC = () => {
             loadHobbies();
         } catch (error) {
             console.error('Failed to add hobby', error);
-            alert('Failed to add hobby');
+            alert(t.adminPages.hobbies.addFail);
         }
     };
 
     const handleDelete = async (id: number) => {
-        if (window.confirm('Are you sure you want to delete this hobby?')) {
+        if (window.confirm(t.adminPages.hobbies.deleteConfirm)) {
             try {
                 await deleteHobby(id);
                 setHobbies(prev => prev.filter(h => h.id !== id));
             } catch (error) {
                 console.error('Failed to delete hobby', error);
-                alert('Failed to delete hobby');
+                alert(t.adminPages.hobbies.deleteFail);
             }
         }
     };
 
+
     return (
         <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto', color: '#fff' }}>
-            <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>Manage Hobbies</h2>
+            <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>{t.adminPages.hobbies.title}</h2>
 
             <form onSubmit={handleSubmit} style={{ marginBottom: '2rem', background: '#333', padding: '1.5rem', borderRadius: '8px' }}>
                 <div style={{ marginBottom: '1rem' }}>
-                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>Hobby Name</label>
+                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>{t.adminPages.hobbies.nameLabel || 'Hobby Name'}</label>
                     <input
                         type="text"
                         value={name}
                         onChange={e => setName(e.target.value)}
                         required
-                        placeholder="Gaming, Photography, etc."
+                        placeholder={t.adminPages.hobbies.namePlaceholder}
                         style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #555', background: '#222', color: '#fff' }}
                     />
                 </div>
                 <div style={{ marginBottom: '1rem' }}>
-                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>Description (Optional)</label>
+                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>{t.adminPages.hobbies.descriptionLabel || 'Description (Optional)'}</label>
                     <textarea
                         value={description}
                         onChange={e => setDescription(e.target.value)}
-                        placeholder="A brief description..."
+                        placeholder={t.adminPages.hobbies.descriptionPlaceholder}
                         style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #555', background: '#222', color: '#fff', minHeight: '80px' }}
                     />
                 </div>
-                <button type="submit" style={{ width: '100%', padding: '0.75rem', background: '#f44336', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Add Hobby</button>
+                <button type="submit" style={{ width: '100%', padding: '0.75rem', background: '#f44336', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>{t.adminPages.hobbies.addButton}</button>
             </form>
 
             <div className="hobbies-list" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import ArchiveIcon from './ArchiveIcon';
 import { LanguageContext } from './LanguageContext';
+import './AdminTables.css';
 
 interface ContactMessage {
   id: number;
@@ -23,10 +24,11 @@ const ContactArchivedSection: React.FC<ContactArchivedSectionProps> = ({ contact
     <section>
       <div className="dashboard-content">
         <h2 style={{ textAlign: 'center', marginTop: 32, fontSize: '2em', color: '#fbbf24' }}>{t.archive.contactsTitle}</h2>
-        <table className="admin-feedback-table">
-          <thead>
-            <tr>
-              <th>{t.archive.table.name}</th>
+        <div className="table-responsive">
+          <table className="admin-feedback-table">
+            <thead>
+              <tr>
+                <th>{t.archive.table.name}</th>
               <th>{t.archive.table.email}</th>
               <th>{t.archive.table.message}</th>
               <th>{t.archive.table.date}</th>
@@ -57,7 +59,8 @@ const ContactArchivedSection: React.FC<ContactArchivedSectionProps> = ({ contact
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
     </section>
   );

@@ -34,9 +34,7 @@
 
 .work-page-wrapper {
   min-height: 100vh;
-  padding: opx 24px 60px; /* Adjusted padding top from 100px */
-  background: #18181b; 
-  position: relative;
+  padding: 0px 24px 100px; /* Top padding 0px as requested */
   overflow-x: hidden;
   color: #fff;
   transition: background-color 0.3s ease;

@@ -154,6 +154,7 @@
 
   .admin-subnav.visible {
     top: auto !important; /* Override default top: 64px */
+    bottom: 20px !important;
     opacity: 1;
     pointer-events: auto;
     transform: translateX(-50%) !important;

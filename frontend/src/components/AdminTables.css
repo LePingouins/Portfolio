@@ -1,0 +1,111 @@
+.admin-feedback-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0;
+  color: #e2e8f0;
+  font-size: 0.95em;
+  background: #18181b;
+}
+.admin-feedback-table th,
+.admin-feedback-table td {
+  padding: 14px 20px;
+  text-align: left;
+  border-bottom: 1px solid #333;
+}
+.admin-feedback-table th {
+  background: #27272a;
+  font-weight: 600;
+  color: #fbbf24;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.85em;
+}
+.admin-feedback-table td {
+  vertical-align: middle;
+}
+/* Truncate long comments */
+.admin-feedback-table td .comment-scroll {
+  max-width: 320px;
+  max-height: 4.5em; /* approximate 3 lines */
+  overflow-y: auto;
+  padding-right: 4px; /* space for scrollbar */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #555 #222;
+}
+.admin-feedback-table td .comment-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.admin-feedback-table td .comment-scroll::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 3px;
+}
+/* Action buttons container */
+.admin-feedback-table td:last-child {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  white-space: nowrap;
+  min-width: 220px; /* Ensure buttons have space */
+  height: 2.8em;
+  overflow: visible;
+}
+.admin-feedback-table tr:last-child td {
+  border-bottom: none;
+}
+.admin-feedback-table tr:hover td {
+  background: #23242a;
+}
+.admin-feedback-table button {
+  background: linear-gradient(90deg, #ef4444 0%, #991b1b 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 18px;
+  font-size: 1em;
+  font-weight: 600;
+  margin-right: 0;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #ef444422;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+}
+.admin-feedback-table button:last-child {
+  margin-right: 0;
+}
+.admin-feedback-table button:hover {
+  background: linear-gradient(90deg, #991b1b 0%, #ef4444 100%);
+  box-shadow: 0 4px 16px #ef444455;
+  transform: translateY(-2px) scale(1.04);
+}
+.admin-feedback-table .status {
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: #23242a;
+  color: #fbbf24;
+}
+.admin-feedback-table .status.ACCEPTED {
+  color: #4ade80;
+  background: #14532d;
+}
+.admin-feedback-table .status.REJECTED {
+  color: #f87171;
+  background: #7f1d1d;
+}
+
+/* Responsive Table Wrapper */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+@media (max-width: 900px) {
+  .admin-feedback-table {
+    min-width: 800px; /* Ensure table is wide enough to be readable, forcing scroll */
+  }
+}

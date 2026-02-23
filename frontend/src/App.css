@@ -234,3 +234,27 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Responsive Table Wrapper */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+@media (max-width: 900px) {
+  .admin-feedback-table {
+    min-width: 800px; /* Ensure table is wide enough to be readable, forcing scroll */
+  }
+  
+  .dashboard-content {
+    width: 100% !important;
+    padding: 0 10px;
+    box-sizing: border-box;
+    overflow-x: hidden; 
+  }
+}
+

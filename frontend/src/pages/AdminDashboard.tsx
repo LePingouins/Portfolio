@@ -1,6 +1,8 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 const LazyAdminSkills = lazy(() => import('./AdminSkills'));
 import { useNavigate, useParams } from 'react-router-dom';
+import { useContext } from 'react';
+import { LanguageContext } from '../components/LanguageContext';
 import FeedbackSection from '../components/FeedbackSection';
 import AdminProjects from '../components/AdminProjects';
 import AdminWork from '../components/AdminWork';
@@ -23,6 +25,7 @@ const AdminDashboard: React.FC = () => {
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const { t } = useContext(LanguageContext);
   const { section } = useParams();
   // Normalize section: default to 'feedbacks' if not present or if 'feedback' (singular), but handle /admin/projects
   let adminSection = section;
@@ -87,9 +90,9 @@ const AdminDashboard: React.FC = () => {
                   imageUrl: project.imageUrl,
                   techStack: project.techStack,
                 });
-                window.alert('Project added successfully!');
+                window.alert(t.admin.projects.messages.addSuccess);
               } catch {
-                window.alert('Failed to add project.');
+                window.alert(t.admin.projects.messages.addFail);
               }
             }} />
           )}

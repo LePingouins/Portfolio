@@ -62,6 +62,78 @@ export default {
     viewProject: "View Project",
     visitWebsite: "Visit Website"
   },
+  admin: {
+    projects: {
+      title: "All Projects",
+      form: {
+        projectName: "Project Name",
+        description: "Description",
+        projectLink: "Project Link",
+        websiteLink: "Website Link (optional)",
+        imageLink: "Image Link (optional)",
+        techStack: "Tech Stack (optional)",
+        addTech: "Add Tech"
+      },
+      actions: {
+        add: "Add Project",
+        save: "Save Changes",
+        edit: "Edit",
+        delete: "Delete",
+        archive: "Archive",
+        unarchive: "Unarchive"
+      },
+      messages: {
+        addSuccess: "Project added successfully!",
+        addFail: "Failed to add project."
+      }
+    }
+  },
+  adminPages: {
+    subnav: {
+      feedbacks: "Feedbacks",
+      archive: "Archive",
+      contacts: "Contacts",
+      projects: "Projects",
+      skills: "Skills",
+      work: "Work",
+      hobbies: "Hobbies"
+    },
+    skills: {
+      title: "Manage Skills",
+      addPlaceholder: "Enter a skill",
+      addButton: "Add Skill",
+      saving: "Saving...",
+      deleteConfirm: "Delete this skill?",
+      deleteFail: "Failed to delete skill",
+      addFail: "Failed to add skill"
+    },
+    work: {
+      title: "Manage Work Experience",
+      addButton: "Add Experience",
+      deleteConfirm: "Are you sure you want to delete this experience?",
+      addFail: "Failed to add work experience",
+      deleteFail: "Failed to delete work experience",
+      company: "Company",
+      period: "Period",
+      location: "Location",
+      responsibilities: "Responsibilities",
+      addResponsibilityPlaceholder: "Add a responsibility"
+    },
+    hobbies: {
+      title: "Manage Hobbies",
+      addButton: "Add Hobby",
+      deleteConfirm: "Are you sure you want to delete this hobby?",
+      addFail: "Failed to add hobby",
+      deleteFail: "Failed to delete hobby",
+      namePlaceholder: "Gaming, Photography, etc.",
+      descriptionPlaceholder: "A brief description...",
+      nameLabel: "Hobby Name",
+      descriptionLabel: "Description (Optional)"
+    }
+  },
+  adminConfirm: {
+    deleteProject: "Delete this project?"
+  },
   contact: {
     title: "Let's connect",
     subtitle: "Have a project in mind or just want to chat? I'd love to hear from you.",

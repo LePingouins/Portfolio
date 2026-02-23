@@ -122,14 +122,24 @@ export async function deleteContactMessage(id: number) {
   if (!res.ok) throw new Error('Failed to delete contact message');
 }
 
+import { getDeviceFingerprint, ensureSessionId } from '../utils/fingerprint';
+
 export async function submitContactMessage(message: { name: string; email: string; subject: string; message: string }) {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/contact-messages` : `${API_BASE_URL}/api/contact-messages`;
+  // ensure a session id cookie for cross-IP continuity
+  try { ensureSessionId(); } catch { /* ignore */ }
+  const fp = await getDeviceFingerprint().catch(() => 'no-fp');
+
   const res = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json', 'X-Device-Fingerprint': fp },
     body: JSON.stringify(message),
   });
-  if (!res.ok) throw new Error('Failed to submit contact message');
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(text || 'Failed to submit contact message');
+  }
   return res.json();
 }
 

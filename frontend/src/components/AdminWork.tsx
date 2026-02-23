@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { LanguageContext } from './LanguageContext';
 import type { WorkExperience } from '../models/WorkExperience';
 import { addWorkExperience, deleteWorkExperience, fetchWorkExperiences, type WorkExperienceForm } from '../services/api';
 
@@ -55,6 +56,8 @@ const AdminWork: React.FC = () => {
         }
     };
 
+    const { t } = useContext(LanguageContext);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
@@ -69,29 +72,31 @@ const AdminWork: React.FC = () => {
             });
         } catch (error) {
             console.error('Failed to add work experience', error);
-            alert('Failed to add work experience');
+            alert(t.adminPages.work.addFail);
         }
     };
 
     const handleDelete = async (id: number) => {
-        if (window.confirm("Are you sure you want to delete this experience?")) {
+        if (window.confirm(t.adminPages.work.deleteConfirm)) {
             try {
                 await deleteWorkExperience(id);
                 setExperiences(prev => prev.filter(exp => exp.id !== id));
             } catch (error) {
                 console.error('Failed to delete work experience', error);
-                alert('Failed to delete work experience');
+                alert(t.adminPages.work.deleteFail);
             }
         }
     };
 
+    
+
     return (
         <div className="admin-work-container" style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto', color: '#fff' }}>
-            <h2 style={{ textAlign: 'center' }}>Manage Work Experience</h2>
+            <h2 style={{ textAlign: 'center' }}>{t.adminPages.work.title}</h2>
             
             <form onSubmit={handleSubmit} style={{ marginBottom: '2rem', background: '#333', padding: '1.5rem', borderRadius: '8px' }}>
                 <div style={{ marginBottom: '1rem' }}>
-                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>Title</label>
+                        <label style={{ display: 'block', marginBottom: '0.5rem' }}>{t.adminPages.work.title}</label>
                     <input
                         type="text"
                         value={form.title}
@@ -101,7 +106,7 @@ const AdminWork: React.FC = () => {
                     />
                 </div>
                 <div style={{ marginBottom: '1rem' }}>
-                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>Company</label>
+                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>{t.adminPages.work.company || 'Company'}</label>
                     <input
                         type="text"
                         value={form.company}
@@ -111,7 +116,7 @@ const AdminWork: React.FC = () => {
                     />
                 </div>
                 <div style={{ marginBottom: '1rem' }}>
-                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>Period</label>
+                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>{t.adminPages.work.period || 'Period'}</label>
                     <input
                         type="text"
                         value={form.period}
@@ -121,7 +126,7 @@ const AdminWork: React.FC = () => {
                     />
                 </div>
                 <div style={{ marginBottom: '1rem' }}>
-                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>Location</label>
+                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>{t.adminPages.work.location || 'Location'}</label>
                     <input
                         type="text"
                         value={form.location}
@@ -132,16 +137,16 @@ const AdminWork: React.FC = () => {
                 </div>
                 
                 <div style={{ marginBottom: '1rem' }}>
-                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>Responsibilities</label>
+                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>{t.adminPages.work.responsibilities || 'Responsibilities'}</label>
                     <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
                         <input
                             type="text"
                             value={responsibilityInput}
                             onChange={e => setResponsibilityInput(e.target.value)}
-                            placeholder="Add a responsibility"
+                            placeholder={t.adminPages.work.addResponsibilityPlaceholder || 'Add a responsibility'}
                             style={{ flex: 1, padding: '0.5rem', borderRadius: '4px', border: '1px solid #555', background: '#222', color: '#fff' }}
                         />
-                        <button type="button" onClick={handleAddResponsibility} style={{ padding: '0.5rem 1rem', background: '#4CAF50', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Add</button>
+                        <button type="button" onClick={handleAddResponsibility} style={{ padding: '0.5rem 1rem', background: '#4CAF50', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>{t.adminPages.work.addButton}</button>
                     </div>
                     <ul style={{ paddingLeft: '1.5rem', color: '#ddd' }}>
                         {form.responsibilities.map((resp, index) => (
@@ -152,7 +157,7 @@ const AdminWork: React.FC = () => {
                     </ul>
                 </div>
 
-                <button type="submit" style={{ width: '100%', padding: '0.75rem', background: '#f44336', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Add Experience</button>
+                <button type="submit" style={{ width: '100%', padding: '0.75rem', background: '#f44336', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>{t.adminPages.work.addButton}</button>
             </form>
 
             <div className="experiences-list">

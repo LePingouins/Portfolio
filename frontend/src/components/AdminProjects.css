@@ -1,0 +1,45 @@
+.admin-project-card {
+  background: #181818;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  border: 1px solid #333;
+  padding: 24px;
+  margin: 0 auto;
+  max-width: 700px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-project-content {
+  flex: 1;
+  min-width: 0; /* Enable truncation inside flex item */
+}
+
+.admin-project-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+@media (max-width: 768px) {
+  .admin-project-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .admin-project-actions {
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 12px;
+  }
+  
+  .admin-project-img {
+    margin-top: 12px;
+    margin-left: 0 !important;
+    display: block;
+  }
+}

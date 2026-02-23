@@ -90,3 +90,31 @@ main, .main-content, .container {
     margin-bottom: 40px; /* Extra breathing room */
   }
 }
+
+/* Global Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #18181b; /* Dark track matching background */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ef4444; /* Red thumb */
+  border-radius: 4px;
+  border: 2px solid #18181b; /* Adds a bit of padding visual */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #dc2626; /* Darker red on hover */
+}
+
+/* Firefox support (future-proof) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ef4444 #18181b; /* thumb track */
+}
+

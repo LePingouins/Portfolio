@@ -3,6 +3,7 @@ import { LanguageContext } from './LanguageContext';
 
 import ArchiveIcon from './ArchiveIcon';
 import '../pages/Feedback.css';
+import './AdminTables.css';
 
 interface Feedback {
   id: number;
@@ -31,10 +32,11 @@ const FeedbackSection: React.FC<FeedbackSectionProps> = ({ feedbacks, onAccept, 
     <section>
       <h2 style={{ textAlign: 'center', marginTop: 32, fontSize: '2em', color: isArchiveView ? '#fbbf24' : '#f87171' }}>{isArchiveView ? t.archive.feedbacksTitle : t.archive.submissionsTitle}</h2>
       {admin && (
-        <table className="admin-feedback-table">
-          <thead>
-            <tr>
-              <th>{t.archive.table.name}</th>
+        <div className="table-responsive">
+          <table className="admin-feedback-table">
+            <thead>
+              <tr>
+                <th>{t.archive.table.name}</th>
               <th>{t.archive.table.comment}</th>
               <th>{t.archive.table.date}</th>
               <th>{t.archive.table.status}</th>
@@ -84,7 +86,8 @@ const FeedbackSection: React.FC<FeedbackSectionProps> = ({ feedbacks, onAccept, 
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
       )}
       {!isArchiveView && (
         <div className="admin-feedback-comments" style={{ marginTop: 32, background: '#18181b', borderRadius: 12, boxShadow: '0 2px 16px #f8717122', padding: 24, maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>

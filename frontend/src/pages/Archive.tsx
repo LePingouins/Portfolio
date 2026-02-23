@@ -4,6 +4,7 @@ import FeedbackSection from '../components/FeedbackSection';
 import ContactArchivedSection from '../components/ContactArchivedSection';
 import { fetchArchivedProjects, unarchiveProject } from '../services/api';
 import { LanguageContext } from '../components/LanguageContext';
+import '../components/AdminTables.css';
 
 
 interface Feedback {
@@ -71,8 +72,9 @@ const Archive: React.FC = () => {
   };
 
   return (
-    <div className="content-safe-bg" style={{ fontSize: 18, fontFamily: 'Inter, Arial, sans-serif', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingBottom: 80 }}>
-      <div className="dashboard-content">
+    <div className="content-safe-bg" style={{ fontSize: 18, fontFamily: 'Inter, Arial, sans-serif', paddingBottom: 80 }}>
+      {/* Remove flex centering to allow full width flow for table scroll */}
+      <div className="dashboard-content" style={{ width: '100%', maxWidth: '100%', margin: '0 auto' }}>
         <ContactArchivedSection
           contacts={archivedContacts}
           onDelete={handleDeleteContact}
@@ -92,6 +94,7 @@ const Archive: React.FC = () => {
           {loadingProjects ? <div>{t.archive.loading}</div> : archivedProjects.length === 0 ? (
             <div>{t.archive.noProjects}</div>
           ) : (
+            <div className="table-responsive">
             <table className="admin-feedback-table">
               <thead>
                 <tr>
@@ -127,6 +130,7 @@ const Archive: React.FC = () => {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </section>
       </div>

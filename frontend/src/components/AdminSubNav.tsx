@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './AdminSubNav.css';
+import { LanguageContext } from './LanguageContext';
 
 interface AdminSubNavProps {
   current: string;
@@ -7,25 +8,20 @@ interface AdminSubNavProps {
   visible?: boolean;
 }
 
-const sections = [
-  { key: 'feedbacks', label: 'Feedbacks' },
-  { key: 'archive', label: 'Archive' },
-  { key: 'contacts', label: 'Contacts' },
-  { key: 'projects', label: 'Projects' },
-  { key: 'skills', label: 'Skills' },
-  { key: 'work', label: 'Work' },
-  { key: 'hobbies', label: 'Hobbies' },
-];
+const sectionsKeys = ['feedbacks','archive','contacts','projects','skills','work','hobbies'] as const;
+type SectionKey = typeof sectionsKeys[number];
 
 const AdminSubNav: React.FC<AdminSubNavProps> = ({ current, onNavigate, visible }) => {
   // Removed hovered state, no longer needed.
   const feedbackBtnRef = React.useRef<HTMLButtonElement>(null);
   // Removed submenuPos and showSubmenu, no longer needed.
 
+  const { t } = useContext(LanguageContext);
+
   return (
     <>
       <nav className={"admin-subnav" + (visible ? " visible" : "") }>
-        {sections.map(section => (
+        {sectionsKeys.map((k: SectionKey) => ({ key: k, label: t?.adminPages?.subnav?.[k] ?? k })).map(section => (
           <div
             key={section.key}
             style={{ position: 'relative', display: 'inline-block' }}

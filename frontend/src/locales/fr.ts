@@ -62,6 +62,78 @@ export default {
     viewProject: "Voir le Projet",
     visitWebsite: "Visiter le Site"
   },
+  admin: {
+    projects: {
+      title: "Tous les Projets",
+      form: {
+        projectName: "Nom du Projet",
+        description: "Description",
+        projectLink: "Lien du Projet",
+        websiteLink: "Lien du Site (optionnel)",
+        imageLink: "Lien de l'Image (optionnel)",
+        techStack: "Technologies (optionnel)",
+        addTech: "Ajouter Tech"
+      },
+      actions: {
+        add: "Ajouter le Projet",
+        save: "Enregistrer les Modifications",
+        edit: "Modifier",
+        delete: "Supprimer",
+        archive: "Archiver",
+        unarchive: "Désarchiver"
+      },
+      messages: {
+        addSuccess: "Projet ajouté avec succès !",
+        addFail: "Échec de l'ajout du projet."
+      }
+    }
+  },
+  adminPages: {
+    subnav: {
+      feedbacks: "Avis",
+      archive: "Archive",
+      contacts: "Contacts",
+      projects: "Projets",
+      skills: "Compétences",
+      work: "Expérience",
+      hobbies: "Passe temps"
+    },
+    skills: {
+      title: "Gérer les Compétences",
+      addPlaceholder: "Entrez une compétence",
+      addButton: "Ajouter la Compétence",
+      saving: "Enregistrement...",
+      deleteConfirm: "Supprimer cette compétence ?",
+      deleteFail: "Échec de la suppression de la compétence",
+      addFail: "Échec de l'ajout de la compétence"
+    },
+    work: {
+      title: "Gérer l'Expérience",
+      addButton: "Ajouter l'Expérience",
+      deleteConfirm: "Êtes-vous sûr de vouloir supprimer cette expérience ?",
+      addFail: "Échec de l'ajout de l'expérience",
+      deleteFail: "Échec de la suppression de l'expérience"
+      ,company: "Entreprise",
+      period: "Période",
+      location: "Lieu",
+      responsibilities: "Responsabilités",
+      addResponsibilityPlaceholder: "Ajouter une responsabilité"
+    },
+    hobbies: {
+      title: "Gérer les Hobbies",
+      addButton: "Ajouter Hobby",
+      deleteConfirm: "Êtes-vous sûr de vouloir supprimer ce hobby ?",
+      addFail: "Échec de l'ajout du hobby",
+      deleteFail: "Échec de la suppression du hobby",
+      namePlaceholder: "Gaming, Photographie, etc.",
+      descriptionPlaceholder: "Une brève description..."
+      ,nameLabel: "Nom du Hobby",
+      descriptionLabel: "Description (Optionnelle)"
+    }
+  },
+  adminConfirm: {
+    deleteProject: "Supprimer ce projet ?"
+  },
   contact: {
     title: "Restons connectés",
     subtitle: "Vous avez un projet en tête ou voulez simplement discuter ? N'hésitez pas.",

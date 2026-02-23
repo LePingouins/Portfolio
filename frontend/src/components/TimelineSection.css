@@ -156,101 +156,76 @@
 }
 
 /* Mobile Responsive */
+
+/* Mobile Responsive */
 @media (max-width: 900px) {
-  .timeline-line {
-    left: 20px;
-    transform: none;
-  }
-  
-  .timeline-dot-wrapper {
-    left: 20px;
-    transform: translateX(-50%);
-  }
-  
-  .timeline-row {
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 48px;
+  .timeline-container {
+    padding: 0 16px;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
 
-  .timeline-row.left, 
-  .timeline-row.right {
-    padding: 0;
-    justify-content: flex-start;
-    padding-left: 56px; 
-  }
-  
-  .timeline-row.left .timeline-content-card, 
-  .timeline-row.right .timeline-content-card {
-    margin: 0;
-    width: 100%;
-  }
-}
-
-/* Mobile responsiveness */
-@media (max-width: 768px) {
+  /* Vertical line stays static on the left */
   .timeline-vertical {
-    padding: 20px 0;
-  }
-  
-  /* Move line to left side */
-  .timeline-line {
-    left: 20px;
-    transform: none;
-  }
-  
-  .timeline-row {
-    flex-direction: column;
-    align-items: flex-start;
-    margin-left: 60px; /* Space for line */
-    width: auto;
-    margin-bottom: 40px;
-    padding: 0 !important; /* Override desktop padding */
+    position: relative;
+    padding-left: 0;
   }
 
-  /* Reset row specific alignments */
+  .timeline-line {
+    left: 24px !important;
+    transform: none !important;
+    top: 0;
+    bottom: 0;
+  }
+  
+  /* Reset Row Layout for Mobile */
+  .timeline-row,
   .timeline-row.left,
   .timeline-row.right {
-    justify-content: flex-start;
+    display: flex;
+    flex-direction: column;
     align-items: flex-start;
+    justify-content: flex-start;
     padding: 0;
+    margin-bottom: 48px;
+    width: 100%;
+    position: relative;
   }
-  
+
+  /* Shift content right to clear the line */
   .timeline-row.left .timeline-content-card,
   .timeline-row.right .timeline-content-card {
-    margin: 0;
-    width: 100%;
-  }
-  
-  /* Card width */
-  .timeline-content-card {
-    width: 100%;
+    margin: 0 0 0 60px; /* 24px line + padding */
+    width: calc(100% - 60px);
     max-width: 100%;
-    min-width: 0;
+    box-sizing: border-box !important; /* Include padding in width calculation */
   }
-  
-  /* Indicators */
+
+  /* Dots on the line */
   .timeline-dot-wrapper {
-    left: -49px !important; /* Position relative to content, back to line at 20px */
-    top: 24px;
+    left: 24px !important; /* Match line position */
+    top: 24px; /* Align with card top padding/icon */
+    transform: translateX(-50%) !important;
     position: absolute;
     display: block !important;
+    z-index: 5;
   }
 
   .timeline-dot-inner {
-    display: block !important;
+    display: block;
     width: 12px; height: 12px;
-    background: #ef4444; border-radius: 50%;
-    position: absolute; left: 0; top: 0;
+    background: #ef4444; 
+    border-radius: 50%;
   }
-  
+
   .timeline-dot-glow {
-    display: block !important;
-    position: absolute; left: -6px; top: -6px;
+    display: block;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
     width: 24px; height: 24px;
     background: rgba(239, 68, 68, 0.4);
     border-radius: 50%;
     animation: pulseDot 2s infinite;
   }
 }
-
