@@ -160,9 +160,7 @@ const Contact: React.FC = () => {
             </div>
           ) : (
             <form onSubmit={handleSubmit}>
-              <div className="form-header">
-                <h3>{t.contact.form.title}</h3>
-              </div>
+              
               
               <div className="form-group">
                 <label htmlFor="contact-name" style={{ position: 'absolute', left: -9999 }}>{t.contact.form.name}</label>
