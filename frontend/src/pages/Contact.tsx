@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext } from 'react';
 import './Contact.css';
 import { LanguageContext } from '../components/LanguageContext';
 import { submitContactMessage, API_BASE_URL } from '../services/api';
@@ -12,7 +12,7 @@ const Contact: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [showCaptcha, setShowCaptcha] = useState(false);
-  const preloadedTokenRef = useRef<string | null>(null);
+ 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -132,12 +132,9 @@ const Contact: React.FC = () => {
               <TurnstileStatus />
             </div>
           </div>
-          {/* Preload invisible widget so Turnstile script and widget are ready when needed */}
-           <CaptchaWidget
-             preload
-             siteKey={import.meta.env.VITE_CLOUDFLARE_TURNSTILE_SITE_KEY || import.meta.env.VITE_RECAPTCHA_SITE_KEY || '1x00000000000000000000AA'}
-             onVerified={(t: string) => { preloadedTokenRef.current = t; }}
-           />
+          
+          {/* Removed preload widget - causes 110200 errors with Managed keys */}
+          
           {showCaptcha && (
             // Lazily load site key, prefer Cloudflare Turnstile
             <CaptchaWidget 

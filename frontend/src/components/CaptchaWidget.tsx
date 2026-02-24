@@ -74,9 +74,19 @@ const CaptchaWidget: React.FC<Props> = ({ siteKey, onVerified, onCancel, provide
                     sitekey: effectiveSiteKey,
                     callback: (token: string) => onVerified(token),
                     'error-callback': (code:  unknown) => { 
-                        console.error('Turnstile error callback:', code);
-                        if (onCancel) onCancel(); 
+                        // Only log errors if not in preload mode, to avoid noise
+                        if (!preload) {
+                             console.error('Turnstile error callback:', code);
+                             if (onCancel) onCancel(); 
+                        } else {
+                            console.warn('Turnstile preload error (likely due to hidden/offscreen rendering):', code);
+                        }
                     },
+                    // If preloading, try to use interaction-only to avoid aggressive checks on hidden elements
+                    // or just don't render if it is going to fail.
+                    // However, we can also try 'execution': 'render' to just load it but not verify yet?
+                    // But the point of preload here seems to be getting a token ready.
+                    // If the widget is Managed, it cannot be effectively preloaded off-screen without issues.
                 } as Record<string, unknown>);
                 widgetIdRef.current = id != null ? String(id) : null;
                 console.debug('CaptchaWidget render - widget id', id);

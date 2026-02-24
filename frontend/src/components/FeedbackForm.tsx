@@ -1,5 +1,5 @@
 
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext } from 'react';
 import './FeedbackForm.css';
 import { submitFeedback, API_BASE_URL } from '../services/api';
 import { LanguageContext } from '../components/LanguageContextValue';
@@ -22,7 +22,6 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [showCaptcha, setShowCaptcha] = useState(false);
-  const preloadedTokenRef = useRef<string | null>(null);
 
   const t = {
     title: language === 'fr' ? 'Votre Avis' : 'Share your thought',
@@ -155,12 +154,9 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
               <TurnstileStatus />
             </div>
         </div>
-        {/* Preload invisible widget so Turnstile script and widget are ready when needed */}
-          <CaptchaWidget
-            preload
-            siteKey={import.meta.env.VITE_CLOUDFLARE_TURNSTILE_SITE_KEY || import.meta.env.VITE_RECAPTCHA_SITE_KEY || '1x00000000000000000000AA'}
-            onVerified={(t: string) => { preloadedTokenRef.current = t; }}
-          />
+        
+        {/* Removed preload widget - it causes 110200 errors with Managed keys when rendered off-screen */}
+        
         {showCaptcha && (
           <CaptchaWidget 
              siteKey={import.meta.env.VITE_CLOUDFLARE_TURNSTILE_SITE_KEY || import.meta.env.VITE_RECAPTCHA_SITE_KEY || '1x00000000000000000000AA'} 
