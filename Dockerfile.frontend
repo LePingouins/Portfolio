@@ -17,8 +17,22 @@ COPY --from=build /app/dist /usr/share/nginx/html
 COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf.template
 
 # Replace API_URL in the template with dynamic environment variable and start nginx
-# If API_URL is set to the internal service name (e.g. portfolio-backend), we use http and port 10000 (Render default internal port) or 8080?
-# Render documentation says internal services are available at host:port.
-CMD ["/bin/sh", "-c", "if [ -n \"$API_HOST\" ]; then if echo \"$API_HOST\" | grep -q 'onrender.com'; then export BACKEND_HOST=\"$API_HOST\"; export API_URL=\"https://$API_HOST\"; else export BACKEND_HOST=\"$API_HOST\"; export API_URL=\"http://$API_HOST:8080\"; fi; fi; echo \"Resolved API_URL=$API_URL BACKEND_HOST=$BACKEND_HOST\"; envsubst '${API_URL} ${BACKEND_HOST}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && cat /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+# We assume that if API_HOST doesn't have a dot, it's an internal hostname (like 'portfolio-backend')
+# If it has onrender.com, it is the public URL.
+# However, sometimes Render injects just the name. 
+# Better strategy: If it contains 'onrender.com', treat as public HTTPS.
+# If it DOES NOT contain 'onrender.com', append it if we are sure it is public, OR treat as internal.
+# The previous logic was: if contains 'onrender.com' -> https://$API_HOST. Else -> http://$API_HOST:8080.
+# The error "portfolio-backend-tjiq could not be resolved" implies it was treated as internal (http://portfolio-backend-tjiq:8080) and 8.8.8.8 couldn't resolve it, OR it was treated as external but missing the suffix.
+
+# Let's adjust: Always assume public if not explicitly internal service alias.
+# But we reverted render.yaml to use `fromService` which usually gives the public hostname `xxx.onrender.com`.
+# If `host` property gives just the slug, we need to append .onrender.com.
+# If `host` property gives full domain, it works.
+
+# Debugging indicated `portfolio-backend-tjiq` was passed. This looks like a slug.
+# Let's try to append .onrender.com if safe.
+
+CMD ["/bin/sh", "-c", "if [ -n \"$API_HOST\" ]; then if echo \"$API_HOST\" | grep -q 'onrender.com'; then export BACKEND_HOST=\"$API_HOST\"; export API_URL=\"https://$API_HOST\"; else export BACKEND_HOST=\"$API_HOST.onrender.com\"; export API_URL=\"https://$API_HOST.onrender.com\"; fi; fi; echo \"Resolved API_URL=$API_URL BACKEND_HOST=$BACKEND_HOST\"; envsubst '${API_URL} ${BACKEND_HOST}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && cat /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
 
 EXPOSE 80
