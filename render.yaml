@@ -49,7 +49,10 @@ services:
     branch: main
     envVars:
       - key: API_HOST
-        value: portfolio-backend
+        fromService:
+          type: web
+          name: portfolio-backend
+          property: host
 
 
 databases:
