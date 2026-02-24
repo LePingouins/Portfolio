@@ -18,7 +18,7 @@ public class AuthController {
         String password = body.get("password");
         AdminUser user = adminRepo.findByUsername(username).orElse(null);
         if (user == null || !encoder.matches(password, user.getPasswordHash())) {
-            throw new RuntimeException("Invalid credentials");
+            throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.UNAUTHORIZED, "Invalid credentials");
         }
         // For demo: return a fake token. Replace with JWT in production.
         return Map.of("token", "demo-token", "username", user.getUsername());
