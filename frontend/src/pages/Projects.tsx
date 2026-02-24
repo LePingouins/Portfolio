@@ -4,6 +4,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { LanguageContext } from '../components/LanguageContextValue';
 import './Projects.css';
 import { fetchProjects } from '../services/api';
+import { safeImageUrl } from '../utils/imageUtils';
 
 interface Project {
   id?: number;
@@ -112,7 +113,7 @@ const Projects: React.FC = () => {
               >
                 <div className="project-image-wrapper">
                     <img
-                      src={project.imageUrl && project.imageUrl.trim() !== '' ? project.imageUrl : '/project-placeholder.png'}
+                      src={safeImageUrl(project.imageUrl)}
                       alt={project.name}
                       className="project-image"
                     />

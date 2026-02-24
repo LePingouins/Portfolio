@@ -54,7 +54,7 @@ const AdminArchive: React.FC = () => {
                 <a href={project.projectLink} target="_blank" rel="noopener noreferrer" style={{ color: '#4faaff', marginRight: 12 }}>{t.archive.link.project}</a>
                 {project.websiteLink && <a href={project.websiteLink} target="_blank" rel="noopener noreferrer" style={{ color: '#4faaff', marginRight: 12 }}>{t.archive.link.website}</a>}
                 <img
-                  src={project.imageUrl && project.imageUrl.trim() !== '' ? project.imageUrl : '/project-placeholder.png'}
+                  src={safeImageUrl(project.imageUrl)}
                   alt={project.name}
                   style={{ maxHeight: 40, marginLeft: 12, verticalAlign: 'middle', background: '#333', borderRadius: 6 }}
                 />
