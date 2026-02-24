@@ -6,6 +6,9 @@ RUN npm install
 COPY frontend .
 # Ensure VITE_API_URL is set so the frontend makes relative requests (proxied by nginx)
 ENV VITE_API_URL=/
+# Pass Turnstile key as build argument/env so Vite can inline it
+ARG VITE_CLOUDFLARE_TURNSTILE_SITE_KEY
+ENV VITE_CLOUDFLARE_TURNSTILE_SITE_KEY=$VITE_CLOUDFLARE_TURNSTILE_SITE_KEY
 RUN npm run build
 
 # Use Nginx to serve the static files

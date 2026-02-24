@@ -53,6 +53,8 @@ services:
           type: web
           name: portfolio-backend
           property: host
+      - key: VITE_CLOUDFLARE_TURNSTILE_SITE_KEY
+        value: 0x4AAAAAACg-p-VTqkeWVkOc
 
 
 databases:
