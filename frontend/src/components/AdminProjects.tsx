@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { LanguageContext } from './LanguageContext';
 import { fetchProjects, deleteProject, updateProject, archiveProject, unarchiveProject } from '../services/api';
 import ArchiveIcon from './ArchiveIcon';
+import { safeImageUrl } from '../utils/imageUtils';
 import './AdminProjects.css';
 import type { Project } from '../services/api';
 // Use a local Project type matching the desired fields

@@ -3,6 +3,7 @@ import { LanguageContext } from '../components/LanguageContext';
 // import { useNavigate } from 'react-router-dom';
 import { fetchArchivedProjects, unarchiveProject } from '../services/api';
 import ArchiveIcon from '../components/ArchiveIcon';
+import { safeImageUrl } from '../utils/imageUtils';
 import './AdminArchive.css';
 
 interface Project {
