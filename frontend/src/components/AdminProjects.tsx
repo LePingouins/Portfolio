@@ -170,7 +170,7 @@ const AdminProjects: React.FC<AdminProjectsProps> = ({ onAddProject }) => {
                   <a href={project.projectLink} target="_blank" rel="noopener noreferrer" style={{ color: '#4faaff', marginRight: 12 }}>Project Link</a>
                   {project.websiteLink && <a href={project.websiteLink} target="_blank" rel="noopener noreferrer" style={{ color: '#4faaff', marginRight: 12 }}>Website</a>}
                   <img
-                    src={project.imageUrl && project.imageUrl.trim() !== '' ? project.imageUrl : 'https://image2url.com/r2/default/images/1770457767250-ad3cf476-7cec-4c3d-982e-ae8844e0bdd1.png'}
+                    src={project.imageUrl && project.imageUrl.trim() !== '' ? project.imageUrl : '/project-placeholder.png'}
                     alt={project.name}
                     className="admin-project-img"
                     style={{ maxHeight: 40, marginLeft: 12, verticalAlign: 'middle', background: '#333', borderRadius: 6 }}

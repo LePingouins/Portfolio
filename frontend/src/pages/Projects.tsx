@@ -30,7 +30,7 @@ const Projects: React.FC = () => {
       const fetchData = fetchProjects();
       
       try {
-        const [_, data] = await Promise.all([minLoadTime, fetchData]);
+        const [, data] = await Promise.all([minLoadTime, fetchData]);
         setProjects(data);
         setFiltered(data);
       } catch (error) {
@@ -112,9 +112,9 @@ const Projects: React.FC = () => {
               >
                 <div className="project-image-wrapper">
                     <img
-                        src={project.imageUrl && project.imageUrl.trim() !== '' ? project.imageUrl : 'https://placehold.co/600x400/222/999?text=Project'}
-                        alt={project.name}
-                        className="project-image"
+                      src={project.imageUrl && project.imageUrl.trim() !== '' ? project.imageUrl : '/project-placeholder.png'}
+                      alt={project.name}
+                      className="project-image"
                     />
                     <div className="project-overlay">
                         <div className="overlay-links">

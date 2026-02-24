@@ -37,10 +37,12 @@ public class DataSeeder {
                 p.setDescription("CourtierPro is a bilingual (English/French) broker–client management and communication platform designed for Nabizada Courtier Inc., a Quebec-based real estate brokerage.");
                 p.setProjectLink("https://github.com/CourtierPro/CourtierPro");
                 p.setWebsiteLink("https://www.courtier-pro.ca/");
-                p.setImageUrl("https://image2url.com/r2/default/images/1771291691594-53cc4fef-f5b8-4199-9a15-c0955b515448.png");
+                p.setImageUrl("/CourtierPro1.png");
                 p.setTechStack(Arrays.asList("React", "Spring Boot", "Github"));
                 p.setArchived(false);
-                
+                if (p.getImageUrl() == null || p.getImageUrl().trim().isEmpty()) {
+                    p.setImageUrl("/project-placeholder.png");
+                }
                 projectRepo.save(p);
                 System.out.println("Seeded project: CourtierPro");
             }
@@ -52,10 +54,12 @@ public class DataSeeder {
                 p.setDescription("A Todo Application, which includes work orders, kilometers, archives.");
                 p.setProjectLink("https://github.com/LePingouins/entretien-batiment");
                 p.setWebsiteLink(null);
-                p.setImageUrl("https://image2url.com/r2/default/images/1771293140633-7f49237a-9fec-4736-b5cf-7bc8459753f3.png");
+                p.setImageUrl("/EntretientBatiment1.png");
                 p.setTechStack(Arrays.asList("React", "Spring Boot", "PostgreSQL"));
                 p.setArchived(false);
-                
+                if (p.getImageUrl() == null || p.getImageUrl().trim().isEmpty()) {
+                    p.setImageUrl("/project-placeholder.png");
+                }
                 projectRepo.save(p);
                 System.out.println("Seeded project: Entretien Batiment");
             }
@@ -67,10 +71,12 @@ public class DataSeeder {
                 p.setDescription("This repository is being used by Champlain College - St. Lambert Computer Science students who are extending the Spring Boot Microservices Petclinic. This is a multi-section, multi-year project that teaches students about Scrum, version control, issue management, TDD, CI, and so much more.");
                 p.setProjectLink("https://github.com/cgerard321/champlain_petclinic");
                 p.setWebsiteLink("https://petclinic.benmusicgeek.synology.me/home");
-                p.setImageUrl("https://image2url.com/r2/default/images/1771293879611-51ef3776-94d9-439c-b2fb-0389b7edab8a.png"); 
+                p.setImageUrl("/ChamplainPetClinic.png"); 
                 p.setTechStack(Arrays.asList("React", "Spring Boot", "JavaScript", "TypeScript"));
                 p.setArchived(false);
-                
+                if (p.getImageUrl() == null || p.getImageUrl().trim().isEmpty()) {
+                    p.setImageUrl("/project-placeholder.png");
+                }
                 System.out.println("Seeded project: Champlain PetClinic");
                 projectRepo.save(p);
             }
