@@ -44,7 +44,6 @@ const CaptchaWidget: React.FC<Props> = ({ siteKey, onVerified, onCancel, provide
 
     if (provider === 'cloudflare') {
         const scriptId = 'cf-turnstile-script';
-        let script = document.getElementById(scriptId) as HTMLScriptElement;
         
         const renderWidget = () => {
             if (!window.turnstile) return;
@@ -59,11 +58,26 @@ const CaptchaWidget: React.FC<Props> = ({ siteKey, onVerified, onCancel, provide
                   return;
                 }
 
+                // If widget is already rendered in this container, don't re-render
+                if (widgetIdRef.current) {
+                    try {
+                        if (window.turnstile?.remove) {
+                            window.turnstile.remove(widgetIdRef.current);
+                        }
+                    } catch (e) {
+                        console.warn('Failed to remove turnstile widget', e);
+                    }
+                    widgetIdRef.current = null;
+                }
+
                 const id = renderFn(`#${containerId}`, {
                     sitekey: effectiveSiteKey,
                     callback: (token: string) => onVerified(token),
-                    'error-callback': () => { if (onCancel) onCancel?.(); },
-                } as unknown as Record<string, unknown>);
+                    'error-callback': (code:  unknown) => { 
+                        console.error('Turnstile error callback:', code);
+                        if (onCancel) onCancel(); 
+                    },
+                } as Record<string, unknown>);
                 widgetIdRef.current = id != null ? String(id) : null;
                 console.debug('CaptchaWidget render - widget id', id);
                 if (onReady) try { onReady(); } catch { /* ignore */ }
@@ -72,39 +86,55 @@ const CaptchaWidget: React.FC<Props> = ({ siteKey, onVerified, onCancel, provide
             }
         };
 
-        if (!script) {
-            script = document.createElement('script');
-            script.id = scriptId;
-            script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
-            script.async = true;
-            script.addEventListener('load', () => {
-              console.debug('CaptchaWidget script loaded');
-              renderWidget();
-            });
-            document.body.appendChild(script);
-            script.addEventListener('error', (ev) => console.error('CaptchaWidget script error', ev));
+        const existingScript = document.getElementById(scriptId) as HTMLScriptElement;
+
+        const loadScript = () => {
+             const script = document.createElement('script');
+             script.id = scriptId;
+             script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+             script.async = true;
+             script.addEventListener('load', () => {
+               console.debug('CaptchaWidget script loaded');
+               renderWidget();
+             });
+             document.body.appendChild(script);
+             script.addEventListener('error', (ev) => console.error('CaptchaWidget script error', ev));
+        };
+
+        if (!existingScript) {
+             loadScript();
         } else if (window.turnstile) {
-            renderWidget();
+             // If script exists and turnstile object is ready, render immediately
+             renderWidget();
         } else {
-            // Script exists but not loaded? Wait for onload or check interval?
-            // Usually script already loaded in head or previous component
-            setTimeout(renderWidget, 500);
+             // Script exists but turnstile object not ready usually means it's still loading
+             // We can attach a load listener to the existing script if possible, or poll
+             existingScript.addEventListener('load', renderWidget);
+             
+             // Fallback: poll for turnstile object availability
+             const checkInterval = setInterval(() => {
+                 if (window.turnstile) {
+                     clearInterval(checkInterval);
+                     renderWidget();
+                 }
+             }, 100);
+             setTimeout(() => clearInterval(checkInterval), 5000); // 5s timeout
         }
-        
-                return () => {
-                    try {
-                        if (window.turnstile && widgetIdRef.current) {
-                            const removeFn = window.turnstile.remove;
-                            if (typeof removeFn === 'function') {
-                                // turnstile.remove accepts string or number; pass original id if numeric
-                                removeFn(widgetIdRef.current);
-                            }
-                        }
-                    } catch {
-                        /* ignore */
+
+        return () => {
+            try {
+                if (window.turnstile && widgetIdRef.current) {
+                    const removeFn = window.turnstile.remove;
+                    // turnstile.remove accepts string or number; pass original id if numeric
+                    if (typeof removeFn === 'function') {
+                        removeFn(widgetIdRef.current);
                     }
-                    widgetIdRef.current = null;
-                };
+                }
+            } catch {
+                /* ignore */
+            }
+            widgetIdRef.current = null;
+        };
     } else {
         // GOOGLE RECAPTCHA LEGACY SUPPORT
         const scriptId = 'google-recaptcha-script';
