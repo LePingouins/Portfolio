@@ -26,32 +26,7 @@ const About: React.FC = () => {
 
   const isFr = language === 'fr';
 
-  const getSkillIconUrl = (skillName: string) => {
-    const name = skillName.toLowerCase().replace(/ /g, '');
-    const iconMap: Record<string, string> = {
-      'java': 'java/java-original.svg',
-      'react': 'react/react-original.svg',
-      'php': 'php/php-original.svg',
-      'c#': 'csharp/csharp-original.svg',
-      'csharp': 'csharp/csharp-original.svg',
-      'python': 'python/python-original.svg',
-      'sql': 'mysql/mysql-original.svg',
-      'mongodb': 'mongodb/mongodb-original.svg',
-      'github': 'github/github-original.svg',
-      'linux': 'linux/linux-original.svg',
-      'intellij': 'intellij/intellij-original.svg',
-      'azure': 'azure/azure-original.svg',
-      'visualstudiocode': 'vscode/vscode-original.svg',
-      'ios': 'apple/apple-original.svg',
-      'android': 'android/android-original.svg',
-      'springboot': 'spring/spring-original.svg',
-      'javascript': 'javascript/javascript-original.svg',
-      'typescript': 'typescript/typescript-original.svg',
-      'postgresql': 'postgresql/postgresql-original.svg',
-    };
-    const path = iconMap[name] || 'devicon/devicon-original.svg';
-    return `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${path}`;
-  };
+  // ...existing code...
 
   return (
     <div className="about-page-wrapper">
