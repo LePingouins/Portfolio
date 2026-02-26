@@ -13,6 +13,7 @@ public class WorkExperience {
     private String company;
     private String period;
     private String location;
+    private String language; // "en" or "fr"
 
     @ElementCollection
     @CollectionTable(name = "work_experience_responsibilities", joinColumns = @JoinColumn(name = "work_experience_id"))
@@ -43,6 +44,9 @@ public class WorkExperience {
     
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }
+
+    public String getLanguage() { return language; }
+    public void setLanguage(String language) { this.language = language; }
     
     public java.util.List<String> getResponsibilities() { return responsibilities; }
     public void setResponsibilities(java.util.List<String> responsibilities) { this.responsibilities = responsibilities; }

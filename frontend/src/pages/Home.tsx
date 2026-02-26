@@ -1,22 +1,21 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { LanguageContext } from '../components/LanguageContext';
 import Timeline from '../components/TimelineSection';
+import { fetchJourney, type Journey } from '../services/api';
 
 import './Home.css';
 
 const Home: React.FC = () => {
   const { language, t } = useContext(LanguageContext);
+  const [journeyItems, setJourneyItems] = useState<Journey[]>([]);
 
   // Content configuration
   const titleText = t.home.title;
   const descText = t.home.description;
 
-  const timelineItems = [
-    { title: t.home.timeline.college.title, date: '2023', description: t.home.timeline.college.desc },
-    { title: t.home.timeline.internship.title, date: '2026', description: t.home.timeline.internship.desc },
-    { title: t.home.timeline.graduate.title, date: '2026', description: t.home.timeline.graduate.desc },
-    { title: t.home.timeline.university.title, date: '2026', description: t.home.timeline.university.desc }
-  ];
+  useEffect(() => {
+    fetchJourney(language).then(setJourneyItems).catch(console.error);
+  }, [language]);
 
   /* Typing Animation Logic */
   const [displayedTitle, setDisplayedTitle] = useState('');
@@ -92,7 +91,7 @@ const Home: React.FC = () => {
 
         {/* TIMELINE SECTION */}
         <section className="timeline-wrapper fade-in-up">
-           <Timeline items={timelineItems} />
+           <Timeline items={journeyItems} />
         </section>
 
 

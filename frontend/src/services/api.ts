@@ -187,6 +187,7 @@ export interface WorkExperience {
     company: string;
     period: string;
     location: string;
+  language?: string;
     responsibilities: string[];
 }
 
@@ -294,8 +295,9 @@ export async function deleteSkill(id: number) {
 }
 
 // Work Experience
-export async function fetchWorkExperiences() {
-  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/work` : `${API_BASE_URL}/api/work`;
+export async function fetchWorkExperiences(language?: string) {
+  const base = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/work` : `${API_BASE_URL}/api/work`;
+  const url = language ? `${base}?language=${encodeURIComponent(language)}` : base;
   const res = await fetch(url);
   if (!res.ok) throw new Error('Failed to fetch work experience');
   return res.json();
@@ -391,6 +393,67 @@ export async function deleteHobby(id: number) {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/hobbies/${id}` : `${API_BASE_URL}/api/hobbies/${id}`;
   const res = await fetch(url, { method: 'DELETE' });
   if (!res.ok) throw new Error('Failed to delete hobby');
+}
+
+// About Me
+export interface AboutMe {
+  id?: number;
+  language: string;
+  text: string;
+  stack: string[];
+  hobbies: string[];
+  goals: string[];
+}
+
+export async function fetchAboutMe(language: string) {
+  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/aboutme/${language}` : `${API_BASE_URL}/api/aboutme/${language}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Failed to fetch about me');
+  return res.json();
+}
+
+export async function saveAboutMe(aboutMe: AboutMe) {
+  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/aboutme` : `${API_BASE_URL}/api/aboutme`;
+  const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(aboutMe) });
+  if (!res.ok) throw new Error('Failed to save about me');
+  return res.json();
+}
+
+// Journey
+export interface Journey {
+  id?: number;
+  language: string;
+  title: string;
+  date: string;
+  description: string;
+  displayOrder: number;
+}
+
+export async function fetchJourney(language: string) {
+  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/journey/${language}` : `${API_BASE_URL}/api/journey/${language}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Failed to fetch journey');
+  return res.json();
+}
+
+export async function addJourney(journey: Journey) {
+  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/journey` : `${API_BASE_URL}/api/journey`;
+  const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(journey) });
+  if (!res.ok) throw new Error('Failed to add journey');
+  return res.json();
+}
+
+export async function updateJourney(id: number, journey: Journey) {
+  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/journey/${id}` : `${API_BASE_URL}/api/journey/${id}`;
+  const res = await fetch(url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(journey) });
+  if (!res.ok) throw new Error('Failed to update journey');
+  return res.json();
+}
+
+export async function deleteJourney(id: number) {
+  const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/journey/${id}` : `${API_BASE_URL}/api/journey/${id}`;
+  const res = await fetch(url, { method: 'DELETE' });
+  if (!res.ok) throw new Error('Failed to delete journey');
 }
 
 // Contact Info

@@ -96,7 +96,8 @@ export default {
       projects: "Projects",
       skills: "Skills",
       work: "Work",
-      hobbies: "Hobbies"
+      aboutme: "About Me",
+      journey: "Journey"
     },
     skills: {
       title: "Manage Skills",
@@ -117,7 +118,9 @@ export default {
       period: "Period",
       location: "Location",
       responsibilities: "Responsibilities",
-      addResponsibilityPlaceholder: "Add a responsibility"
+      addResponsibilityPlaceholder: "Add a responsibility",
+      language: "Language",
+      filterBy: "Filter by language"
     },
     hobbies: {
       title: "Manage Hobbies",

@@ -1,28 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './Work.css';
 import { initialWorkExperiences } from '../data/workData';
 import { type WorkExperience, fetchWorkExperiences } from '../services/api';
+import { LanguageContext } from '../components/LanguageContext';
 
 const Work: React.FC = () => {
     // const { t } = useContext(LanguageContext);
     const [experiences, setExperiences] = useState<WorkExperience[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const { language } = useContext(LanguageContext);
+
     useEffect(() => {
+        let mounted = true;
         const loadExperiences = async () => {
             try {
-                const data = await fetchWorkExperiences();
-                setExperiences(data);
+                const data = await fetchWorkExperiences(language);
+                if (mounted) setExperiences(data);
             } catch (error) {
                 console.error('Failed to load work experiences', error);
-                // Fallback to local data if API fails (optional, maybe better to show error or empty)
-                setExperiences(initialWorkExperiences);
+                if (mounted) setExperiences(initialWorkExperiences);
             } finally {
-                setLoading(false);
+                if (mounted) setLoading(false);
             }
         };
-        loadExperiences();
-    }, []);
+        void loadExperiences();
+        return () => { mounted = false; };
+    }, [language]);
 
     if (loading) {
         return <div className="work-loading" style={{textAlign: 'center', padding: '50px', color: '#fff'}}>Loading...</div>;

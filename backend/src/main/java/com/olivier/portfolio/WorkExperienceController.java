@@ -11,8 +11,9 @@ public class WorkExperienceController {
     private WorkExperienceRepository workRepo;
 
     @GetMapping
-    public List<WorkExperience> getAll() {
-        return workRepo.findAll();
+    public List<WorkExperience> getAll(@RequestParam(required = false) String language) {
+        if (language == null || language.isBlank()) return workRepo.findAll();
+        return workRepo.findByLanguage(language);
     }
 
     @PostMapping

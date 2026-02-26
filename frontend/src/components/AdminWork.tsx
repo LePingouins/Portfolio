@@ -10,15 +10,18 @@ const AdminWork: React.FC = () => {
         company: '',
         period: '',
         location: '',
-        responsibilities: []
+        responsibilities: [],
+        language: 'en'
     });
     const [responsibilityInput, setResponsibilityInput] = useState('');
+
+    const [filterLang, setFilterLang] = useState<'en'|'fr'>('en');
 
     useEffect(() => {
         let isMounted = true;
         const loadInitialData = async () => {
             try {
-                const data = await fetchWorkExperiences();
+                const data = await fetchWorkExperiences(filterLang);
                 if (isMounted) {
                     setExperiences(data);
                 }
@@ -28,7 +31,7 @@ const AdminWork: React.FC = () => {
         };
         void loadInitialData();
         return () => { isMounted = false; };
-    }, []);
+    }, [filterLang]);
 
     const handleAddResponsibility = () => {
         if (responsibilityInput.trim()) {
@@ -49,7 +52,7 @@ const AdminWork: React.FC = () => {
 
     const fetchAndSetExperiences = async () => {
         try {
-            const data = await fetchWorkExperiences();
+            const data = await fetchWorkExperiences(form.language || filterLang);
             setExperiences(data);
         } catch (error) {
             console.error('Failed to load work experiences', error);
@@ -68,7 +71,8 @@ const AdminWork: React.FC = () => {
                 company: '',
                 period: '',
                 location: '',
-                responsibilities: []
+                responsibilities: [],
+                language: form.language || 'en'
             });
         } catch (error) {
             console.error('Failed to add work experience', error);
@@ -95,6 +99,13 @@ const AdminWork: React.FC = () => {
             <h2 style={{ textAlign: 'center' }}>{t.adminPages.work.title}</h2>
             
             <form onSubmit={handleSubmit} style={{ marginBottom: '2rem', background: '#333', padding: '1.5rem', borderRadius: '8px' }}>
+                <div style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'block', marginBottom: '0.5rem' }}>{t.adminPages.work.language || 'Language'}</label>
+                    <select value={form.language} onChange={e => setForm({ ...form, language: e.target.value })} style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #555', background: '#222', color: '#fff' }}>
+                        <option value="en">English</option>
+                        <option value="fr">Français</option>
+                    </select>
+                </div>
                 <div style={{ marginBottom: '1rem' }}>
                         <label style={{ display: 'block', marginBottom: '0.5rem' }}>{t.adminPages.work.title}</label>
                     <input
@@ -159,6 +170,14 @@ const AdminWork: React.FC = () => {
 
                 <button type="submit" style={{ width: '100%', padding: '0.75rem', background: '#f44336', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>{t.adminPages.work.addButton}</button>
             </form>
+
+            <div style={{ marginBottom: '1rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <label style={{ color: '#fff' }}>{t.adminPages.work.filterBy || 'Filter by language'}</label>
+                <select value={filterLang} onChange={e => setFilterLang(e.target.value as 'en'|'fr')} style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #555', background: '#222', color: '#fff' }}>
+                    <option value="en">English</option>
+                    <option value="fr">Français</option>
+                </select>
+            </div>
 
             <div className="experiences-list">
                 {experiences.map(exp => (

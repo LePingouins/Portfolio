@@ -15,6 +15,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpMethod;
+
 @Configuration
 public class SecurityConfig {
 
@@ -27,7 +29,8 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/hello", "/api/auth/**", "/api/skills", "/api/projects", "/api/feedback", "/api/work", "/api/education", "/api/hobbies", "/api/resume", "/api/contactinfo", "/api/messages").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/hello", "/api/skills", "/api/projects", "/api/feedback", "/api/work", "/api/education", "/api/hobbies", "/api/resume", "/api/contactinfo", "/api/messages", "/api/aboutme/**", "/api/journey/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/admin/**").authenticated()
                 .anyRequest().permitAll()
             )

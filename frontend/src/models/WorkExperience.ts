@@ -4,5 +4,6 @@ export interface WorkExperience {
     company: string;
     period: string;
     location: string;
+    language?: string;
     responsibilities: string[];
 }

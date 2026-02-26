@@ -96,7 +96,8 @@ export default {
       projects: "Projets",
       skills: "Compétences",
       work: "Expérience",
-      hobbies: "Passe temps"
+      aboutme: "À propos de moi",
+      journey: "Parcours"
     },
     skills: {
       title: "Gérer les Compétences",
@@ -118,6 +119,8 @@ export default {
       location: "Lieu",
       responsibilities: "Responsabilités",
       addResponsibilityPlaceholder: "Ajouter une responsabilité"
+      ,language: "Langue",
+      filterBy: "Filtrer par langue"
     },
     hobbies: {
       title: "Gérer les Hobbies",
