@@ -12,16 +12,28 @@ public class DataSeeder {
     @Bean
     public CommandLineRunner seedSkills(SkillRepository skillRepo) {
         return args -> {
-            List<String> skills = Arrays.asList(
-                "Java", "React", "PHP", "C#", "Python", "SQL", 
-                "MongoDB", "GitHub", "Linux", "IntelliJ", "Azure", 
-                "Visual Studio Code", "iOS", "Android"
+            // Seed with category and proficiency
+            List<Skill> skills = Arrays.asList(
+                new Skill("Java", "Languages", 90),
+                new Skill("React", "Frameworks", 85),
+                new Skill("PHP", "Languages", 70),
+                new Skill("C#", "Languages", 75),
+                new Skill("Python", "Languages", 80),
+                new Skill("SQL", "Tools", 80),
+                new Skill("MongoDB", "Tools", 65),
+                new Skill("GitHub", "Tools", 95),
+                new Skill("Linux", "Tools", 80),
+                new Skill("IntelliJ", "Tools", 85),
+                new Skill("Azure", "Tools", 60),
+                new Skill("Visual Studio Code", "Tools", 90),
+                new Skill("iOS", "Frameworks", 60),
+                new Skill("Android", "Frameworks", 65)
             );
 
-            for (String skillName : skills) {
-                if (skillRepo.findByName(skillName).isEmpty()) {
-                    skillRepo.save(new Skill(skillName));
-                    System.out.println("Seeded skill: " + skillName);
+            for (Skill skill : skills) {
+                if (skillRepo.findByName(skill.getName()).isEmpty()) {
+                    skillRepo.save(skill);
+                    System.out.println("Seeded skill: " + skill.getName());
                 }
             }
         };

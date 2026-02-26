@@ -6,18 +6,16 @@ import { useContext } from 'react';
 import { LanguageContext } from '../components/LanguageContext';
 
 const About: React.FC = () => {
-  const [skills, setSkills] = useState<string[]>([]);
+  type Skill = { name: string; category: string; proficiency: number; description?: string };
+  const [skills, setSkills] = useState<Skill[]>([]);
   const [aboutMeData, setAboutMeData] = useState<AboutMe | null>(null);
   const { language, t } = useContext(LanguageContext);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     fetchSkills().then((data) => {
-      if (Array.isArray(data) && data.length > 0 && typeof data[0] === 'object' && data[0] !== null && 'name' in data[0]) {
-        setSkills(data.map((s: { name: string }) => s.name));
-      } else {
-        setSkills(data);
-      }
+      // Use backend-provided category and proficiency
+      setSkills(Array.isArray(data) ? data : []);
     });
 
     fetchAboutMe(language).then(setAboutMeData).catch(console.error);
@@ -104,18 +102,31 @@ const About: React.FC = () => {
         {/* SKILLS SECTION */}
         <section className={`skills-section reveal delay-200`}>
           <h2 className="section-title">{t.about.skillsTitle}</h2>
-          <div className="skills-grid">
-            {skills.length === 0 ? (
-               <p style={{ opacity: 0.7 }}>{t.about.loadingSkills}</p>
-            ) : (
-                skills.map((skill, idx) => (
-                  <div key={idx} className="skill-card" style={{ animationDelay: `${idx * 0.05}s` }}>
-                    <img src={getSkillIconUrl(skill)} alt={skill} className="skill-icon" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-                    <span className="skill-name">{skill}</span>
+          {skills.length === 0 ? (
+            <p style={{ opacity: 0.7 }}>{t.about.loadingSkills}</p>
+          ) : (
+            <>
+              {['Languages', 'Frameworks', 'Tools'].map((cat) => (
+                <div key={cat} className="skills-category">
+                  <h3 className="skills-category-title">{cat}</h3>
+                  <div className="skills-grid">
+                    {skills.filter(s => s.category === cat).map((skill, idx) => (
+                      <div key={skill.name} className="skill-card" style={{ animationDelay: `${idx * 0.05}s` }} title={skill.description}>
+                        <img src={getSkillIconUrl(skill.name)} alt={skill.name} className="skill-icon" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                        <span className="skill-name">{skill.name}</span>
+                        <div className="skill-bar-wrapper">
+                          <div className="skill-bar-bg">
+                            <div className="skill-bar-fill" style={{ width: `${skill.proficiency}%` }}></div>
+                          </div>
+                          <span className="skill-bar-label">{skill.proficiency}%</span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))
-            )}
-          </div>
+                </div>
+              ))}
+            </>
+          )}
         </section>
 
         {/* RESUME SECTION */}

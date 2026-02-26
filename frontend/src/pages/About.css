@@ -204,40 +204,80 @@
 
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 24px;
   justify-items: center;
 }
 
 .skill-card {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  padding: 20px;
-  border-radius: 16px;
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid var(--color-primary);
+  padding: 22px 16px 18px 16px;
+  border-radius: 18px;
   color: var(--color-text);
   font-weight: 500;
   transition: all 0.3s ease;
-  cursor: default;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   width: 100%;
   box-sizing: border-box;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
 }
 
 .skill-card:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: var(--color-primary);
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  background: rgba(255,255,255,0.13);
+  border-color: var(--color-secondary);
+  transform: translateY(-7px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.13);
 }
 
 .skill-icon {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   object-fit: contain;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.18));
+}
+.skills-category {
+  margin-bottom: 36px;
+}
+.skills-category-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 18px;
+  letter-spacing: 0.5px;
+  text-align: left;
+}
+.skill-bar-wrapper {
+  width: 100%;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.skill-bar-bg {
+  width: 80%;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+.skill-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  border-radius: 6px;
+  transition: width 0.6s cubic-bezier(.4,0,.2,1);
+}
+.skill-bar-label {
+  font-size: 0.95rem;
+  color: var(--color-secondary);
+  font-weight: 600;
+  min-width: 32px;
+  text-align: right;
 }
 
 .skill-name {
