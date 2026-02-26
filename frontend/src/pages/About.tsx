@@ -112,7 +112,7 @@ const About: React.FC = () => {
                   <div className="skills-grid">
                     {skills.filter(s => s.category === cat).map((skill, idx) => (
                       <div key={skill.name} className="skill-card" style={{ animationDelay: `${idx * 0.05}s` }} title={skill.description}>
-                        <img src={getSkillIconUrl(skill.name)} alt={skill.name} className="skill-icon" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                        // Removed skill icon image
                         <span className="skill-name">{skill.name}</span>
                         <div className="skill-bar-wrapper">
                           <div className="skill-bar-bg">
