@@ -8,7 +8,7 @@ interface AdminSubNavProps {
   visible?: boolean;
 }
 
-const sectionsKeys = ['feedbacks','archive','contacts','projects','skills','work','aboutme','journey'] as const;
+const sectionsKeys = ['feedbacks','archive','contacts','projects','skills','work','aboutme','journey','education','resume','hobbies'] as const;
 type SectionKey = typeof sectionsKeys[number];
 
 const AdminSubNav: React.FC<AdminSubNavProps> = ({ current, onNavigate, visible }) => {

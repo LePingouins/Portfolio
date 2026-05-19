@@ -2,6 +2,7 @@ export interface Project {
   id: string;
   name: string;
   description: string;
+  descriptionFr?: string;
   projectLink: string;
   websiteLink: string;
   techStack?: string[];

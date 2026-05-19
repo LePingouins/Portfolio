@@ -67,7 +67,8 @@ export default {
       title: "Tous les Projets",
       form: {
         projectName: "Nom du Projet",
-        description: "Description",
+        description: "Description (Anglais)",
+        descriptionFr: "Description (Français)",
         projectLink: "Lien du Projet",
         websiteLink: "Lien du Site (optionnel)",
         imageLink: "Lien de l'Image (optionnel)",
@@ -97,7 +98,10 @@ export default {
       skills: "Compétences",
       work: "Expérience",
       aboutme: "À propos de moi",
-      journey: "Parcours"
+      journey: "Parcours",
+      education: "Éducation",
+      resume: "CV",
+      hobbies: "Hobbies"
     },
     skills: {
       title: "Gérer les Compétences",
@@ -132,6 +136,42 @@ export default {
       descriptionPlaceholder: "Une brève description..."
       ,nameLabel: "Nom du Hobby",
       descriptionLabel: "Description (Optionnelle)"
+    },
+    education: {
+      title: "Gérer la Formation",
+      addButton: "Ajouter une Entrée",
+      saveButton: "Enregistrer",
+      cancelButton: "Annuler",
+      editButton: "Modifier",
+      deleteButton: "Supprimer",
+      deleteConfirm: "Supprimer cette entrée de formation ?",
+      deleteFail: "Échec de la suppression",
+      saveFail: "Échec de l'enregistrement",
+      noEntries: "Aucune entrée de formation.",
+      schoolLabel: "École / Université",
+      schoolPlaceholder: "Collège Champlain",
+      degreeLabel: "Diplôme",
+      degreePlaceholder: "DEC, Licence, etc.",
+      fieldLabel: "Domaine d'études (optionnel)",
+      fieldPlaceholder: "Informatique",
+      startDateLabel: "Année de début",
+      endDateLabel: "Année de fin",
+      present: "Présent"
+    },
+    resume: {
+      title: "Gérer le CV",
+      description: "Ajoutez un lien vers votre CV (PDF hébergé sur Google Drive, Dropbox, etc.).",
+      urlLabel: "URL du CV",
+      urlPlaceholder: "https://drive.google.com/...",
+      addButton: "Ajouter le CV",
+      saveButton: "Enregistrer",
+      cancelButton: "Annuler",
+      editButton: "Modifier",
+      deleteButton: "Supprimer",
+      deleteConfirm: "Supprimer ce lien vers le CV ?",
+      deleteFail: "Échec de la suppression",
+      saveFail: "Échec de l'enregistrement",
+      noEntries: "Aucun lien CV ajouté."
     }
   },
   adminConfirm: {

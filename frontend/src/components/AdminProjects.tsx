@@ -9,6 +9,7 @@ import type { Project } from '../services/api';
 export type ProjectForm = {
   name: string;
   description: string;
+  descriptionFr: string;
   projectLink: string;
   websiteLink: string;
   imageUrl: string;
@@ -22,6 +23,7 @@ interface AdminProjectsProps {
 const initialState: ProjectForm = {
   name: '',
   description: '',
+  descriptionFr: '',
   projectLink: '',
   websiteLink: '',
   imageUrl: '',
@@ -91,6 +93,7 @@ const AdminProjects: React.FC<AdminProjectsProps> = ({ onAddProject }) => {
     setForm({
       name: project.name,
       description: project.description,
+      descriptionFr: project.descriptionFr || '',
       projectLink: project.projectLink,
       websiteLink: project.websiteLink,
       imageUrl: project.imageUrl,
@@ -127,6 +130,9 @@ const AdminProjects: React.FC<AdminProjectsProps> = ({ onAddProject }) => {
         </label>
         <label style={{ color: '#fff', fontWeight: 500 }}>{t.admin.projects.form.description}
           <textarea name="description" value={form.description} onChange={handleChange} placeholder={t.admin.projects.form.description} required style={{ width: '100%', padding: '0.5rem', borderRadius: 6, border: '1px solid #444', marginTop: 4, background: '#181818', color: '#fff', minHeight: 80 }} />
+        </label>
+        <label style={{ color: '#fff', fontWeight: 500 }}>{t.admin.projects.form.descriptionFr}
+          <textarea name="descriptionFr" value={form.descriptionFr} onChange={handleChange} placeholder={t.admin.projects.form.descriptionFr} style={{ width: '100%', padding: '0.5rem', borderRadius: 6, border: '1px solid #444', marginTop: 4, background: '#181818', color: '#fff', minHeight: 80 }} />
         </label>
         <label style={{ color: '#fff', fontWeight: 500 }}>{t.admin.projects.form.projectLink}
           <input name="projectLink" value={form.projectLink} onChange={handleChange} placeholder={t.admin.projects.form.projectLink} required style={{ width: '100%', padding: '0.5rem', borderRadius: 6, border: '1px solid #444', marginTop: 4, background: '#181818', color: '#fff' }} />

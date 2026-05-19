@@ -171,6 +171,7 @@ export interface Project {
   id?: number;
   name: string;
   description: string;
+  descriptionFr?: string;
   projectLink: string;
   websiteLink: string;
   imageUrl: string;
@@ -199,6 +200,9 @@ export interface Education {
   id?: number;
   school: string;
   degree: string;
+  field?: string;
+  startDate?: string;
+  endDate?: string;
 }
 export interface Resume {
   id?: number;

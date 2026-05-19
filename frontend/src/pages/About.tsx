@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './About.css';
-import { fetchSkills, fetchAboutMe, type AboutMe } from '../services/api';
+import { fetchSkills, fetchAboutMe, fetchEducation, fetchHobbies, type AboutMe, type Education, type Hobby } from '../services/api';
 import ResumeDownload from '../components/ResumeDownload';
 import { useContext } from 'react';
 import { LanguageContext } from '../components/LanguageContext';
@@ -9,16 +9,19 @@ const About: React.FC = () => {
   type Skill = { name: string; category: string; proficiency: number; description?: string };
   const [skills, setSkills] = useState<Skill[]>([]);
   const [aboutMeData, setAboutMeData] = useState<AboutMe | null>(null);
+  const [education, setEducation] = useState<Education[]>([]);
+  const [hobbies, setHobbies] = useState<Hobby[]>([]);
   const { language, t } = useContext(LanguageContext);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     fetchSkills().then((data) => {
-      // Use backend-provided category and proficiency
       setSkills(Array.isArray(data) ? data : []);
     });
 
     fetchAboutMe(language).then(setAboutMeData).catch(console.error);
+    fetchEducation().then(setEducation).catch(() => setEducation([]));
+    fetchHobbies().then(setHobbies).catch(() => setHobbies([]));
 
     const timer = setTimeout(() => setLoaded(true), 100);
     return () => clearTimeout(timer);
@@ -103,6 +106,42 @@ const About: React.FC = () => {
             </>
           )}
         </section>
+
+        {/* EDUCATION SECTION */}
+        {education.length > 0 && (
+          <section className={`skills-section reveal delay-250`}>
+            <h2 className="section-title">{isFr ? 'Formation' : 'Education'}</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {education.map((edu) => (
+                <div key={edu.id} style={{ background: 'var(--color-card, #1e1e2e)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '10px', padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--color-text, #fff)' }}>{edu.school}</div>
+                    <div style={{ color: '#ef4444', fontSize: '0.9rem', marginTop: '0.25rem' }}>{edu.degree}{edu.field ? ` — ${edu.field}` : ''}</div>
+                  </div>
+                  {(edu.startDate || edu.endDate) && (
+                    <div style={{ color: 'var(--color-muted, #888)', fontSize: '0.85rem', flexShrink: 0, textAlign: 'right' }}>
+                      {edu.startDate ?? '?'} – {edu.endDate ?? (isFr ? 'Présent' : 'Present')}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* HOBBIES SECTION */}
+        {hobbies.length > 0 && (
+          <section className={`skills-section reveal delay-275`}>
+            <h2 className="section-title">{isFr ? 'Hobbies & Intérêts' : 'Hobbies & Interests'}</h2>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+              {hobbies.map((hobby) => (
+                <div key={hobby.id} title={hobby.description ?? ''} style={{ background: 'var(--color-card, #1e1e2e)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: '20px', padding: '0.45rem 1.1rem', fontSize: '0.9rem', color: 'var(--color-text, #fff)', cursor: hobby.description ? 'help' : 'default' }}>
+                  {hobby.name}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* RESUME SECTION */}
         <section className={`resume-section reveal delay-300`}>

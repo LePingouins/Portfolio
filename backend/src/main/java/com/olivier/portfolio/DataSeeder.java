@@ -47,6 +47,7 @@ public class DataSeeder {
                 Project p = new Project();
                 p.setName("CourtierPro");
                 p.setDescription("CourtierPro is a bilingual (English/French) broker–client management and communication platform designed for Nabizada Courtier Inc., a Quebec-based real estate brokerage.");
+                p.setDescriptionFr("CourtierPro est une plateforme bilingue (anglais/français) de gestion et de communication entre courtiers et clients, conçue pour Nabizada Courtier Inc., une agence immobilière québécoise.");
                 p.setProjectLink("https://github.com/CourtierPro/CourtierPro");
                 p.setWebsiteLink("https://www.courtier-pro.ca/");
                 p.setImageUrl("/CourtierPro1.png");
@@ -64,8 +65,9 @@ public class DataSeeder {
                 Project p = new Project();
                 p.setName("Entretien Batiment");
                 p.setDescription("A Todo Application, which includes work orders, kilometers, archives.");
+                p.setDescriptionFr("Une application de gestion des tâches incluant les bons de travail, les kilomètres et les archives.");
                 p.setProjectLink("https://github.com/LePingouins/entretien-batiment");
-                p.setWebsiteLink(null);
+                p.setWebsiteLink("https://www.entretien-batiment.com");
                 p.setImageUrl("/EntretientBatiment1.png");
                 p.setTechStack(Arrays.asList("React", "Spring Boot", "PostgreSQL"));
                 p.setArchived(false);
@@ -81,6 +83,7 @@ public class DataSeeder {
                 Project p = new Project();
                 p.setName("Champlain PetClinic");
                 p.setDescription("This repository is being used by Champlain College - St. Lambert Computer Science students who are extending the Spring Boot Microservices Petclinic. This is a multi-section, multi-year project that teaches students about Scrum, version control, issue management, TDD, CI, and so much more.");
+                p.setDescriptionFr("Ce dépôt est utilisé par les étudiants en informatique du Collège Champlain - Saint-Lambert qui étendent la clinique vétérinaire Spring Boot en microservices. Il s'agit d'un projet pluriannuel qui enseigne Scrum, la gestion de versions, le TDD, l'intégration continue, et bien plus encore.");
                 p.setProjectLink("https://github.com/cgerard321/champlain_petclinic");
                 p.setWebsiteLink("https://petclinic.benmusicgeek.synology.me/home");
                 p.setImageUrl("/ChamplainPetClinic.png"); 
@@ -91,6 +94,42 @@ public class DataSeeder {
                 }
                 System.out.println("Seeded project: Champlain PetClinic");
                 projectRepo.save(p);
+            }
+
+            // Project 4: Le Pré Paré
+            if (projectRepo.findByName("Le Pré Paré").isEmpty()) {
+                Project p = new Project();
+                p.setName("Le Pré Paré");
+                p.setDescription("Natural products, free of chemical fertilizers, pesticides, and compromise.");
+                p.setDescriptionFr("Produits naturels sans engrais chimiques, sans pesticides et sans compromis.");
+                p.setProjectLink("https://github.com/LePingouins/Le-Pr-Par-");
+                p.setWebsiteLink("https://www.leprepare.ca");
+                p.setImageUrl("/LePréParé.png");
+                p.setTechStack(Arrays.asList());
+                p.setArchived(false);
+                if (p.getImageUrl() == null || p.getImageUrl().trim().isEmpty()) {
+                    p.setImageUrl("/project-placeholder.png");
+                }
+                projectRepo.save(p);
+                System.out.println("Seeded project: Le Pré Paré");
+            }
+
+            // Project 5: Bushido
+            if (projectRepo.findByName("Bushido").isEmpty()) {
+                Project p = new Project();
+                p.setName("Bushido");
+                p.setDescription("A management platform built specifically for martial arts schools and dojo owners.");
+                p.setDescriptionFr("Une plateforme de gestion conçue spécialement pour les écoles d'arts martiaux et les propriétaires de dojo.");
+                p.setProjectLink(null);
+                p.setWebsiteLink("https://bushidodojosoftware.com/en");
+                p.setImageUrl("/Bushido.png");
+                p.setTechStack(Arrays.asList());
+                p.setArchived(false);
+                if (p.getImageUrl() == null || p.getImageUrl().trim().isEmpty()) {
+                    p.setImageUrl("/project-placeholder.png");
+                }
+                projectRepo.save(p);
+                System.out.println("Seeded project: Bushido");
             }
         };
     }

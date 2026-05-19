@@ -1,16 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { useContext } from 'react';
 import { LanguageContext } from './LanguageContext';
+import { fetchResumes } from '../services/api';
 
 const ResumeDownload: React.FC = () => {
-  // forcing update
   const { t } = useContext(LanguageContext);
+  const [resumeUrl, setResumeUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchResumes()
+      .then(data => { if (data.length > 0) setResumeUrl(data[0].url); })
+      .catch(() => setResumeUrl(null));
+  }, []);
+
+  const href = resumeUrl ?? '/resume.pdf';
+  const isExternal = !!resumeUrl;
+
   return (
     <div style={{ textAlign: 'center', margin: '2em 0' }}>
       <a
-        href="/resume.pdf"
-        download
+        href={href}
+        target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'noopener noreferrer' : undefined}
+        download={!isExternal ? true : undefined}
         style={{
           display: 'inline-block',
           background: '#ef4444',

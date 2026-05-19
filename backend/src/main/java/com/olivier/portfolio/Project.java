@@ -13,7 +13,10 @@ public class Project {
     
     @Column(columnDefinition = "TEXT")
     private String description;
-    
+
+    @Column(columnDefinition = "TEXT")
+    private String descriptionFr;
+
     private String projectLink;
     private String websiteLink;
     
@@ -50,6 +53,9 @@ public class Project {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    public String getDescriptionFr() { return descriptionFr; }
+    public void setDescriptionFr(String descriptionFr) { this.descriptionFr = descriptionFr; }
 
     public String getProjectLink() { return projectLink; }
     public void setProjectLink(String projectLink) { this.projectLink = projectLink; }

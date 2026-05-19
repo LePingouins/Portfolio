@@ -67,7 +67,8 @@ export default {
       title: "All Projects",
       form: {
         projectName: "Project Name",
-        description: "Description",
+        description: "Description (English)",
+        descriptionFr: "Description (French)",
         projectLink: "Project Link",
         websiteLink: "Website Link (optional)",
         imageLink: "Image Link (optional)",
@@ -97,7 +98,10 @@ export default {
       skills: "Skills",
       work: "Work",
       aboutme: "About Me",
-      journey: "Journey"
+      journey: "Journey",
+      education: "Education",
+      resume: "Resume",
+      hobbies: "Hobbies"
     },
     skills: {
       title: "Manage Skills",
@@ -132,6 +136,42 @@ export default {
       descriptionPlaceholder: "A brief description...",
       nameLabel: "Hobby Name",
       descriptionLabel: "Description (Optional)"
+    },
+    education: {
+      title: "Manage Education",
+      addButton: "Add Entry",
+      saveButton: "Save Changes",
+      cancelButton: "Cancel",
+      editButton: "Edit",
+      deleteButton: "Delete",
+      deleteConfirm: "Delete this education entry?",
+      deleteFail: "Failed to delete education entry",
+      saveFail: "Failed to save education entry",
+      noEntries: "No education entries yet.",
+      schoolLabel: "School / University",
+      schoolPlaceholder: "Champlain College",
+      degreeLabel: "Degree / Diploma",
+      degreePlaceholder: "DEC, Bachelor's, etc.",
+      fieldLabel: "Field of Study (optional)",
+      fieldPlaceholder: "Computer Science",
+      startDateLabel: "Start Year",
+      endDateLabel: "End Year",
+      present: "Present"
+    },
+    resume: {
+      title: "Manage Resume",
+      description: "Add a URL to your resume (PDF hosted on Google Drive, Dropbox, etc.).",
+      urlLabel: "Resume URL",
+      urlPlaceholder: "https://drive.google.com/...",
+      addButton: "Add Resume",
+      saveButton: "Save Changes",
+      cancelButton: "Cancel",
+      editButton: "Edit",
+      deleteButton: "Delete",
+      deleteConfirm: "Remove this resume link?",
+      deleteFail: "Failed to delete resume",
+      saveFail: "Failed to save resume",
+      noEntries: "No resume link added yet."
     }
   },
   adminConfirm: {

@@ -10,6 +10,7 @@ interface Project {
   id?: number;
   name: string;
   description: string;
+  descriptionFr?: string;
   projectLink: string;
   websiteLink: string;
   imageUrl: string;
@@ -133,7 +134,7 @@ const Projects: React.FC = () => {
 
                 <div className="project-content">
                   <h3>{project.name}</h3>
-                  <p>{project.description}</p>
+                  <p>{language === 'fr' && project.descriptionFr ? project.descriptionFr : project.description}</p>
                   
                   <div className="tech-stack">
                     {project.techStack?.map((tech, i) => (

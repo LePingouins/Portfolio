@@ -8,6 +8,9 @@ import AdminProjects from '../components/AdminProjects';
 import AdminWork from '../components/AdminWork';
 import AdminAboutMe from '../components/AdminAboutMe';
 import AdminJourney from '../components/AdminJourney';
+import AdminHobbies from '../components/AdminHobbies';
+import AdminEducation from '../components/AdminEducation';
+import AdminResume from '../components/AdminResume';
 import type { ProjectForm } from '../components/AdminProjects';
 import { addProject } from '../services/api';
 import { fetchAllFeedbacks, acceptFeedback, rejectFeedback, deleteFeedback, archiveFeedback } from '../services/api';
@@ -110,6 +113,15 @@ const AdminDashboard: React.FC = () => {
             <Suspense fallback={<div>Loading...</div>}>
               <LazyAdminSkills />
             </Suspense>
+          )}
+          {adminSection === 'education' && (
+            <AdminEducation />
+          )}
+          {adminSection === 'resume' && (
+            <AdminResume />
+          )}
+          {adminSection === 'hobbies' && (
+            <AdminHobbies />
           )}
         </div>
       </div>
