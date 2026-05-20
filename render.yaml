@@ -6,13 +6,14 @@ services:
     dockerContext: ./backend
     dockerfilePath: ./backend/Dockerfile
     plan: free
+    region: oregon
     branch: main
     healthCheckPath: /api/hello
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: SPRING_DATASOURCE_URL
-        value: "jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require"
+        value: "jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}"
       - key: DB_HOST
         fromDatabase:
           name: portfolio-db
@@ -46,6 +47,7 @@ services:
     dockerContext: .
     dockerfilePath: ./Dockerfile.frontend
     plan: free
+    region: oregon
     branch: main
     envVars:
       - key: API_HOST
@@ -62,3 +64,4 @@ databases:
     databaseName: portfolio
     user: portfolio_user
     plan: free
+    region: oregon
