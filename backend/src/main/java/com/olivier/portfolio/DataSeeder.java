@@ -105,7 +105,7 @@ public class DataSeeder {
                 p.setProjectLink("https://github.com/LePingouins/Le-Pr-Par-");
                 p.setWebsiteLink("https://www.leprepare.ca");
                 p.setImageUrl("/LePréParé.png");
-                p.setTechStack(Arrays.asList());
+                p.setTechStack(Arrays.asList("Next.js", "React", "TypeScript"));
                 p.setArchived(false);
                 if (p.getImageUrl() == null || p.getImageUrl().trim().isEmpty()) {
                     p.setImageUrl("/project-placeholder.png");
@@ -123,7 +123,7 @@ public class DataSeeder {
                 p.setProjectLink(null);
                 p.setWebsiteLink("https://bushidodojosoftware.com/en");
                 p.setImageUrl("/Bushido.png");
-                p.setTechStack(Arrays.asList());
+                p.setTechStack(Arrays.asList("Ruby on Rails", "PostgreSQL"));
                 p.setArchived(false);
                 if (p.getImageUrl() == null || p.getImageUrl().trim().isEmpty()) {
                     p.setImageUrl("/project-placeholder.png");
