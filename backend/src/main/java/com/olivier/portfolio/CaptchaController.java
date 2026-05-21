@@ -1,5 +1,6 @@
 package com.olivier.portfolio;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +17,14 @@ import java.util.Map;
 @RequestMapping("/api")
 public class CaptchaController {
 
-    private final StringRedisTemplate redis;
+    @Autowired(required = false)
+    private StringRedisTemplate redis;
 
     @Value("${CLOUDFLARE_TURNSTILE_SECRET:}")
     private String turnstileSecret;
 
     @Value("${RECAPTCHA_SECRET:}")
     private String recaptchaSecret;
-
-    public CaptchaController(StringRedisTemplate redis) { this.redis = redis; }
 
     @PostMapping("/verify-captcha")
     public ResponseEntity<?> verify(@RequestBody Map<String, String> body) {

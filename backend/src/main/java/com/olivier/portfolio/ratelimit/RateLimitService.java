@@ -1,5 +1,6 @@
 package com.olivier.portfolio.ratelimit;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -17,8 +18,9 @@ import java.util.List;
 @Service
 public class RateLimitService {
 
-    private final StringRedisTemplate redis;
-    private final String tokenScriptText;
+    @Autowired(required = false)
+    private StringRedisTemplate redis;
+    private String tokenScriptText;
 
     public enum Action { ALLOW, BLOCK_AND_COUNT, REQUIRE_CAPTCHA, TEMP_BAN }
 
@@ -31,10 +33,13 @@ public class RateLimitService {
         }
     }
 
-    public RateLimitService(StringRedisTemplate redis) throws Exception {
-        this.redis = redis;
-        byte[] bytes = new ClassPathResource("token_bucket.lua").getInputStream().readAllBytes();
-        this.tokenScriptText = new String(bytes, StandardCharsets.UTF_8);
+    public RateLimitService() {
+        try {
+            byte[] bytes = new ClassPathResource("token_bucket.lua").getInputStream().readAllBytes();
+            this.tokenScriptText = new String(bytes, StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            this.tokenScriptText = "";
+        }
     }
 
     private long nowMs() { return Instant.now().toEpochMilli(); }
