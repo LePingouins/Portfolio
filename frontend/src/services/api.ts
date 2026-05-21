@@ -5,6 +5,36 @@ import { getDeviceFingerprint, ensureSessionId } from '../utils/fingerprint';
 const rawApi = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:8080');
 export const API_BASE_URL = String(rawApi).replace(/\/$/, '');
 
+/**
+ * Fetch with automatic retry for 429 / 503 (Render cold-start wake-up).
+ * Retries up to `maxRetries` times with exponential backoff starting at `baseDelayMs`.
+ */
+async function fetchWithRetry(
+  url: string,
+  options?: RequestInit,
+  maxRetries = 6,
+  baseDelayMs = 5000
+): Promise<Response> {
+  let lastError: Error | null = null;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    if (attempt > 0) {
+      const delay = baseDelayMs * Math.pow(1.5, attempt - 1);
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+    try {
+      const res = await fetch(url, options);
+      if ((res.status === 429 || res.status === 503) && attempt < maxRetries) {
+        continue;
+      }
+      return res;
+    } catch (err) {
+      lastError = err as Error;
+      if (attempt === maxRetries) throw lastError;
+    }
+  }
+  throw lastError ?? new Error('Max retries exceeded');
+}
+
 // Gemini skill suggestions (proxy)
 export async function fetchGeminiSkillSuggestions(query: string, model: 'flash' | 'pro' = 'flash') {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/gemini/suggest-skills` : `${API_BASE_URL}/api/gemini/suggest-skills`;
@@ -42,7 +72,7 @@ export async function fetchAllFeedbacks() {
 // Fetch accepted feedbacks (public)
 export async function fetchAcceptedFeedbacks() {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/feedback/accepted` : `${API_BASE_URL}/api/feedback/accepted`;
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url);
   if (!res.ok) throw new Error('Failed to fetch accepted feedbacks');
   return res.json();
 }
@@ -238,7 +268,7 @@ export interface TestimonialPayload {
 // Projects
 export async function fetchProjects() {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/projects` : `${API_BASE_URL}/api/projects`;
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url);
   if (!res.ok) throw new Error('Failed to fetch projects');
   return res.json();
 }
@@ -284,7 +314,7 @@ export async function deleteProject(id: number) {
 // Skills
 export async function fetchSkills() {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/skills` : `${API_BASE_URL}/api/skills`;
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url);
   if (!res.ok) throw new Error('Failed to fetch skills');
   return res.json();
 }
@@ -304,7 +334,7 @@ export async function deleteSkill(id: number) {
 export async function fetchWorkExperiences(language?: string) {
   const base = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/work` : `${API_BASE_URL}/api/work`;
   const url = language ? `${base}?language=${encodeURIComponent(language)}` : base;
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url);
   if (!res.ok) throw new Error('Failed to fetch work experience');
   return res.json();
 }
@@ -329,7 +359,7 @@ export async function deleteWorkExperience(id: number) {
 // Education
 export async function fetchEducation() {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/education` : `${API_BASE_URL}/api/education`;
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url);
   if (!res.ok) throw new Error('Failed to fetch education');
   return res.json();
 }
@@ -354,7 +384,7 @@ export async function deleteEducation(id: number) {
 // Resume
 export async function fetchResumes() {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/resume` : `${API_BASE_URL}/api/resume`;
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url);
   if (!res.ok) throw new Error('Failed to fetch resumes');
   return res.json();
 }
@@ -379,7 +409,7 @@ export async function deleteResume(id: number) {
 // Hobbies
 export async function fetchHobbies() {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/hobbies` : `${API_BASE_URL}/api/hobbies`;
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url);
   if (!res.ok) throw new Error('Failed to fetch hobbies');
   return res.json();
 }
@@ -413,7 +443,7 @@ export interface AboutMe {
 
 export async function fetchAboutMe(language: string) {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/aboutme/${language}` : `${API_BASE_URL}/api/aboutme/${language}`;
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url);
   if (!res.ok) throw new Error('Failed to fetch about me');
   return res.json();
 }
@@ -437,7 +467,7 @@ export interface Journey {
 
 export async function fetchJourney(language: string) {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/journey/${language}` : `${API_BASE_URL}/api/journey/${language}`;
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url);
   if (!res.ok) throw new Error('Failed to fetch journey');
   return res.json();
 }
@@ -465,7 +495,7 @@ export async function deleteJourney(id: number) {
 // Contact Info
 export async function fetchContactInfo() {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/contactinfo` : `${API_BASE_URL}/api/contactinfo`;
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url);
   if (!res.ok) throw new Error('Failed to fetch contact info');
   return res.json();
 }
@@ -490,7 +520,7 @@ export async function deleteContactInfo(id: number) {
 // Messages
 export async function fetchMessages() {
   const url = API_BASE_URL.endsWith('/api') ? `${API_BASE_URL}/messages` : `${API_BASE_URL}/api/messages`;
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url);
   if (!res.ok) throw new Error('Failed to fetch messages');
   return res.json();
 }

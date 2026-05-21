@@ -30,4 +30,7 @@ COPY --from=0 /app/build/libs/*.jar app.jar
 EXPOSE 8080
 
 # Run the application
-ENTRYPOINT ["java", "-Xmx256m", "-jar", "app.jar"]
+# -Xmx400m        : more heap = less GC pressure = faster startup
+# -XX:TieredStopAtLevel=1 : skip JIT compilation at startup (fine for a portfolio API)
+# -Dspring.backgroundpreinitializer.ignore=true : skip background pre-init thread
+ENTRYPOINT ["java", "-Xmx400m", "-XX:TieredStopAtLevel=1", "-Dspring.backgroundpreinitializer.ignore=true", "-jar", "app.jar"]
