@@ -23,7 +23,7 @@ public class Project {
     @Column(columnDefinition = "TEXT")
     private String imageUrl;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "project_tech_stack", joinColumns = @JoinColumn(name = "project_id"))
     @Column(name = "tech_stack")
     private java.util.List<String> techStack;

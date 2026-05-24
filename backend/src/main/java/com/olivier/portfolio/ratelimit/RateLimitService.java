@@ -42,6 +42,11 @@ public class RateLimitService {
         }
     }
 
+    RateLimitService(StringRedisTemplate redis) {
+        this();
+        this.redis = redis;
+    }
+
     private long nowMs() { return Instant.now().toEpochMilli(); }
 
     private Decision checkTokenBucket(String key, double capacity, double refillPerSec, double consume, long ttlMs) {

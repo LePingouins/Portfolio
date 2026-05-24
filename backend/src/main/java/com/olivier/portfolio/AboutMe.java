@@ -17,12 +17,12 @@ public class AboutMe {
     @Column(columnDefinition = "TEXT")
     private String text;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> stack;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> hobbies;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> goals;
 }

@@ -15,7 +15,7 @@ public class WorkExperience {
     private String location;
     private String language; // "en" or "fr"
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "work_experience_responsibilities", joinColumns = @JoinColumn(name = "work_experience_id"))
     @Column(name = "responsibility")
     private java.util.List<String> responsibilities;
