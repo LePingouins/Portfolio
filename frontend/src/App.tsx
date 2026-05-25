@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { waitForBackend } from './services/api';
 import Home from './pages/Home';
 import About from './pages/About';
 import Projects from './pages/Projects';
@@ -87,7 +88,54 @@ function AppRouter() {
 }
 
 
+function WakingUpScreen({ attempt }: { attempt: number }) {
+  return (
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: '#111',
+      color: '#eee',
+      fontFamily: 'sans-serif',
+      gap: '16px',
+    }}>
+      <style>{`@keyframes _spin { to { transform: rotate(360deg); } }`}</style>
+      <div style={{
+        width: 48, height: 48,
+        border: '4px solid #333',
+        borderTop: '4px solid #aaa',
+        borderRadius: '50%',
+        animation: '_spin 1s linear infinite',
+      }} />
+      <p style={{ margin: 0, fontSize: '1.1rem' }}>Waking up the server…</p>
+      <p style={{ margin: 0, fontSize: '0.85rem', color: '#666' }}>
+        {attempt > 1
+          ? `Attempt ${attempt} — free hosting takes ~20–30 s to wake up`
+          : 'This may take a moment on first visit'}
+      </p>
+    </div>
+  );
+}
+
 function App() {
+  // In development the backend is assumed to be running; skip the warm-up gate.
+  const [backendReady, setBackendReady] = React.useState(!import.meta.env.PROD);
+  const [attempt, setAttempt] = React.useState(0);
+
+  React.useEffect(() => {
+    if (!import.meta.env.PROD) return;
+    let cancelled = false;
+    waitForBackend((n) => { if (!cancelled) setAttempt(n); })
+      .then(() => { if (!cancelled) setBackendReady(true); });
+    return () => { cancelled = true; };
+  }, []);
+
+  if (!backendReady) {
+    return <WakingUpScreen attempt={attempt} />;
+  }
+
   return (
     <AuthProvider>
       <LanguageProvider>

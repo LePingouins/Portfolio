@@ -535,3 +535,31 @@ export async function deleteMessage(id: number) {
   const res = await fetch(url, { method: 'DELETE' });
   if (!res.ok) throw new Error('Failed to delete message');
 }
+
+/**
+ * Polls /api/hello until the backend responds with HTTP 200.
+ * Calls onAttempt(n) before each try so the UI can show progress.
+ * Resolves when ready or silently gives up after maxAttempts.
+ */
+export async function waitForBackend(
+  onAttempt?: (attempt: number) => void,
+  maxAttempts = 20,
+  intervalMs = 3000
+): Promise<void> {
+  const url = API_BASE_URL.endsWith('/api')
+    ? `${API_BASE_URL}/hello`
+    : `${API_BASE_URL}/api/hello`;
+  for (let i = 0; i < maxAttempts; i++) {
+    onAttempt?.(i + 1);
+    try {
+      const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+      if (res.ok) return;
+    } catch {
+      // network error or timeout — keep retrying
+    }
+    if (i < maxAttempts - 1) {
+      await new Promise(r => setTimeout(r, intervalMs));
+    }
+  }
+  // Give up — render the app anyway and let individual calls fail/retry normally
+}
